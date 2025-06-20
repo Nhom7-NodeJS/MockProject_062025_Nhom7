@@ -1,10 +1,10 @@
 {
   "name": "demoexpressjs",
   "version": "1.0.0",
-  "main": "main.js",
-  "type": "module",
+  "main": "main.ts",
+  "type": "commonjs",
   "scripts": {
-    "dev": "nodemon --inspect main.js",
+    "dev": "nodemon --watch src --exec ts-node src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,6 +22,11 @@
     "nodemailer": "^7.0.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
