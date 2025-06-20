@@ -1,10 +1,10 @@
 {
   "name": "demoexpressjs",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "main.ts",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --inspect main.js",
+    "dev": "nodemon --inspect main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -17,7 +17,7 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.2",
+    "multer": "^1.4.5-lts.3",
     "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^7.0.3",
     "typescript": "^5.8.3"
