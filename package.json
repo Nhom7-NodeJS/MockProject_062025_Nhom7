@@ -1,10 +1,14 @@
 {
-  "name": "demoexpressjs",
+  "name": "express-app",
   "version": "1.0.0",
   "main": "src/main.ts",
   "scripts": {
     "dev": "nodemon --watch ./src --ext ts --exec ts-node -r tsconfig-paths/register src/main.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js         migration:generate -d src/config/config-database.ts",
+    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/config-database.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/config-database.ts"
   },
   "author": "",
   "license": "ISC",
@@ -12,8 +16,10 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.2",
     "nodemon": "^3.1.9",

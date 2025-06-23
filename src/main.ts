@@ -1,36 +1,33 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-
-import { AppDataSource } from '@/config/db';
-import userRoutes from '@/routes/user.routes';
-
-dotenv.config();
+import express from "express";
+import cors from "cors";
+import { initDatabase } from "@/database/connect-database";
+import router from "@/routes";
+import { exceptionHandler } from "@/middlewares/exception-filter";
+import { loadedEnv } from "@/config/load-env";
+import { requestLogger } from "@/middlewares/logger-filter";
+import { logger } from "@/utils/logger";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Initialize database connection
-AppDataSource.initialize()
-    .then(() => {
-        console.log('Database connected successfully');
-    })
-    .catch((error) => console.log('Error during Data Source initialization', error));
+const PORT = loadedEnv.port;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the CRUD API' });
-});
+// Middleware logger
+app.use(requestLogger);
 
-// API routes
-app.use('/api/users', userRoutes);
+// Initialize database connection
+initDatabase();
+
+// init routes
+app.use("/", router);
+
+// middleware handle exception
+app.use(exceptionHandler);
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  logger.success(`Server is running on port ${PORT}`);
 });
