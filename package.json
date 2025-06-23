@@ -1,31 +1,58 @@
 {
-  "name": "demoexpressjs",
+  "name": "mock-project-expressjs",
   "version": "1.0.0",
-  "main": "src/main.ts",
+  "description": "Mock Project Express.js API with TypeScript and TypeORM",
+  "main": "dist/main.js",
   "scripts": {
     "dev": "nodemon --watch ./src --ext ts --exec ts-node -r tsconfig-paths/register src/main.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "start:dev": "ts-node -r tsconfig-paths/register src/main.ts",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test": "jest"
   },
+  "keywords": [
+    "express",
+    "typescript",
+    "typeorm",
+    "rest-api"
+  ],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.6.2",
-    "nodemon": "^3.1.9",
-    "reflect-metadata": "^0.1.13",
+    "mysql2": "^3.14.1",
+    "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.25"
   },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.10.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.0",
+    "jest": "^30.0.2",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.0",
+    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   }
 }

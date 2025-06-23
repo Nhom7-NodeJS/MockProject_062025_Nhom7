@@ -1,36 +1,79 @@
-import express from 'express';
-import dotenv from 'dotenv';
+import 'reflect-metadata';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { config } from 'dotenv';
+import { errorHandler } from '@/shared/middleware/error-handler.middleware';
+import { connectDB } from '@/shared/database/connection';
+import apiRoutes from '@/modules';
 
-import { AppDataSource } from '@/config/db';
-import userRoutes from '@/routes/user.routes';
+// Load environment variables
+config();
 
-dotenv.config();
+class App {
+  public app: express.Application;
+  public port: number;
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+  constructor() {
+    this.app = express();
+    this.port = parseInt(process.env.PORT || '3000');
+    this.initializeMiddlewares();
+    this.initializeRoutes();
+    this.initializeErrorHandling();
+  }
 
-// Initialize database connection
-AppDataSource.initialize()
-    .then(() => {
-        console.log('Database connected successfully');
-    })
-    .catch((error) => console.log('Error during Data Source initialization', error));
+  private initializeMiddlewares() {
+    this.app.use(cors());
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+  }
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  private initializeRoutes() {
+    // API routes
+    this.app.use('/api', apiRoutes);
+    
+    // 404 handler
+    this.app.use((req: Request, res: Response) => {
+      res.status(404).json({
+        status: 'error',
+        message: 'Resource not found',
+      });
+    });
+  }
 
-// Routes
-app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the CRUD API' });
+  private initializeErrorHandling() {
+    this.app.use(errorHandler);
+  }
+
+  public async start() {
+    try {
+      // Initialize database connection
+      await connectDB();
+      
+      // Start the server
+      this.app.listen(this.port, () => {
+        console.log(`Server is running on port ${this.port}`);
+        console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+      });
+    } catch (error) {
+      console.error('Failed to start the server:', error);
+      process.exit(1);
+    }
+  }
+}
+
+// Start the application
+const app = new App();
+app.start();
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Consider restarting the server or handling the error appropriately
 });
 
-// API routes
-app.use('/api/users', userRoutes);
-
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // Consider restarting the server or handling the error appropriately
+  process.exit(1);
 });
