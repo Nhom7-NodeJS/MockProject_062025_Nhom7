@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 import { BaseJoiDto } from '@/shared/dto/base.dto';
 
 export class CreateUserDto extends BaseJoiDto {

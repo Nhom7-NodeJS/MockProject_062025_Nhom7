@@ -1,13 +1,16 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { validateJoi } from '@/shared/middleware/validation.middleware';
-import { HttpStatus } from '@/shared/constants/http-status';
-import { ApiResponse } from '@/shared/utils/api-response';
-import { ErrorCodes } from '@/shared/constants/error-codes';
 
-import { UserController } from './user.controller';
+
+import { ErrorCodes } from '@/shared/constants/error-codes';
+import { HttpStatus } from '@/shared/constants/http-status';
+import { validateJoi } from '@/shared/middleware/validation.middleware';
+import { ApiResponse } from '@/shared/utils/api-response';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserParamsDto } from './dto/user-params.dto';
+import { UserController } from './user.controller';
+
 
 export class UserRoutes {
   public router: Router;

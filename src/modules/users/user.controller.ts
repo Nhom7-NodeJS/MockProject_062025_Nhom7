@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserService } from './user.service';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserParamsDto } from './dto/user-params.dto';
 import { User } from './entities/user.entity';
+import { UserService } from './user.service';
 
 export class UserController {
   private userService: UserService;

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
+
 import { BaseJoiDto } from '@/shared/dto/base.dto';
 
 export function validateJoi<T extends BaseJoiDto>(

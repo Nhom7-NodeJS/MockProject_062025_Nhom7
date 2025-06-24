@@ -1,10 +1,12 @@
 import 'reflect-metadata';
-import express, { Request, Response, NextFunction } from 'express';
+
 import cors from 'cors';
 import { config } from 'dotenv';
-import { errorHandler } from '@/shared/middleware/error-handler.middleware';
-import { connectDB } from '@/shared/database/connection';
+import express, { Request, Response } from 'express';
+
 import apiRoutes from '@/modules';
+import { connectDB } from '@/shared/database/connection';
+import { errorHandler } from '@/shared/middleware/error-handler.middleware';
 
 // Load environment variables
 config();

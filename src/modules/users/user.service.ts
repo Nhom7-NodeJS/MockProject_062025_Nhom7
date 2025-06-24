@@ -1,6 +1,9 @@
 import { Repository } from 'typeorm';
+
 import { AppDataSource } from '@/shared/database/connection';
+
 import { User } from './entities/user.entity';
+
 
 export class UserService {
   private userRepository: Repository<User>;
