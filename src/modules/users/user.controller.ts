@@ -4,14 +4,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserParamsDto } from './dto/user-params.dto';
 import { User } from './entities/user.entity';
-import { UserService } from './user.service';
+import UserService from './user.service';
 
-export class UserController {
-  private userService: UserService;
-
-  constructor() {
-    this.userService = new UserService();
-  }
+class UserController {
+  constructor(private userService: UserService) {}
 
   /**
    * Get all users without pagination
@@ -71,4 +67,4 @@ export class UserController {
   }
 }
 
-export default new UserController();
+export default UserController;

@@ -1,23 +1,22 @@
-import { ValidationError } from 'joi';
+import Joi, { ValidationError, ObjectSchema } from "joi";
 
-export interface IBaseJoiDto {
-  validate?(): Promise<{ [key: string]: string } | null>;
-}
+export type ValidationErrors = { [key: string]: string[] };
 
-export abstract class BaseJoiDto implements IBaseJoiDto {
-  static schema: any;
+export abstract class BaseJoiDto {
+  static schema: ObjectSchema<any>;
 
-  static async validate<T extends object>(dto: T): Promise<{ [key: string]: string[] } | null> {
+  static async validate<T extends object>(
+    this: { schema: ObjectSchema<T> },
+    dto: T
+  ): Promise<ValidationErrors | null> {
     try {
-      await (this as any).schema.validateAsync(dto, { abortEarly: false });
+      await this.schema.validateAsync(dto, { abortEarly: false });
       return null;
     } catch (error) {
       if (error instanceof ValidationError) {
-        return error.details.reduce((acc: { [key: string]: string[] }, detail) => {
+        return error.details.reduce<ValidationErrors>((acc, detail) => {
           const key = detail.path.join('.');
-          if (!acc[key]) {
-            acc[key] = [];
-          }
+          acc[key] = acc[key] || [];
           acc[key].push(detail.message);
           return acc;
         }, {});
@@ -26,13 +25,12 @@ export abstract class BaseJoiDto implements IBaseJoiDto {
     }
   }
 
-  static fromRequest<T extends BaseJoiDto>(this: new () => T, data: object): T {
+  static fromRequest<T extends BaseJoiDto>(
+    this: new () => T,
+    data: Partial<T>
+  ): T {
     const instance = new this();
     Object.assign(instance, data);
     return instance;
-  }
-
-  async validate?(): Promise<{ [key: string]: string } | null> {
-    return null;
   }
 }

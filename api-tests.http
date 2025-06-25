@@ -1,0 +1,44 @@
+@baseUrl = http://localhost:3000/api
+@contentType = application/json
+
+### 1. Test Create User - Simple Test
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Test User",
+  "email": "testuser@example.com",
+  "password": "Test123!"
+}
+
+### 2. Get All Users - Check if user was created
+GET {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+### 3. Test Create User - Missing Required Fields
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Incomplete User"
+}
+
+### 4. Test Create User - Invalid Email
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Invalid Email",
+  "email": "not-an-email",
+  "password": "Test123!"
+}
+
+### 5. Test Create User - Short Password
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Short Password",
+  "email": "shortpass@example.com",
+  "password": "123"
+}

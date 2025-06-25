@@ -12,7 +12,6 @@ A robust RESTful API built with Express.js, TypeScript, and TypeORM, following b
 - Request validation
 - Error handling
 - CORS enabled
-- API documentation (TBD)
 
 ## Prerequisites
 
@@ -50,27 +49,31 @@ A robust RESTful API built with Express.js, TypeScript, and TypeORM, following b
 
 - `npm run dev` - Start development server with hot-reload
 - `npm run build` - Build the application
-- `npm start` - Start the production server
+- `npm run start` - Start the production server
 - `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint issues
 - `npm run format` - Format code with Prettier
-- `npm test` - Run tests
 
 ## Project Structure
 
 ```
 src/
-├── modules/               # Feature modules
-│   └── users/            # User module
-│       ├── controllers/   # Request handlers
-│       ├── services/      # Business logic
-│       ├── routes/        # Route definitions
-│       ├── entities/      # TypeORM entities
-│       └── validators/    # Request validators
-├── shared/                # Shared utilities
-│   ├── config/           # Configuration files
-│   ├── database/         # Database connection and utils
-│   └── middleware/       # Global middleware
-└── main.ts               # Application entry point
+├── modules/                      # Feature modules
+│   └── users/                    # User module
+│       ├── dto/                  # Data Transfer Objects
+│       ├── entities/             # TypeORM entities
+│       ├── user.controller.ts    # Request handlers
+│       ├── user.routes.ts        # Route definitions
+│       ├── user.service.ts       # Business logic
+├── shared/                       # Shared utilities  
+│   ├── config/                   # Configuration management
+│   ├── constants/                # Application constants
+│   ├── database/                 # Database connection and utils
+│   ├── dto/                      # Data Transfer Objects
+│   ├── interfaces/               # TypeScript interfaces
+│   ├── middleware/               # Global middleware
+│   └── utils/                    # Utility functions
+└── main.ts                       # Application entry point
 ```
 
 ## API Endpoints

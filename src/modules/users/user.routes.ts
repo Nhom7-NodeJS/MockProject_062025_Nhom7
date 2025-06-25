@@ -9,8 +9,8 @@ import { ApiResponse } from '@/shared/utils/api-response';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserParamsDto } from './dto/user-params.dto';
-import { UserController } from './user.controller';
-
+import UserController from './user.controller';
+import UserService from './user.service';
 
 export class UserRoutes {
   public router: Router;
@@ -18,7 +18,9 @@ export class UserRoutes {
 
   constructor() {
     this.router = Router();
-    this.controller = new UserController();
+
+    const userService = new UserService();
+    this.controller = new UserController(userService);
     this.initializeRoutes();
   }
 

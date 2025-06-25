@@ -1,27 +1,39 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-
 import { BaseJoiDto } from '@/shared/dto/base.dto';
 
-export function validateJoi<T extends BaseJoiDto>(
-  type: new () => T,
-  source: 'body' | 'query' | 'params' = 'body'
+type RequestSource = 'body' | 'query' | 'params';
+type Constructor<T> = new (...args: any[]) => T;
+
+declare global {
+  namespace Express {
+    interface Request {
+      validated?: BaseJoiDto;
+    }
+  }
+}
+
+/**
+ * Middleware factory for validating request data against a Joi schema
+ * @param DtoClass The DTO class to validate against (must extend BaseJoiDto)
+ * @param source The request property to validate (default: 'body')
+ */
+export function validateJoi<Dto extends BaseJoiDto>(
+  DtoClass: Constructor<Dto> & typeof BaseJoiDto,
+  source: RequestSource = 'body'
 ): RequestHandler {
-  return (async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      // Create instance of the DTO class
-      const dto = new type();
-      
-      // Assign request data to DTO
-      Object.assign(dto, req[source]);
+      // Create and validate DTO instance using the static fromRequest method
+      const dto = DtoClass.fromRequest(req[source]);
       
       // Get the schema from the DTO class
-      const schema = (dto.constructor as any).schema;
+      const schema = DtoClass.schema;
       if (!schema) {
-        throw new Error(`No Joi schema defined in ${type.name}`);
+        throw new Error(`No Joi schema defined in ${DtoClass.name}`);
       }
       
       // Validate the DTO using Joi schema
-      const validationErrors = await (dto.constructor as typeof BaseJoiDto).validate(dto);
+      const validationErrors = await DtoClass.validate(dto);
       
       if (validationErrors) {
         res.status(400).json({
@@ -31,34 +43,12 @@ export function validateJoi<T extends BaseJoiDto>(
         });
         return;
       }
-
-      // If DTO has custom validation
-      if (typeof dto.validate === 'function') {
-        const customErrors = await dto.validate();
-        if (customErrors) {
-          res.status(400).json({
-            status: 'error',
-            message: 'Validation failed',
-            errors: customErrors,
-          });
-          return;
-        }
-      }
-
+      
       // Attach the validated DTO to the request object
       req.validated = dto;
       next();
     } catch (error) {
       next(error);
     }
-  }) as RequestHandler;
-}
-
-// Extend Express Request type to include validated property
-declare global {
-  namespace Express {
-    interface Request {
-      validated?: any;
-    }
-  }
+  };
 }
