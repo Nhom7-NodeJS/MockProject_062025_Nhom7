@@ -1,13 +1,18 @@
 import express from "express";
 
-import UserController from "@/controllers/user.controller";
+import userController from "@/modules/users/user.controller";
+import { asyncHandle } from "@/utils/error-handler";
+import { validateBody } from "@/middlewares/validate.middleware";
+import { CreateUserSchema } from "@/modules/users/schemas/create-user.schema";
 
 const router = express.Router();
 
-router.get("/", (req, res) => UserController.getAll(req, res));
-router.get("/:id", (req, res) => UserController.getById(req, res));
-router.post("/", (req, res) => UserController.create(req, res));
-router.put("/:id", (req, res) => UserController.update(req, res));
-router.delete("/:id", (req, res) => UserController.delete(req, res));
+router.get("/", asyncHandle(userController.getAll));
+router.post(
+  "/",
+  validateBody(CreateUserSchema),
+  asyncHandle(userController.create)
+);
+router.get("/:id", asyncHandle(userController.getById));
 
 export default router;
