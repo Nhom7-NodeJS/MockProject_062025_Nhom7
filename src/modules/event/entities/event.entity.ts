@@ -1,15 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity({ name: 'event' })
 export class Event {
-  @PrimaryGeneratedColumn()
-  event_id!: number;
+  @PrimaryColumn()
+  event_id!: string;
 
   @Column()
-  suspect_id!: number;
+  suspect_id!: string;
 
   @Column()
-  case_id!: number;
+  case_id!: string;
 
   @Column({ type: 'datetime' })
   time_start!: Date;

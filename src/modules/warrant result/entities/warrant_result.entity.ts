@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column} from 'typeorm';
 
 @Entity({ name: 'warrant_result' })
 export class WarrantResult {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   warrant_result_id!: string;
 
   @Column()
