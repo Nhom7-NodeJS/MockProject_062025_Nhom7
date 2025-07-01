@@ -9,6 +9,26 @@ export const SuccessMessages = {
     USER_GET: "Fetch user data successfully",
   },
 
+  ARREST: {
+    ARREST_CREATED: "Arrest created successfully",
+
+    ARREST_UPDATED: "Arrest updated successfully",
+
+    ARREST_DELETED: "Arrest deleted successfully",
+
+    ARREST_GET: "Fetch arrest data successfully",
+  },
+
+  PERMISSION: {
+    PERMISSION_CREATED: "Permission created successfully",
+
+    PERMISSION_UPDATED: "Permission updated successfully",
+
+    PERMISSION_DELETED: "Permission deleted successfully",
+
+    PERMISSION_GET: "Fetch permission data successfully",
+  },
+
   AUTH: {
     LOGIN_SUCCESS: "Login successfully",
 
@@ -30,4 +50,18 @@ export const ErrorMessages = {
   VALIDATION_FAILED: "Validation failed",
 
   SERVER_ERROR: "Something went wrong",
+
+  ARREST_NOT_FOUND: "Arrest not found",
+
+  ARREST_EXISTS: "Arrest already exists",
+
+  PERMISSION_NOT_FOUND: "Permission not found",
+
+  PERMISSION_ALREADY_EXISTS: "Permission already exists",
+
+  PERMISSION_EXISTS: "Permission already exists for this user",
+
+  SENTENCE_NOT_FOUND: "Sentence not found",
+
+  SENTENCE_EXISTS: "Sentence already exists",
 } as const;
