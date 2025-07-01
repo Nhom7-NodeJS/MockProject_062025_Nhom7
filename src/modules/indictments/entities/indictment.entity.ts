@@ -14,6 +14,6 @@ export class Indictment {
   @Column()
   issued_at!: Date;
 
-  @Column()
-  is_deleted: boolean | undefined;
+  @Column({ type: "boolean", default: false })
+  is_deleted!: boolean;
 }

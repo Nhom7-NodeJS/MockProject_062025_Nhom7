@@ -20,6 +20,6 @@ export class Victim {
   @Column()
   status!: string;
 
-  @Column()
-  is_deleted: boolean | undefined;
+  @Column({ type: "boolean", default: false })
+  is_deleted!: boolean;
 }
