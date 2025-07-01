@@ -2,16 +2,39 @@
 
 A robust RESTful API built with Express.js, TypeScript, and TypeORM, following best practices for scalability and maintainability.
 
-## Features
+## Development Priorities
 
-- TypeScript for type safety
-- Express.js for the web framework
-- TypeORM for database operations
-- MySQL database support
-- Environment configuration
-- Request validation
-- Error handling
-- CORS enabled
+### Completed
+- [x] Basic CRUD operations
+- [x] Database setup (TypeORM + MySQL)
+- [x] API response formatting
+- [x] Environment configuration
+
+### In Progress
+- [ ] Input Validation
+  - [ ] Enhance update operation validation
+  - [ ] Add query parameter validation
+  - [ ] Validate email format
+  - [ ] Add password strength requirements
+
+- [ ] Error Handling
+  - [ ] More specific error messages
+  - [ ] Handle duplicate email errors
+  - [ ] Add error codes for different scenarios
+  - [ ] Improve validation error responses
+
+### Next Up
+- [ ] Security
+  - [ ] JWT Authentication
+  - [ ] Password hashing (bcrypt)
+  - [ ] Protected routes
+  - [ ] Rate limiting
+
+- [ ] API Improvements
+  - [ ] Add search functionality
+  - [ ] Implement filtering
+  - [ ] Add sorting options
+  - [ ] Response caching
 
 ## Prerequisites
 
@@ -23,8 +46,8 @@ A robust RESTful API built with Express.js, TypeScript, and TypeORM, following b
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone https://github.com/nmnguyen130/Express-REST-API.git
+   cd Express-REST-API
    ```
 
 2. **Install dependencies**
@@ -40,9 +63,18 @@ A robust RESTful API built with Express.js, TypeScript, and TypeORM, following b
    - Create a MySQL database
    - Update the connection details in `.env`
 
-5. **Run migrations (if any)**
+5. **Run database migrations**
    ```bash
-   # Add migration commands here when you have them
+   # Run pending migrations
+   npm run migration:run
+   
+   # (Optional) If you need to undo the last migration
+   # npm run migration:revert
+   ```
+   
+   After making changes to your entities, create a new migration:
+   ```bash
+   npm run migration:generate src/migrations/YourMigrationName
    ```
 
 ## Available Scripts
@@ -54,10 +86,22 @@ A robust RESTful API built with Express.js, TypeScript, and TypeORM, following b
 - `npm run lint:fix` - Fix ESLint issues
 - `npm run format` - Format code with Prettier
 
+## Database Migrations
+
+Migrations help manage your database schema changes. Here are the available scripts:
+
+- `npm run migration:run` - Run all pending migrations
+- `npm run migration:revert` - Revert the last migration
+- `npm run migration:generate` - Create a new migration
+- `npm run migration:show` - Show migration status
+
+**Note:** All database schema changes should be done through migrations, not by directly modifying the database.
+
 ## Project Structure
 
 ```
 src/
+├── migrations/                   # Database migration files
 ├── modules/                      # Feature modules
 │   └── users/                    # User module
 │       ├── dto/                  # Data Transfer Objects
@@ -95,14 +139,6 @@ src/
 - `DB_USERNAME` - Database username
 - `DB_PASSWORD` - Database password
 - `DB_NAME` - Database name
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## License
 

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import logger from '@/shared/utils/logger';
 
 export class AppError extends Error {
   statusCode: number;
@@ -44,7 +45,7 @@ const sendErrorDev = (err: any, req: Request, res: Response) => {
   }
 
   // RENDERED WEBSITE
-  console.error('ERROR', err);
+  logger.error('Unexpected error in development:', err);
   return res.status(err.statusCode).render('error', {
     title: 'Something went wrong!',
     msg: err.message,
@@ -63,7 +64,7 @@ const sendErrorProd = (err: any, req: Request, res: Response) => {
       });
     }
     // 2. Programming or other unknown error: don't leak error details
-    console.error('ERROR', err);
+    logger.error('ERROR', err);
     return res.status(500).json({
       status: 'error',
       message: 'Something went very wrong!',
@@ -77,7 +78,7 @@ const sendErrorProd = (err: any, req: Request, res: Response) => {
       msg: err.message,
     });
   }
-  console.error('ERROR', err);
+  logger.error('Unexpected error in production:', err);
   return res.status(err.statusCode).render('error', {
     title: 'Something went wrong!',
     msg: 'Please try again later.',

@@ -1,21 +1,36 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm";
+import { Role } from "@/modules/roles/entities/role.entity";
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryColumn()
+  username!: string;
 
   @Column()
-  name!: string;
+  password_hash!: string;
 
-  @Column({ unique: true })
+  @Column()
+  fullname!: string;
+
+  @Column({ nullable: true })
+  avatar_url?: string;
+
+  @Column()
   email!: string;
 
-  @Column({ select: false })
-  password!: string;
+  @Column()
+  phonenumber!: string;
 
-  toJSON() {
-    const { password, ...rest } = this;
-    return rest;
-  }
+  @Column()
+  create_at!: Date;
+
+  @Column()
+  role_id!: string;
+
+  @OneToOne(() => Role)
+  @JoinColumn({ name: 'role_id' })
+  role!: Role;
+
+  @Column({ type: 'boolean', default: false })
+  is_deleted!: boolean;
 }
