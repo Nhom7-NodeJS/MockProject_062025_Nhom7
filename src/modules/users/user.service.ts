@@ -15,7 +15,7 @@ export class UserService {
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);
   }
-
+  
   async getAll(): Promise<User[]> {
     return await this.userRepository.find();
   }

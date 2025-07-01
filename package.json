@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "nodemon --watch ./src --ext ts --exec ts-node -r tsconfig-paths/register src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js         migration:generate -d src/config/config-database.ts",
     "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/config-database.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/config-database.ts"
@@ -20,6 +19,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "joi": "^17.13.3",
+    "joy": "^0.1.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.2",
     "nodemon": "^3.1.9",
@@ -32,6 +32,6 @@
     "@types/node": "^20.10.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   }
 }
