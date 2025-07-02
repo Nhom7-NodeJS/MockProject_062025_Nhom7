@@ -1,40 +1,63 @@
-import { Entity, Column, PrimaryColumn } from "typeorm";
+import { Case } from "@/modules/case/entities/case.entity";
+import { Evidence } from "@/modules/evidences/entities/evidence.entity";
+import { ReportsVictims } from "@/modules/reports_victims/entities/reports_victims.entity";
+import { Suspect } from "@/modules/suspect/entities/suspect.entity";
+import { User } from "@/modules/users/entities/user.entity";
+import { Entity, Column, PrimaryColumn, ManyToOne, OneToMany } from "typeorm";
 
-@Entity('reports')
+@Entity("reports")
 export class Report {
   @PrimaryColumn()
   report_id!: string;
 
   @Column()
-  case_id!: string
+  type_report!: string;
 
   @Column()
-  type_report!: string
+  severity!: string;
 
-  @Column({ nullable: true })
-  description?: string
-  
-  @Column()
-  case_location!:string
-  
-  @Column()
-  reported_at!:string
-  
-  @Column()
-  reporter_location!: Date
-  
-  @Column()
-  reporter_fullname!: string
-
-  @Column()
-  reporter_email!: string
-  
-  @Column({ nullable: true })
-  reporter_phonenumber?: string
+  @Column({ type: "timestamp" })
+  incident_date!: Date;
 
   @Column({ nullable: true })
-  office_approve_id?: string
+  description?: string;
 
-  @Column({ type: 'boolean', default: false })
-  is_deleted!: boolean
+  @Column()
+  case_location!: string;
+
+  @Column({ type: "timestamp" })
+  reported_at!: Date;
+
+  @Column()
+  reporter_location!: string;
+
+  @Column()
+  reporter_fullname!: string;
+
+  @Column()
+  reporter_email!: string;
+
+  @Column({ nullable: true })
+  reporter_phone_number?: string;
+
+  @Column({ type: "boolean", default: false })
+  is_deleted!: boolean;
+
+  @Column()
+  status!: string;
+
+  @ManyToOne(() => User, (user) => user.reports)
+  user!: User;
+
+  @ManyToOne(() => Case, (case1) => case1.reports)
+  case!: Case;
+
+  @OneToMany(() => Evidence, (evidence) => evidence.report)
+  evidences!: Evidence[];
+
+  @OneToMany(() => Suspect, (suspect) => suspect.report)
+  suspects!: Suspect[];
+
+  @OneToMany(() => ReportsVictims, (reportsVictims) => reportsVictims.report)
+  reports_victims!: ReportsVictims[];
 }

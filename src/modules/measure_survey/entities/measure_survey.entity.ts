@@ -1,6 +1,7 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Evidence } from "@/modules/evidences/entities/evidence.entity";
+import { Entity, PrimaryColumn, Column, ManyToOne } from "typeorm";
 
-@Entity('measure_surveys')
+@Entity("measure_surveys")
 export class MeasureSurvey {
   @PrimaryColumn()
   measure_survey_id!: string;
@@ -14,6 +15,9 @@ export class MeasureSurvey {
   @Column({ nullable: true })
   result?: string;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
+
+  @ManyToOne(() => Evidence, (evidence) => evidence.measure_surveys)
+  evidence!: Evidence;
 }

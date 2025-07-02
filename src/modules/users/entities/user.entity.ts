@@ -1,7 +1,14 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn, OneToMany, ManyToOne } from "typeorm";
 import { Role } from "@/modules/roles/entities/role.entity";
+import { Report } from "@/modules/reports/entities/report.entity";
+import { Interview } from "@/modules/interview/entities/interview.entity";
+import { InvestigationPlan } from "@/modules/investigation_plan/entities/investigation_plan.entity";
+import { Evidence } from "@/modules/evidences/entities/evidence.entity";
+import { Prosecution } from "@/modules/prosecution/entities/prosecution.entity";
+import { UsersCases } from "@/modules/user_case/entities/user_case.entity";
+import { Question } from "@/modules/question/entity/question.entity";
 
-@Entity('users')
+@Entity("users")
 export class User {
   @PrimaryColumn()
   username!: string;
@@ -19,18 +26,38 @@ export class User {
   email!: string;
 
   @Column()
-  phonenumber!: string;
+  phone_number!: string;
 
   @Column()
   create_at!: Date;
 
-  @Column()
-  role_id!: string;
+  @Column({ type: "boolean", default: false })
+  is_deleted!: boolean;
 
-  @OneToOne(() => Role)
-  @JoinColumn({ name: 'role_id' })
+  @OneToMany(() => Report, (report) => report.user, { nullable: true })
+  reports!: Report[];
+
+  @OneToMany(() => Interview, (interview) => interview.interviewer)
+  interviews!: Interview[];
+
+  @OneToMany(
+    () => InvestigationPlan,
+    (investigationPlan) => investigationPlan.created_officer_id
+  )
+  investigation_plans!: InvestigationPlan[];
+
+  @OneToMany(() => Evidence, (evidence) => evidence.user)
+  evidences!: Evidence[];
+
+  @OneToMany(() => Prosecution, (prosecution) => prosecution.user)
+  prosecutions!: Prosecution[];
+
+  @ManyToOne(() => Role, (role) => role.users)
   role!: Role;
 
-  @Column({ type: 'boolean', default: false })
-  is_deleted!: boolean;
+  @OneToMany(() => UsersCases, (usersCases) => usersCases.user)
+  users_cases!: UsersCases[];
+
+  @OneToMany(() => Question, (question) => question.user)
+  questions!: Question[];
 }

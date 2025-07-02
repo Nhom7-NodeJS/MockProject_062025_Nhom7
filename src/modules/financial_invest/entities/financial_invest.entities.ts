@@ -1,17 +1,18 @@
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn } from "typeorm";
-@Entity("physical_invest")
-export class PhysicalInvest {
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
+
+@Entity("financial_invest")
+export class FinancialInvest {
   @PrimaryColumn()
   evidence_id!: string;
 
   @Column()
-  image_url!: string;
+  summary!: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @OneToOne(() => Evidence, { onDelete: "CASCADE" })
+  @OneToOne(() => Evidence)
   @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }
