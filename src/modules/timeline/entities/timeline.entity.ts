@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { CaseResult } from '@/modules/case_result/entities/case_result.entity';
 
 @Entity('timelines')
 export class Timeline {
@@ -14,8 +15,8 @@ export class Timeline {
   @Column({ type: 'timestamp', nullable: true })
   end_time?: Date;
 
-  @Column({ type: 'jsonb', nullable: true })
-  attached_file?: Record<string, any>;
+  @Column({ type: 'json', nullable: true })
+  attached_file?: string[];
 
   @Column({ nullable: true })
   notes?: string;
@@ -25,4 +26,8 @@ export class Timeline {
 
   @Column({ type: 'boolean', default: false })
   is_deleted!: boolean;
+
+  @ManyToOne(() => CaseResult, (caseResult) => caseResult.timelines)
+  @JoinColumn({ name: 'case_result_id' })
+  caseResult!: CaseResult;
 }

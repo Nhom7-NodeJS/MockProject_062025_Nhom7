@@ -1,13 +1,17 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
+import { RolePermission } from "@/modules/roles_permissions/entities/role_permission.entity";
 
 @Entity("permission")
 export class Permission {
-  @PrimaryColumn({ name: "permission_id", type: "varchar" })
-  permissionId!: string;
+  @PrimaryColumn()
+  permission_id!: string;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ nullable: true })
   description?: string;
 
-  @Column({ name: "is_deleted", default: false })
-  isDeleted!: boolean;
+  @Column({ default: false })
+  is_deleted!: boolean;
+
+  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.permission)
+  rolePermissions?: RolePermission[];
 }
