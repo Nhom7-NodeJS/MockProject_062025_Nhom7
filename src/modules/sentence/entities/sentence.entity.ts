@@ -1,6 +1,6 @@
 import { Case } from "@/modules/case/entities/case.entity";
 import { CaseResult } from "@/modules/case_result/entities/case_result.entity";
-import { Entity, PrimaryColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity("sentence")
 export class Sentence {
@@ -23,8 +23,10 @@ export class Sentence {
   is_deleted!: boolean;
 
   @ManyToOne(() => Case, (case1) => case1.sentences)
+  @JoinColumn({ name: "case_id" })
   case!: Case;
 
   @ManyToOne(() => CaseResult, (caseResult) => caseResult.sentences)
+  @JoinColumn({ name: "case_result_id" })
   case_result!: CaseResult;
 }

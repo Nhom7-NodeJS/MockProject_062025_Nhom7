@@ -4,6 +4,7 @@ import { VictimInterview } from "@/modules/victim_interview/entities/victim_inte
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryColumn,
@@ -30,7 +31,8 @@ export class Victim {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @ManyToOne(() => Case, (case1) => case1.victims)
+  @ManyToOne(() => Case, (case_) => case_.victims)
+  @JoinColumn({ name: "case_id" })
   case!: Case;
 
   @OneToMany(() => ReportsVictims, (reportsVictims) => reportsVictims.victim)

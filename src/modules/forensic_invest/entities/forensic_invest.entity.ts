@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Evidence } from "@/modules/evidences/entities/evidence.entity";
+import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn } from "typeorm";
 
 @Entity("forensic_invest")
 export class ForensicInvest {
@@ -11,9 +12,13 @@ export class ForensicInvest {
   @Column()
   report!: string;
 
-  @Column()
+  @Column({ type: "timestamp" })
   received_at!: Date;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
+
+  @OneToOne(() => Evidence)
+  @JoinColumn({ name: "evidence_id" })
+  evidence!: Evidence;
 }

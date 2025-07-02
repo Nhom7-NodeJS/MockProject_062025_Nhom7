@@ -1,11 +1,11 @@
 import { Interview } from "@/modules/interview/entities/interview.entity";
 import { User } from "@/modules/users/entities/user.entity";
-import { Entity, PrimaryColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity("question")
 export class Question {
-  @PrimaryColumn({ name: "question_id", type: "varchar" })
-  questionId!: string; // PK
+  @PrimaryColumn({ type: "varchar" })
+  question_id!: string; // PK
 
   @Column({ type: "text" })
   content!: string;
@@ -17,11 +17,13 @@ export class Question {
   reliability?: number;
 
   @Column({ name: "is_deleted", default: false })
-  isDeleted!: boolean;
+  is_deleted!: boolean;
 
   @ManyToOne(() => Interview, (interview) => interview.questions)
+  @JoinColumn({ name: "interview_id" })
   interview!: Interview;
 
   @ManyToOne(() => User, (user) => user.questions)
+  @JoinColumn({ name: "user_id" })
   user!: User;
 }

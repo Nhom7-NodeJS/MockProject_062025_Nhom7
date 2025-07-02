@@ -10,11 +10,11 @@ export class ReportsVictims {
   @PrimaryColumn()
   victim_id!: string;
 
-  @ManyToOne(() => Victim, (victim) => victim)
+  @ManyToOne(() => Victim, (victim) => victim.reports_victims)
   @JoinColumn({ name: "victim_id" })
   victim!: Victim;
 
-  @ManyToOne(() => Report, (report) => report)
+  @ManyToOne(() => Report, (report) => report.reports_victims)
   @JoinColumn({ name: "report_id" })
   report!: Report;
 

@@ -23,8 +23,8 @@ export class Interview {
   @Column()
   location!: string;
 
-  @Column()
-  attached_file!: string;
+  @Column({ type: "json" })
+  attached_file!: string[];
 
   @Column({ type: "timestamp" })
   start_time!: Date;

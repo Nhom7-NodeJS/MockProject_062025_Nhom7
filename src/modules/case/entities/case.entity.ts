@@ -33,7 +33,7 @@ export class Case {
   @Column()
   summary!: string;
 
-  @Column()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   create_at!: Date;
 
   @Column({ type: "boolean", default: false })
@@ -63,7 +63,7 @@ export class Case {
   )
   investigation_plans!: InvestigationPlan[];
 
-  @OneToMany(() => Evidence, (evidence) => evidence)
+  @OneToMany(() => Evidence, (evidence) => evidence.case)
   evidences!: Evidence[];
 
   @OneToMany(() => Arrest, (arrest) => arrest.case)

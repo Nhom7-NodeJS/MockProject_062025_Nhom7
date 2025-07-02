@@ -11,7 +11,7 @@ export class PhysicalInvest {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @OneToOne(() => Evidence, { onDelete: "CASCADE" })
+  @OneToOne(() => Evidence)
   @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }

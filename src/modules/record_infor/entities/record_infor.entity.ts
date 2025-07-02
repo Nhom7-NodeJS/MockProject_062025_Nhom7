@@ -1,5 +1,5 @@
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { Entity, PrimaryColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity("record_info")
 export class RecordInfo {
@@ -22,5 +22,6 @@ export class RecordInfo {
   is_deleted!: boolean;
 
   @ManyToOne(() => Evidence, (evidence) => evidence.record_infos)
+  @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }

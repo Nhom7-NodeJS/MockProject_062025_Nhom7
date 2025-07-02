@@ -1,5 +1,5 @@
 import { Prosecution } from "@/modules/prosecution/entities/prosecution.entity";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 @Entity("indictments")
 export class Indictment {
@@ -16,5 +16,6 @@ export class Indictment {
   is_deleted!: boolean;
 
   @ManyToOne(() => Prosecution, (prosecution) => prosecution.indictments)
+  @JoinColumn({ name: "prosecution_id" })
   prosecution!: Prosecution;
 }

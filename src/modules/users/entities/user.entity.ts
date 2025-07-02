@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryColumn, OneToMany, ManyToOne } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
 import { Role } from "@/modules/roles/entities/role.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
 import { Interview } from "@/modules/interview/entities/interview.entity";
@@ -28,7 +35,7 @@ export class User {
   @Column()
   phone_number!: string;
 
-  @Column()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   create_at!: Date;
 
   @Column({ type: "boolean", default: false })
@@ -53,6 +60,7 @@ export class User {
   prosecutions!: Prosecution[];
 
   @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({ name: "role_id" })
   role!: Role;
 
   @OneToMany(() => UsersCases, (usersCases) => usersCases.user)

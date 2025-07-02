@@ -2,15 +2,16 @@ import { Case } from "@/modules/case/entities/case.entity";
 import { WitnessesInterviews } from "@/modules/witnesses_interviews/entities/witnesses_interviews.entity";
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   ManyToOne,
   OneToMany,
+  PrimaryColumn,
+  JoinColumn,
 } from "typeorm";
 
 @Entity("witness")
 export class Witness {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   witness_id!: string;
 
   @Column()
@@ -25,7 +26,8 @@ export class Witness {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @ManyToOne(() => Case, (case1) => case1.witnesses)
+  @ManyToOne(() => Case, (case_) => case_.witnesses)
+  @JoinColumn({ name: "case_id" })
   case!: Case;
 
   @OneToMany(

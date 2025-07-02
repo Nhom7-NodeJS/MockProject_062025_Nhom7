@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from "typeorm";
 
 @Entity("timelines")
@@ -15,7 +16,7 @@ export class Timeline {
   @Column()
   case_result_id!: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp" })
   start_time!: Date;
 
   @Column({ type: "timestamp", nullable: true })
@@ -34,5 +35,6 @@ export class Timeline {
   is_deleted!: boolean;
 
   @ManyToOne(() => CaseResult, (caseResult) => caseResult.timelines)
+  @JoinColumn({ name: "case_result_id" })
   case_result!: CaseResult;
 }

@@ -2,7 +2,14 @@ import { Arrest } from "@/modules/arrest/entities/arrest.entity";
 import { Case } from "@/modules/case/entities/case.entity";
 import { EvidencesSuspects } from "@/modules/evidences_suspects/entities/evidences_suspects.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
-import { Entity, Column, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  JoinColumn,
+} from "typeorm";
 
 @Entity("suspect")
 export class Suspect {
@@ -33,7 +40,7 @@ export class Suspect {
   @Column()
   address!: string;
 
-  @Column()
+  @Column({ type: "timestamp" })
   catch_time!: Date;
 
   @Column({ type: "text", nullable: true })
@@ -51,13 +58,15 @@ export class Suspect {
   @Column()
   health_status!: string;
 
-  @ManyToOne(() => Case, (case1) => case1.suspects)
+  @ManyToOne(() => Case, (case_) => case_.suspects)
+  @JoinColumn({ name: "case_id" })
   case!: Case;
 
   @OneToMany(() => Arrest, (arrest) => arrest.suspect)
   arrests!: Arrest[];
 
   @ManyToOne(() => Report, (report) => report.suspects)
+  @JoinColumn({ name: "report_id" })
   report!: Report;
 
   @OneToMany(

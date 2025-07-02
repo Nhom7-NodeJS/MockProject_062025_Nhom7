@@ -1,7 +1,14 @@
 import { Case } from "@/modules/case/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { WarrantResult } from "@/modules/warrant_result/entities/warrant_result.entity";
-import { Entity, PrimaryColumn, Column, OneToMany, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
 
 @Entity({ name: "warrant" })
 export class Warrant {
@@ -23,7 +30,8 @@ export class Warrant {
   @OneToMany(() => WarrantResult, (warrantResult) => warrantResult.warrant)
   warrant_results!: WarrantResult[];
 
-  @ManyToOne(() => Case, (case1) => case1.warrants)
+  @ManyToOne(() => Case, (case_) => case_.warrants)
+  @JoinColumn({ name: "case_id" })
   case!: Case;
 
   @OneToMany(() => Evidence, (evidence) => evidence.warrant)

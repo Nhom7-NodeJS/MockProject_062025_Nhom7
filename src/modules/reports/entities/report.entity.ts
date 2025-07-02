@@ -3,7 +3,14 @@ import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { ReportsVictims } from "@/modules/reports_victims/entities/reports_victims.entity";
 import { Suspect } from "@/modules/suspect/entities/suspect.entity";
 import { User } from "@/modules/users/entities/user.entity";
-import { Entity, Column, PrimaryColumn, ManyToOne, OneToMany } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+} from "typeorm";
 
 @Entity("reports")
 export class Report {
@@ -25,7 +32,7 @@ export class Report {
   @Column()
   case_location!: string;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   reported_at!: Date;
 
   @Column()
@@ -47,9 +54,11 @@ export class Report {
   status!: string;
 
   @ManyToOne(() => User, (user) => user.reports)
+  @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToOne(() => Case, (case1) => case1.reports)
+  @ManyToOne(() => Case, (case_) => case_.reports)
+  @JoinColumn({ name: "case_id" })
   case!: Case;
 
   @OneToMany(() => Evidence, (evidence) => evidence.report)

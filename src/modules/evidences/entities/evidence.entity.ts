@@ -11,6 +11,7 @@ import { Warrant } from "@/modules/warrant/entities/warrant.entity";
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -52,19 +53,19 @@ export class Evidence {
   @OneToMany(() => MeasureSurvey, (measureSurvey) => measureSurvey.evidence)
   measure_surveys!: MeasureSurvey[];
 
-  @ManyToOne(() => Case, (case1) => case1.evidences)
+  @ManyToOne(() => Case, (case_) => case_.evidences)
+  @JoinColumn({ name: "case_id" })
   case!: Case;
 
   @ManyToOne(() => User, (user) => user.evidences)
+  @JoinColumn({ name: "user_id" })
   user!: User;
-
-  @OneToOne(() => ForensicInvest)
-  forensic_invest!: ForensicInvest;
 
   @OneToMany(() => CasesEvidences, (casesEvidences) => casesEvidences.evidence)
   cases_evidences!: CasesEvidences[];
 
   @ManyToOne(() => Report, (report) => report.evidences)
+  @JoinColumn({ name: "report_id" })
   report!: Report;
 
   @OneToMany(
@@ -74,5 +75,6 @@ export class Evidence {
   evidences_suspects!: EvidencesSuspects[];
 
   @ManyToOne(() => Warrant, (warrant) => warrant.evidences)
+  @JoinColumn({ name: "warrant_id" })
   warrant!: Warrant;
 }

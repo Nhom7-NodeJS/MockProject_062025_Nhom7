@@ -1,5 +1,5 @@
 import { Warrant } from "@/modules/warrant/entities/warrant.entity";
-import { Entity, PrimaryColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity({ name: "warrant_result" })
 export class WarrantResult {
@@ -22,5 +22,6 @@ export class WarrantResult {
   is_deleted!: boolean;
 
   @ManyToOne(() => Warrant, (warrant) => warrant.warrant_results)
+  @JoinColumn({ name: "warrant_id" })
   warrant!: Warrant;
 }

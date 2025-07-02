@@ -10,7 +10,7 @@ export class CasesEvidences {
   @PrimaryColumn()
   evidence_id!: string;
 
-  @ManyToOne(() => Case, (case1) => case1.cases_evidences)
+  @ManyToOne(() => Case, (case_) => case_.cases_evidences)
   @JoinColumn({ name: "case_id" })
   case!: Case;
 
