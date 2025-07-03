@@ -8,12 +8,13 @@ import {
 } from "typeorm";
 import { Role } from "@/modules/roles/entities/role.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
-import { Interview } from "@/modules/interview/entities/interview.entity";
-import { InvestigationPlan } from "@/modules/investigation_plan/entities/investigation_plan.entity";
+import { Interview } from "@/modules/interviews/entities/interview.entity";
+import { InvestigationPlan } from "@/modules/investigations_plans/entities/investigation_plan.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { Prosecution } from "@/modules/prosecution/entities/prosecution.entity";
-import { UsersCases } from "@/modules/user_case/entities/user_case.entity";
-import { Question } from "@/modules/question/entity/question.entity";
+import { Prosecution } from "@/modules/prosecutions/entities/prosecution.entity";
+import { UsersCases } from "@/modules/users_cases/entities/user_case.entity";
+import { Question } from "@/modules/questions/entity/question.entity";
+import { ProsecutionsUsers } from "@/modules/prosecutions_users/entities/prosecutions_users.entity";
 
 @Entity("users")
 export class User {
@@ -29,11 +30,17 @@ export class User {
   @Column({ nullable: true })
   avatar_url?: string;
 
-  @Column()
-  email!: string;
+  @Column({ nullable: true })
+  phone_number?: string;
+
+  @Column({ type: "timestamp" })
+  dob!: Date;
+
+  @Column({ type: "timestamp" })
+  date_attended!: Date;
 
   @Column()
-  phone_number!: string;
+  status!: string;
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   create_at!: Date;
@@ -68,4 +75,10 @@ export class User {
 
   @OneToMany(() => Question, (question) => question.user)
   questions!: Question[];
+
+  @OneToMany(
+    () => ProsecutionsUsers,
+    (prosecutionsUsers) => prosecutionsUsers.user
+  )
+  prosecutions_users!: ProsecutionsUsers[];
 }

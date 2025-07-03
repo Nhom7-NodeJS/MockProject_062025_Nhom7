@@ -1,4 +1,4 @@
-import { Case } from "@/modules/case/entities/case.entity";
+import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { Entity, PrimaryColumn, ManyToOne, Column, JoinColumn } from "typeorm";
 

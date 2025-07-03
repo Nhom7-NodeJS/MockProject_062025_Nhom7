@@ -1,6 +1,6 @@
-import { Case } from "@/modules/case/entities/case.entity";
+import { Case } from "@/modules/cases/entities/case.entity";
 import { ReportsVictims } from "@/modules/reports_victims/entities/reports_victims.entity";
-import { VictimInterview } from "@/modules/victim_interview/entities/victim_interview.entity";
+import { VictimInterview } from "@/modules/victims_interviews/entities/victim_interview.entity";
 import {
   Column,
   Entity,
@@ -8,7 +8,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
 } from "typeorm";
 
 @Entity("victims")
@@ -16,11 +15,20 @@ export class Victim {
   @PrimaryColumn()
   victim_id!: string;
 
-  @Column()
-  fullname!: string;
+  @Column({ nullable: true })
+  fullname?: string;
 
   @Column()
   contact!: string;
+
+  @Column({ nullable: true })
+  national?: string;
+
+  @Column({ nullable: true })
+  gender?: string;
+
+  @Column({ nullable: true })
+  description?: string;
 
   @Column()
   injuries!: string;

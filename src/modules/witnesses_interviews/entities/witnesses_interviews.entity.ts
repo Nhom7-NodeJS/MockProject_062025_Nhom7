@@ -1,5 +1,5 @@
-import { Interview } from "@/modules/interview/entities/interview.entity";
-import { Witness } from "@/modules/witness/entities/witness.entity";
+import { Interview } from "@/modules/interviews/entities/interview.entity";
+import { Witness } from "@/modules/witnesses/entities/witness.entity";
 import { Entity, PrimaryColumn, ManyToOne, Column, JoinColumn } from "typeorm";
 
 @Entity("witnesses_interviews")

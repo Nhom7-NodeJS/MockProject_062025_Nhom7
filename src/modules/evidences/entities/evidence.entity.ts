@@ -1,13 +1,13 @@
-import { Case } from "@/modules/case/entities/case.entity";
+import { Case } from "@/modules/cases/entities/case.entity";
 import { CasesEvidences } from "@/modules/cases_evidences/entities/cases_evidences.entity";
 import { EvidencesSuspects } from "@/modules/evidences_suspects/entities/evidences_suspects.entity";
-import { ForensicInvest } from "@/modules/forensic_invest/entities/forensic_invest.entity";
-import { MeasureSurvey } from "@/modules/measure_survey/entities/measure_survey.entity";
-import { PhysicalInvest } from "@/modules/physical_invest/entities/physical_invest.entity";
-import { RecordInfo } from "@/modules/record_infor/entities/record_infor.entity";
+import { ForensicInvest } from "@/modules/forensics_invests/entities/forensic_invest.entity";
+import { MeasureSurvey } from "@/modules/measures_surveys/entities/measure_survey.entity";
+import { PhysicalInvest } from "@/modules/physicals_invests/entities/physical_invest.entity";
+import { RecordInfo } from "@/modules/records_infors/entities/record_infor.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
 import { User } from "@/modules/users/entities/user.entity";
-import { Warrant } from "@/modules/warrant/entities/warrant.entity";
+import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import {
   Column,
   Entity,
