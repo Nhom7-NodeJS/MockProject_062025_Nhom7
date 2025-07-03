@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm";
 import { User } from "@/modules/users/entities/user.entity";
-import { RolesPermissions } from "@/modules/permission_role/entities/permission_role.entity";
+import { RolesPermissions } from "@/modules/permissions_roles/entities/permission_role.entity";
 
 @Entity("roles")
 export class Role {

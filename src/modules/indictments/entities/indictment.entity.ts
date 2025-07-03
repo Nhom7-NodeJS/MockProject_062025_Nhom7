@@ -1,4 +1,4 @@
-import { Prosecution } from "@/modules/prosecution/entities/prosecution.entity";
+import { Prosecution } from "@/modules/prosecutions/entities/prosecution.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 @Entity("indictments")

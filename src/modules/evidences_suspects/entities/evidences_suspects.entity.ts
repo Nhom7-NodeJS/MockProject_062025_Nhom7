@@ -1,5 +1,5 @@
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { Suspect } from "@/modules/suspect/entities/suspect.entity";
+import { Suspect } from "@/modules/suspects/entities/suspect.entity";
 import { Entity, PrimaryColumn, ManyToOne, Column, JoinColumn } from "typeorm";
 
 @Entity("evidences_suspects")

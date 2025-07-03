@@ -1,7 +1,7 @@
-import { Case } from "@/modules/case/entities/case.entity";
+import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { ReportsVictims } from "@/modules/reports_victims/entities/reports_victims.entity";
-import { Suspect } from "@/modules/suspect/entities/suspect.entity";
+import { Suspect } from "@/modules/suspects/entities/suspect.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import {
   Entity,
@@ -69,4 +69,7 @@ export class Report {
 
   @OneToMany(() => ReportsVictims, (reportsVictims) => reportsVictims.report)
   reports_victims!: ReportsVictims[];
+
+  @OneToMany(() => ReportsVictims, (reportsVictims) => reportsVictims.report)
+  reports_witnesses!: ReportsVictims[];
 }
