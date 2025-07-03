@@ -1,7 +1,8 @@
-import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
-import { Evidence } from '@/modules/evidences/entities/evidence.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
-@Entity('measure_surveys')
+import { Evidence } from "@/modules/evidences/entities/evidence.entity";
+
+@Entity("measure_surveys")
 export class MeasureSurvey {
   @PrimaryColumn()
   measure_survey_id!: string;
@@ -15,9 +16,11 @@ export class MeasureSurvey {
   @Column({ nullable: true })
   result?: string;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @OneToMany(() => Evidence, (evidence) => evidence.measureSurvey)
-  evidences?: Evidence[];
+  // ManyToOne
+  @ManyToOne(() => Evidence, (evidence) => evidence.measureSurveys)
+  @JoinColumn({ name: "evidence_id" })
+  evidence!: Evidence;
 }

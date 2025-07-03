@@ -1,17 +1,12 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { Interview } from "@/modules/interview/entities/interview.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+
+import { Interview } from "@/modules/interviews/entities/interview.entity";
 import { User } from "@/modules/users/entities/user.entity";
 
 @Entity("questions")
 export class Question {
   @PrimaryColumn()
   question_id!: string;
-
-  @Column()
-  interview_id!: string;
-
-  @Column()
-  created_by!: string;
 
   @Column()
   content!: string;
@@ -22,14 +17,15 @@ export class Question {
   @Column({ nullable: true })
   reliability?: number;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  // ManyToOne
   @ManyToOne(() => Interview, (interview) => interview.questions)
-  @JoinColumn({ name: 'interview_id' })
+  @JoinColumn({ name: "interview_id" })
   interview!: Interview;
 
   @ManyToOne(() => User, (user) => user.questions)
-  @JoinColumn({ name: 'created_by' })
-  createdBy!: User;
+  @JoinColumn({ name: "user_id" })
+  user!: User;
 }

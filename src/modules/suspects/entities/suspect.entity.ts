@@ -1,46 +1,42 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
-import { Case } from "@/modules/cases/entities/case.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+
 import { Arrest } from "@/modules/arrests/entities/arrest.entity";
-import { ReportSuspect } from "@/modules/reports_suspects/entities/report_suspect.entity";
-import { SuspectEvidence } from "@/modules/suspects_evidences/entities/suspect_evidence.entity";
-import { ProsecutionSuspect } from "@/modules/prosecutions_suspects/entities/prosecution_suspect.entity";
+import { EvidenceSuspect } from "@/modules/evidences_suspects/entities/evidence_suspect.entity";
+import { Report } from "@/modules/reports/entities/report.entity";
 
 @Entity("suspects")
 export class Suspect {
   @PrimaryColumn()
-  suspect_id!: string; 
+  suspect_id!: string;
 
-  @Column()
-  case_id!: string;
+  @Column({ nullable: true })
+  fullname?: string;
 
-  @Column()
-  fullname!: string;
-
-  @Column()
-  national!: string;
+  @Column({ nullable: true })
+  national?: string;
 
   @Column()
   gender!: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: "timestamp" })
   dob!: Date;
 
-  @Column({ nullable: true })
-  identification?: string;
+  @Column()
+  identification!: string;
 
-  @Column({ nullable: true })
-  phonenumber?: string;
+  @Column()
+  phone_number!: string;
 
-  @Column({ type: 'text', nullable: true })
-  description?: string;
+  @Column()
+  description!: string;
 
-  @Column({ nullable: true })
-  address?: string;
+  @Column()
+  address!: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: "timestamp" })
   catch_time!: Date;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ nullable: true })
   notes?: string;
 
   @Column()
@@ -49,25 +45,24 @@ export class Suspect {
   @Column({ nullable: true })
   mugshot_url?: string;
 
-  @Column({ nullable: true })
-  fingerprints_hash?: string;
+  @Column()
+  fingerprints_hash!: string;
 
   @Column()
   health_status!: string;
-  
-  @ManyToOne(() => Case, (case_) => case_.suspects)
-  @JoinColumn({ name: 'case_id' })
-  case!: Case;
 
+  // OneToMany
   @OneToMany(() => Arrest, (arrest) => arrest.suspect)
-  arrests?: Arrest[];
+  arrests!: Arrest[];
 
-  @OneToMany(() => ReportSuspect, (reportSuspect) => reportSuspect.suspect)
-  reportSuspects?: ReportSuspect[];
+  @OneToMany(
+    () => EvidenceSuspect,
+    (evidenceSuspect) => evidenceSuspect.suspect
+  )
+  evidenceSuspects!: EvidenceSuspect[];
 
-  @OneToMany(() => SuspectEvidence, (suspectEvidence) => suspectEvidence.suspect)
-  suspectEvidences?: SuspectEvidence[];
-
-  @OneToMany(() => ProsecutionSuspect, (prosecutionSuspect) => prosecutionSuspect.suspect)
-  prosecutionSuspects?: ProsecutionSuspect[];
+  // ManyToOne
+  @ManyToOne(() => Report, (report) => report.suspects)
+  @JoinColumn({ name: "report_id" })
+  report!: Report;
 }

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+
 import { Report } from "@/modules/reports/entities/report.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
 
@@ -13,6 +14,7 @@ export class ReportVictim {
   @Column({ type: 'boolean', default: false })
   is_deleted!: boolean;
 
+  // ManyToOne
   @ManyToOne(() => Report, (report) => report.reportVictims)
   @JoinColumn({ name: 'report_id' })
   report!: Report;
