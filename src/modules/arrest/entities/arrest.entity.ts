@@ -1,25 +1,29 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Case } from "@/modules/case/entities/case.entity";
+import { Suspect } from "@/modules/suspect/entities/suspect.entity";
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
 
-@Entity('arrest')
-export class arrest {
-  @PrimaryColumn({ name: 'suspect_id' })
-  suspectId!: string;
+@Entity("arrest")
+export class Arrest {
+  @PrimaryColumn()
+  arrest_id!: string;
 
-  @PrimaryColumn({ name: 'case_id' })
-  caseId!: string;
+  @Column({ nullable: true })
+  suspect_miranda_signature?: string;
 
-  @Column({ name: 'officer_id' })
-  officerId!: string;
+  @Column({ type: "timestamp" })
+  arrest_start_time!: Date;
 
-  @Column({ name: 'suspect_miranda_signature', nullable: true })
-  suspectMirandaSignature?: string;
+  @Column({ type: "timestamp", nullable: true })
+  arrest_end_time?: Date;
 
-  @Column({ name: 'arrest_start_time', type: 'datetime' })
-  arrestStartTime!: Date;
+  @Column({ default: false })
+  is_deleted!: boolean;
 
-  @Column({ name: 'arrest_end_time', type: 'datetime', nullable: true })
-  arrestEndTime?: Date;
+  @ManyToOne(() => Case, (case_) => case_.arrests)
+  @JoinColumn({ name: "case_id" })
+  case!: Case;
 
-  @Column({ name: 'is_deleted', default: false })
-  isDeleted!: boolean;
+  @ManyToOne(() => Suspect, (suspect) => suspect.arrests)
+  @JoinColumn({ name: "suspect_id" })
+  suspect!: Suspect;
 }

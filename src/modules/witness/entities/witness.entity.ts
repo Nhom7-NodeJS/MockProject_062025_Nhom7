@@ -1,22 +1,38 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Case } from "@/modules/case/entities/case.entity";
+import { WitnessesInterviews } from "@/modules/witnesses_interviews/entities/witnesses_interviews.entity";
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  JoinColumn,
+} from "typeorm";
 
 @Entity("witness")
 export class Witness {
-  @PrimaryGeneratedColumn()
-    witness_id!: number;
+  @PrimaryColumn()
+  witness_id!: string;
 
   @Column()
-  case_id!: number;
+  fullname!: string;
 
-    @Column()
-    fullname!: string;
+  @Column()
+  contact!: string;
 
-    @Column()
-    contact!: string;
-
-    @Column({ type: 'text' })
+  @Column({ type: "text" })
   statement!: string;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
+
+  @ManyToOne(() => Case, (case_) => case_.witnesses)
+  @JoinColumn({ name: "case_id" })
+  case!: Case;
+
+  @OneToMany(
+    () => WitnessesInterviews,
+    (witnessesInterviews) => witnessesInterviews.witness
+  )
+  witnesses_interviews!: WitnessesInterviews[];
 }

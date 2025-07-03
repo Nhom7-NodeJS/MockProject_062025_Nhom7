@@ -1,18 +1,22 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Case } from "@/modules/case/entities/case.entity";
+import { Interview } from "@/modules/interview/entities/interview.entity";
+import { User } from "@/modules/users/entities/user.entity";
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+} from "typeorm";
 
 @Entity("investigation_plan")
 export class InvestigationPlan {
-  @PrimaryColumn({ name: "investigation_plan_id", type: "varchar" })
-  investigationPlanId!: string;   // PK
+  @PrimaryColumn({ type: "varchar" })
+  investigation_plan_id!: string; // PK
 
-  @Column({ name: "created_officer_id", type: "varchar" })
-  createdOfficerId!: string;       // FK
-
-  @Column({ name: "case_id", type: "varchar" })
-  caseId!: string;                 // FK
-
-  @Column({ name: "deadline_date", type: "date" })
-  deadlineDate!: Date;
+  @Column({ type: "timestamp" })
+  deadline_date!: Date;
 
   @Column({ type: "text", nullable: true })
   result?: string;
@@ -20,12 +24,23 @@ export class InvestigationPlan {
   @Column({ type: "varchar", nullable: true })
   status?: string;
 
-  @Column({ name: "create_at", type: "timestamp" })
-  createAt!: Date;
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  create_at!: Date;
 
-  @Column({ name: "plan_content", type: "text" })
-  planContent!: string;
+  @Column({ type: "text" })
+  plan_content!: string;
 
   @Column({ name: "is_deleted", default: false })
-  isDeleted!: boolean;
+  is_deleted!: boolean;
+
+  @ManyToOne(() => Case, (case_) => case_.investigation_plans)
+  @JoinColumn({ name: "case_id" })
+  case!: Case;
+
+  @ManyToOne(() => User, (user) => user.investigation_plans)
+  @JoinColumn({ name: "user_id" })
+  created_officer_id!: User;
+
+  @OneToMany(() => Interview, (interview) => interview.investigationPlan)
+  interviews!: Interview[];
 }
