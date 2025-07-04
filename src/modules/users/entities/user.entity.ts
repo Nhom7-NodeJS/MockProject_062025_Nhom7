@@ -1,7 +1,23 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm";
-import { Role } from "@/modules/roles/entities/role.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn
+} from "typeorm";
 
-@Entity('users')
+import { Evidence } from "@/modules/evidences/entities/evidence.entity";
+import { Interview } from "@/modules/interviews/entities/interview.entity";
+import { InvestigationPlan } from "@/modules/investigation_plans/entities/investigation_plan.entity";
+import { Prosecution } from "@/modules/prosecutions/entities/prosecution.entity";
+import { ProsecutionUser } from "@/modules/prosecutions_users/entities/prosecution_user.entity";
+import { Question } from "@/modules/questions/entity/question.entity";
+import { Report } from "@/modules/reports/entities/report.entity";
+import { Role } from "@/modules/roles/entities/role.entity";
+import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
+
+@Entity("users")
 export class User {
   @PrimaryColumn()
   username!: string;
@@ -15,22 +31,51 @@ export class User {
   @Column({ nullable: true })
   avatar_url?: string;
 
-  @Column()
-  email!: string;
+  @Column({ nullable: true })
+  phone_number?: string;
+
+  @Column({ type: "timestamp" })
+  dob!: Date;
+
+  @Column({ type: "timestamp" })
+  date_attended!: Date;
 
   @Column()
-  phonenumber!: string;
+  status!: string;
 
-  @Column()
+  @Column({ type: "timestamp" })
   create_at!: Date;
 
-  @Column()
-  role_id!: string;
-
-  @OneToOne(() => Role)
-  @JoinColumn({ name: 'role_id' })
-  role!: Role;
-
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
+
+  // OneToMany
+  @OneToMany(() => CaseUser, (caseUser) => caseUser.user)
+  caseUsers!: CaseUser[];
+
+  @OneToMany(() => Evidence, (evidence) => evidence.user)
+  evidences!: Evidence[];
+
+  @OneToMany(() => InvestigationPlan, (investigationPlan) => investigationPlan.createdOfficer)
+  investigationPlans!: InvestigationPlan[];
+
+  @OneToMany(() => Interview, (interview) => interview.interviewer)
+  interviews!: Interview[];
+
+  @OneToMany(() => Prosecution, (prosecution) => prosecution.user)
+  prosecutions!: Prosecution[];
+
+  @OneToMany(() => ProsecutionUser, (prosecutionUser) => prosecutionUser.user)
+  prosecutionUsers!: ProsecutionUser[];
+
+  @OneToMany(() => Question, (question) => question.user)
+  questions!: Question[];
+
+  @OneToMany(() => Report, (report) => report.user)
+  reports!: Report[];
+
+  // ManyToOne
+  @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({ name: "role_id" })
+  role!: Role;
 }
