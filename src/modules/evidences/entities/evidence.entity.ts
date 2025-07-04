@@ -18,6 +18,8 @@ import { RecordInfo } from "@/modules/records_infos/entities/record_info.entity"
 import { Report } from "@/modules/reports/entities/report.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
+import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
+import { DigitalInvest } from "@/modules/digital_invests/entities/digital_invest.entity";
 
 @Entity("evidences")
 export class Evidence {
@@ -43,6 +45,18 @@ export class Evidence {
   is_deleted!: boolean;
 
   // OneToOne
+  @OneToOne(() => DigitalInvest, (digitalInvest: DigitalInvest) => digitalInvest.evidence)
+  digitalInvest?: DigitalInvest;
+
+  @OneToOne(
+    () => FinancialInvest,
+    (financialInvest: FinancialInvest) => financialInvest.evidence
+  )
+  financialInvest?: FinancialInvest;
+
+  @OneToOne(() => ForensicInvest, (forensicInvest: ForensicInvest) => forensicInvest.evidence)
+  forensicInvest?: ForensicInvest;
+
   @OneToOne(
     () => PhysicalInvest,
     (physicalInvest: PhysicalInvest) => physicalInvest.evidence

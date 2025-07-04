@@ -20,7 +20,7 @@ export class DigitalInvest {
   is_deleted!: boolean;
 
   // OneToOne
-  @OneToOne(() => Evidence)
+  @OneToOne(() => Evidence, (evidence) => evidence.digitalInvest)
   @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }

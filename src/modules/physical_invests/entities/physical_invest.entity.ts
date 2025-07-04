@@ -13,11 +13,7 @@ export class PhysicalInvest {
   is_deleted!: boolean;
   
   // OneToOne
-  // @OneToOne(() => Evidence, (evidence) => evidence.physicalInvest)
-  // @JoinColumn({ name: 'evidence_id' })
-  // evidence!: Evidence;
-
-  @OneToOne(() => Evidence)
-  @JoinColumn({ name: "evidence_id" })
+  @OneToOne(() => Evidence, (evidence) => evidence.physicalInvest)
+  @JoinColumn({ name: 'evidence_id' })
   evidence!: Evidence;
 }
