@@ -27,6 +27,12 @@ export const SuccessMessages = {
     PERMISSION_DELETED: "Permission deleted successfully",
   },
 
+  FINANCIAL_INVEST: {
+    CONFIRMED: "Financial investment confirmed successfully",
+
+    UPDATED: "Financial investment updated successfully",
+  },
+
   AUTH: {
     LOGIN_SUCCESS: "Login successfully",
     LOGOUT_SUCCESS: "Logout successfully",
@@ -48,4 +54,6 @@ export const ErrorMessages = {
   PERMISSION_EXISTS: "Permission already exists for this user",
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
+
+  FINANCIAL_INVEST_NOT_FOUND: "Financial investment not found",
 } as const;
