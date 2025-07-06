@@ -5,7 +5,7 @@ import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorMessages, SuccessMessages } from "@/constants/message";
 import { AppError } from "@/common/error.response";
 import { ErrorCode } from "@/constants/error-code";
-import { UpdateFinancialInvestDto, FinancialInvestResponseDto } from "../dto/financial_invest.dto";
+import { UpdateFinancialInvestDto, FinancialInvestResponseDto } from "./dto/financial_invest.dto";
 import { toFinancialInvestResponseDto } from "./financial_invest.mapper";
 
 
