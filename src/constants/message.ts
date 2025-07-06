@@ -64,4 +64,6 @@ export const ErrorMessages = {
   SENTENCE_NOT_FOUND: "Sentence not found",
 
   SENTENCE_EXISTS: "Sentence already exists",
+
+  REPORT_NOT_FOUND: "Report not found",
 } as const;
