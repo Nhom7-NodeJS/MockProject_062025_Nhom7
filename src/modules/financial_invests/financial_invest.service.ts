@@ -1,11 +1,11 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "@/config/config-database";
-import { FinancialInvest } from "../entities/financial_invest.entities";
+import { FinancialInvest } from "./entities/financial_invest.entities";
 import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
-import { UpdateFinancialInvestDto } from "../dto/financial_invest.dto";
+import { UpdateFinancialInvestDto } from "./dto/financial_invest.dto";
 
 export class FinancialInvestService {
   private repo: Repository<FinancialInvest>;
