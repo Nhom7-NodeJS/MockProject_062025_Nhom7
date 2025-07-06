@@ -1,27 +1,29 @@
-import { CaseResult } from "@/modules/cases_results/entities/case_result.entity";
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+
+import { CaseResult } from "@/modules/case_results/entities/case_result.entity";
 
 @Entity("sentences")
 export class Sentence {
-  @PrimaryColumn({ type: "varchar" })
+  @PrimaryColumn()
   sentence_id!: string;
 
-  @Column({ type: "varchar" })
+  @Column()
   sentence_type!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ nullable: true })
   duration?: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ nullable: true })
   condition?: string;
 
   @Column({ type: "timestamp" })
   sentencing_date!: Date;
 
-  @Column({ default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  // ManyToOne
   @ManyToOne(() => CaseResult, (caseResult) => caseResult.sentences)
   @JoinColumn({ name: "case_result_id" })
-  case_result!: CaseResult;
+  caseResult!: CaseResult;
 }

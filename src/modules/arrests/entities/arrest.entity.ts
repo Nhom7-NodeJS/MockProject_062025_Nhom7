@@ -1,6 +1,7 @@
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
+
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Suspect } from "@/modules/suspects/entities/suspect.entity";
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity("arrests")
 export class Arrest {
@@ -19,9 +20,10 @@ export class Arrest {
   @Column({ type: "timestamp", nullable: true })
   arrest_end_time?: Date;
 
-  @Column({ default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  // ManyToOne
   @ManyToOne(() => Case, (case_) => case_.arrests)
   @JoinColumn({ name: "case_id" })
   case!: Case;

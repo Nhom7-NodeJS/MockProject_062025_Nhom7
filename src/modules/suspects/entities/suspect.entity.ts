@@ -1,14 +1,8 @@
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+
 import { Arrest } from "@/modules/arrests/entities/arrest.entity";
-import { EvidencesSuspects } from "@/modules/evidences_suspects/entities/evidences_suspects.entity";
+import { EvidenceSuspect } from "@/modules/evidences_suspects/entities/evidence_suspect.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
-import {
-  Entity,
-  Column,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-  JoinColumn,
-} from "typeorm";
 
 @Entity("suspects")
 export class Suspect {
@@ -33,7 +27,7 @@ export class Suspect {
   @Column()
   phone_number!: string;
 
-  @Column({ type: "text" })
+  @Column()
   description!: string;
 
   @Column()
@@ -42,7 +36,7 @@ export class Suspect {
   @Column({ type: "timestamp" })
   catch_time!: Date;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ nullable: true })
   notes?: string;
 
   @Column()
@@ -57,16 +51,18 @@ export class Suspect {
   @Column()
   health_status!: string;
 
+  // OneToMany
   @OneToMany(() => Arrest, (arrest) => arrest.suspect)
   arrests!: Arrest[];
 
+  @OneToMany(
+    () => EvidenceSuspect,
+    (evidenceSuspect) => evidenceSuspect.suspect
+  )
+  evidenceSuspects!: EvidenceSuspect[];
+
+  // ManyToOne
   @ManyToOne(() => Report, (report) => report.suspects)
   @JoinColumn({ name: "report_id" })
   report!: Report;
-
-  @OneToMany(
-    () => EvidencesSuspects,
-    (evidencesSuspects) => evidencesSuspects.suspect
-  )
-  evidences_suspects!: EvidencesSuspects[];
 }

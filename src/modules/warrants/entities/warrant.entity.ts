@@ -1,16 +1,10 @@
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { WarrantResult } from "@/modules/warrants_results/entities/warrant_result.entity";
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  OneToMany,
-  ManyToOne,
-  JoinColumn,
-} from "typeorm";
+import { WarrantResult } from "@/modules/warrant_results/entities/warrant_result.entity";
 
-@Entity({ name: "warrants" })
+@Entity("warrants")
 export class Warrant {
   @PrimaryColumn()
   warrant_id!: string;
@@ -27,13 +21,15 @@ export class Warrant {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @OneToMany(() => WarrantResult, (warrantResult) => warrantResult.warrant)
-  warrant_results!: WarrantResult[];
+  // OneToMany
+  @OneToMany(() => Evidence, (evidence) => evidence.warrant)
+  evidences!: Evidence[];
 
+  @OneToMany(() => WarrantResult, (warrantResult) => warrantResult.warrant)
+  warrantResults!: WarrantResult[];
+
+  // ManyToOne
   @ManyToOne(() => Case, (case_) => case_.warrants)
   @JoinColumn({ name: "case_id" })
   case!: Case;
-
-  @OneToMany(() => Evidence, (evidence) => evidence.warrant)
-  evidences!: Evidence[];
 }

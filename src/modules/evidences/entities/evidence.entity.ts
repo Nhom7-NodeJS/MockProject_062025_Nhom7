@@ -1,13 +1,3 @@
-import { Case } from "@/modules/cases/entities/case.entity";
-import { CasesEvidences } from "@/modules/cases_evidences/entities/cases_evidences.entity";
-import { EvidencesSuspects } from "@/modules/evidences_suspects/entities/evidences_suspects.entity";
-import { ForensicInvest } from "@/modules/forensics_invests/entities/forensic_invest.entity";
-import { MeasureSurvey } from "@/modules/measures_surveys/entities/measure_survey.entity";
-import { PhysicalInvest } from "@/modules/physicals_invests/entities/physical_invest.entity";
-import { RecordInfo } from "@/modules/records_infors/entities/record_infor.entity";
-import { Report } from "@/modules/reports/entities/report.entity";
-import { User } from "@/modules/users/entities/user.entity";
-import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import {
   Column,
   Entity,
@@ -18,13 +8,26 @@ import {
   PrimaryColumn,
 } from "typeorm";
 
+import { Case } from "@/modules/cases/entities/case.entity";
+import { CaseEvidence } from "@/modules/cases_evidences/entities/case_evidence.entity";
+import { EvidenceSuspect } from "@/modules/evidences_suspects/entities/evidence_suspect.entity";
+import { ForensicInvest } from "@/modules/forensic_invests/entities/forensic_invest.entity";
+import { MeasureSurvey } from "@/modules/measure_surveys/entities/measure_survey.entity";
+import { PhysicalInvest } from "@/modules/physical_invests/entities/physical_invest.entity";
+import { RecordInfo } from "@/modules/records_infos/entities/record_info.entity";
+import { Report } from "@/modules/reports/entities/report.entity";
+import { User } from "@/modules/users/entities/user.entity";
+import { Warrant } from "@/modules/warrants/entities/warrant.entity";
+import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
+import { DigitalInvest } from "@/modules/digital_invests/entities/digital_invest.entity";
+
 @Entity("evidences")
 export class Evidence {
   @PrimaryColumn()
   evidence_id!: string;
 
-  @Column()
-  description!: string;
+  @Column({ nullable: true })
+  description?: string;
 
   @Column({ type: "timestamp" })
   collected_at!: Date;
@@ -41,38 +44,50 @@ export class Evidence {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  // OneToOne
+  @OneToOne(() => DigitalInvest, (digitalInvest: DigitalInvest) => digitalInvest.evidence)
+  digitalInvest?: DigitalInvest;
+
+  @OneToOne(
+    () => FinancialInvest,
+    (financialInvest: FinancialInvest) => financialInvest.evidence
+  )
+  financialInvest?: FinancialInvest;
+
+  @OneToOne(() => ForensicInvest, (forensicInvest: ForensicInvest) => forensicInvest.evidence)
+  forensicInvest?: ForensicInvest;
+
   @OneToOne(
     () => PhysicalInvest,
     (physicalInvest: PhysicalInvest) => physicalInvest.evidence
   )
   physicalInvest?: PhysicalInvest;
 
-  @OneToMany(() => RecordInfo, (recordInfo) => recordInfo.evidence)
-  record_infos!: RecordInfo[];
+  // OneToMany
+  @OneToMany(() => CaseEvidence, (caseEvidence) => caseEvidence.evidence)
+  caseEvidences!: CaseEvidence[];
+
+  @OneToMany(() => EvidenceSuspect, (evidenceSuspect) => evidenceSuspect.evidence)
+  evidenceSuspects!: EvidenceSuspect[];
 
   @OneToMany(() => MeasureSurvey, (measureSurvey) => measureSurvey.evidence)
-  measure_surveys!: MeasureSurvey[];
+  measureSurveys!: MeasureSurvey[];
 
+  @OneToMany(() => RecordInfo, (recordInfo) => recordInfo.evidence)
+  recordInfos!: RecordInfo[];
+
+  // ManyToOne
   @ManyToOne(() => Case, (case_) => case_.evidences)
   @JoinColumn({ name: "case_id" })
   case!: Case;
-
-  @ManyToOne(() => User, (user) => user.evidences)
-  @JoinColumn({ name: "user_id" })
-  user!: User;
-
-  @OneToMany(() => CasesEvidences, (casesEvidences) => casesEvidences.evidence)
-  cases_evidences!: CasesEvidences[];
 
   @ManyToOne(() => Report, (report) => report.evidences)
   @JoinColumn({ name: "report_id" })
   report!: Report;
 
-  @OneToMany(
-    () => EvidencesSuspects,
-    (evidencesSuspects) => evidencesSuspects.evidence
-  )
-  evidences_suspects!: EvidencesSuspects[];
+  @ManyToOne(() => User, (user) => user.evidences)
+  @JoinColumn({ name: "user_id" })
+  user!: User;
 
   @ManyToOne(() => Warrant, (warrant) => warrant.evidences)
   @JoinColumn({ name: "warrant_id" })

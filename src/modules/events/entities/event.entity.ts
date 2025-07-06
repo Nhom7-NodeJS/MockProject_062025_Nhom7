@@ -1,6 +1,6 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'event' })
+@Entity('events')
 export class Event {
   @PrimaryColumn()
   event_id!: string;
@@ -11,17 +11,17 @@ export class Event {
   @Column()
   case_id!: string;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   time_start!: Date;
 
-  @Column({ type: 'datetime' })
-  time_end: Date | undefined
+  @Column({ type: 'timestamp', nullable: true })
+  time_end?: Date;
 
   @Column()
   event_name!: string;
 
-  @Column()
-  description!: string;
+  @Column({ nullable: true })
+  description?: string;
 
   @Column({ type: 'boolean', default: false })
   is_deleted!: boolean;

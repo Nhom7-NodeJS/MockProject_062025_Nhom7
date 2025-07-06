@@ -1,24 +1,26 @@
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+
 import { Interview } from "@/modules/interviews/entities/interview.entity";
 import { User } from "@/modules/users/entities/user.entity";
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity("questions")
 export class Question {
-  @PrimaryColumn({ type: "varchar" })
-  question_id!: string; // PK
+  @PrimaryColumn()
+  question_id!: string;
 
-  @Column({ type: "text" })
+  @Column()
   content!: string;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ nullable: true })
   answer?: string;
 
-  @Column({ type: "float", nullable: true })
+  @Column({ nullable: true })
   reliability?: number;
 
-  @Column({ name: "is_deleted", default: false })
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  // ManyToOne
   @ManyToOne(() => Interview, (interview) => interview.questions)
   @JoinColumn({ name: "interview_id" })
   interview!: Interview;

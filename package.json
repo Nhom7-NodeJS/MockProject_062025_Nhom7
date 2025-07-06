@@ -4,10 +4,13 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "nodemon --watch ./src --ext ts --exec ts-node -r tsconfig-paths/register src/main.ts",
+    "seed:physical-investigation": "ts-node -r tsconfig-paths/register src/scripts/seed-physical-investigation.ts",
+    "seed:financial-investigation": "ts-node -r tsconfig-paths/register src/scripts/seed-financial-investigation.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js         migration:generate -d src/config/config-database.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/config/config-database.ts",
     "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/config-database.ts",
-    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/config-database.ts"
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/config-database.ts",
+    "migration:show": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d src/config/config-database.ts"
   },
   "author": "",
   "license": "ISC",
@@ -24,12 +27,14 @@
     "mysql2": "^3.14.1",
     "nodemon": "^3.1.9",
     "reflect-metadata": "^0.1.14",
-    "typeorm": "^0.3.25"
+    "typeorm": "^0.3.25",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.23",
     "@types/node": "^20.19.2",
+    "@types/uuid": "^10.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"

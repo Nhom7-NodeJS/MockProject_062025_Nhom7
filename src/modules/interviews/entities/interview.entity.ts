@@ -1,16 +1,10 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  OneToMany,
-} from "typeorm";
-import { User } from "@/modules/users/entities/user.entity";
-import { InvestigationPlan } from "@/modules/investigations_plans/entities/investigation_plan.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+
+import { InvestigationPlan } from "@/modules/investigation_plans/entities/investigation_plan.entity";
 import { Question } from "@/modules/questions/entity/question.entity";
-import { WitnessesInterviews } from "@/modules/witnesses_interviews/entities/witnesses_interviews.entity";
+import { User } from "@/modules/users/entities/user.entity";
 import { VictimInterview } from "@/modules/victims_interviews/entities/victim_interview.entity";
+import { WitnessInterview } from "@/modules/witnesses_interviews/entities/witness_interview.entity";
 
 @Entity("interviews")
 export class Interview {
@@ -26,38 +20,31 @@ export class Interview {
   @Column({ type: "json" })
   attached_file!: string[];
 
-  @Column({ type: "timestamp" })
+  @CreateDateColumn()
   start_time!: Date;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: 'timestamp' })
   end_time!: Date;
 
-  @Column({ type: "boolean", default: false })
+  @Column({ type: 'boolean', default: false })
   is_deleted!: boolean;
 
-  @ManyToOne(() => User, (user) => user.interviews, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "interviewer_id" })
-  interviewer!: User;
+  // OneToMany
+  @OneToMany(() => Question, (question) => question.interview)
+  questions?: Question[];
 
-  @ManyToOne(
-    () => InvestigationPlan,
-    (investigationPlan) => investigationPlan.interviews
-  )
-  @JoinColumn({ name: "investigation_plan_id" })
+  @OneToMany(() => VictimInterview, (victimInterview) => victimInterview.interview)
+  victimInterviews?: VictimInterview[];
+
+  @OneToMany(() => WitnessInterview, (witnessInterview) => witnessInterview.interview)
+  witnessInterviews?: WitnessInterview[];
+
+  // ManyToOne
+  @ManyToOne(() => InvestigationPlan, (investigationPlan) => investigationPlan.interviews)
+  @JoinColumn({ name: 'investigation_plan_id' })
   investigationPlan?: InvestigationPlan;
 
-  @OneToMany(() => Question, (question) => question.interview)
-  questions!: Question[];
-
-  @OneToMany(
-    () => WitnessesInterviews,
-    (witnessesInterviews) => witnessesInterviews.interview
-  )
-  witnesses_interviews!: WitnessesInterviews[];
-
-  @OneToMany(
-    () => VictimInterview,
-    (victimInterview) => victimInterview.interview
-  )
-  victims_interviews!: VictimInterview[];
+  @ManyToOne(() => User, (user) => user.interviews)
+  @JoinColumn({ name: 'interviewer_id' })
+  interviewer!: User;
 }

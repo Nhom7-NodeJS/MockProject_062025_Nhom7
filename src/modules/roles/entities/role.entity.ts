@@ -1,14 +1,12 @@
 import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm";
+
+import { PermissionRole } from "@/modules/permissions_roles/entities/permission_role.entity"
 import { User } from "@/modules/users/entities/user.entity";
-import { RolesPermissions } from "@/modules/permissions_roles/entities/permission_role.entity";
 
 @Entity("roles")
 export class Role {
   @PrimaryColumn()
   role_id!: string;
-
-  @OneToMany(() => User, (user) => user.role)
-  users!: User[];
 
   @Column()
   description!: string;
@@ -16,9 +14,13 @@ export class Role {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  // OneToMany
+  @OneToMany(() => User, (user) => user.role)
+  users!: User[];
+
   @OneToMany(
-    () => RolesPermissions,
-    (rolesPermissions) => rolesPermissions.role
+    () => PermissionRole,
+    (permissionRole) => permissionRole.role
   )
-  roles_permissions!: RolesPermissions[];
+  permissionRoles!: PermissionRole[];
 }

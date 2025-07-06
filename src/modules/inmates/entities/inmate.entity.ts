@@ -1,7 +1,6 @@
-import {Entity, PrimaryColumn, Column} from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
-
-@Entity("inmate")
+@Entity("inmates")
 export class Inmate {
   @PrimaryColumn()
   inmate_id!: string;
@@ -12,10 +11,10 @@ export class Inmate {
   @Column()
   assigned_facility!: string;
 
-  @Column()
+  @Column({ type: 'timestamp' })
   start_date!: Date;
 
-  @Column()
+  @Column({ type: 'timestamp' })
   expected_release!: Date;
 
   @Column()
@@ -25,5 +24,5 @@ export class Inmate {
   status!: string;
 
   @Column({ type: 'boolean', default: false })
-   is_deleted!: boolean
+  is_deleted!: boolean
 }

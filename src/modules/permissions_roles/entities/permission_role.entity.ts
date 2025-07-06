@@ -1,23 +1,25 @@
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+
 import { Permission } from "@/modules/permissions/entities/permission.entity";
 import { Role } from "@/modules/roles/entities/role.entity";
-import { Entity, PrimaryColumn, ManyToOne, Column, JoinColumn } from "typeorm";
 
-@Entity("roles_permissions")
-export class RolesPermissions {
+@Entity("permissions_roles")
+export class PermissionRole {
   @PrimaryColumn()
   role_id!: string;
 
   @PrimaryColumn()
   permission_id!: string;
 
-  @ManyToOne(() => Role, (role) => role.roles_permissions)
-  @JoinColumn({ name: "role_id" })
-  role!: Role;
+  @Column({ type: "boolean", default: false })
+  is_deleted!: boolean;
 
-  @ManyToOne(() => Permission, (permission) => permission.roles_permissions)
+  // ManyToOne
+  @ManyToOne(() => Permission, (permission) => permission.permissionRoles)
   @JoinColumn({ name: "permission_id" })
   permission!: Permission;
 
-  @Column({ type: "boolean", default: false })
-  is_deleted!: boolean;
+  @ManyToOne(() => Role, (role) => role.permissionRoles)
+  @JoinColumn({ name: "role_id" })
+  role!: Role;
 }

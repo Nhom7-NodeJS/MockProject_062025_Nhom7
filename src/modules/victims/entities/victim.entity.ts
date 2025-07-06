@@ -1,14 +1,8 @@
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+
 import { Case } from "@/modules/cases/entities/case.entity";
-import { ReportsVictims } from "@/modules/reports_victims/entities/reports_victims.entity";
+import { ReportVictim } from "@/modules/reports_victims/entities/report_victim.entity";
 import { VictimInterview } from "@/modules/victims_interviews/entities/victim_interview.entity";
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-} from "typeorm";
 
 @Entity("victims")
 export class Victim {
@@ -39,13 +33,15 @@ export class Victim {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  // OneToMany
+  @OneToMany(() => ReportVictim, (reportVictim) => reportVictim.victim)
+  reportVictims!: ReportVictim[];
+
+  @OneToMany(() => VictimInterview, (victimInterview) => victimInterview.victim)
+  victimInterviews!: VictimInterview[];
+
+  // ManyToOne
   @ManyToOne(() => Case, (case_) => case_.victims)
   @JoinColumn({ name: "case_id" })
   case!: Case;
-
-  @OneToMany(() => ReportsVictims, (reportsVictims) => reportsVictims.victim)
-  reports_victims!: ReportsVictims[];
-
-  @OneToMany(() => VictimInterview, (victimInterview) => victimInterview.victim)
-  victims_interviews!: VictimInterview[];
 }
