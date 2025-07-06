@@ -34,6 +34,10 @@ export const SuccessMessages = {
 
     LOGOUT_SUCCESS: "Logout successfully",
   },
+
+  FINANCIAL_INVEST: {
+    FINANCIAL_INVEST_GET: "Fetch financial invest data successfully",
+  },
 } as const;
 
 export const ErrorMessages = {
@@ -64,4 +68,6 @@ export const ErrorMessages = {
   SENTENCE_NOT_FOUND: "Sentence not found",
 
   SENTENCE_EXISTS: "Sentence already exists",
+
+  FINANCIAL_INVESTIGATION_NOT_FOUND: "Financial investigation not found",
 } as const;

@@ -2,6 +2,12 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 
+export enum FinancialInvestStatus {
+  WAITING_EXECUTING = "Waiting executing",
+  EXECUTING = "Executing",
+  COMPLETED = "Completed",
+}
+
 @Entity("financial_invests")
 export class FinancialInvest {
   @PrimaryColumn()
@@ -9,13 +15,22 @@ export class FinancialInvest {
 
   @Column()
   summary!: string;
-  
-  @Column({ type: 'boolean', default: false })
+
+  @Column({ type: "timestamp" })
+  deadline!: Date;
+
+  @Column({
+    type: "enum",
+    enum: FinancialInvestStatus,
+    default: FinancialInvestStatus.WAITING_EXECUTING,
+  })
+  status!: FinancialInvestStatus;
+
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
   // OneToOne
   @OneToOne(() => Evidence, (evidence) => evidence.financialInvest)
-  @JoinColumn({ name: 'evidence_id' })
+  @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }
-

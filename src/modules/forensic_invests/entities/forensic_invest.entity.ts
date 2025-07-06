@@ -24,6 +24,6 @@ export class ForensicInvest {
 
   // OneToOne
   @OneToOne(() => Evidence, (evidence) => evidence.forensicInvest)
-  @JoinColumn({ name: 'evidence_id' })
+  @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }

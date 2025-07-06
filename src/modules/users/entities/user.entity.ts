@@ -4,7 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn
+  PrimaryColumn,
 } from "typeorm";
 
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
@@ -56,7 +56,10 @@ export class User {
   @OneToMany(() => Evidence, (evidence) => evidence.user)
   evidences!: Evidence[];
 
-  @OneToMany(() => InvestigationPlan, (investigationPlan) => investigationPlan.createdOfficer)
+  @OneToMany(
+    () => InvestigationPlan,
+    (investigationPlan) => investigationPlan.createdOfficer
+  )
   investigationPlans!: InvestigationPlan[];
 
   @OneToMany(() => Interview, (interview) => interview.interviewer)
