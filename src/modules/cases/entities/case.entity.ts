@@ -12,6 +12,25 @@ import { Victim } from "@/modules/victims/entities/victim.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
 
+export enum CaseType {
+  ROBBERY = "Robbery",
+  MURDER = "Murder",
+  RAPE = "Rape"
+}
+
+export enum CaseSeverity {
+  LOW = "Low",
+  MEDIUM = "Medium",
+  HIGH = "High",
+  CRITICAL = "Critical"
+}
+
+export enum CaseStatus {
+  PENDING_APPROVAL = 'Pending Approval',
+  IN_PROCESS = 'In Process',
+  DONE = 'Done'
+}
+
 @Entity("cases")
 export class Case {
   @PrimaryColumn()
@@ -20,14 +39,26 @@ export class Case {
   @Column()
   case_name!: string;
 
-  @Column()
-  type_case!: string;
+  @Column({
+    type: 'enum',
+    enum: CaseType,
+    default: CaseType.ROBBERY
+  })
+  type_case!: CaseType;
 
-  @Column()
-  severity!: string;
+  @Column({
+    type: 'enum',
+    enum: CaseSeverity,
+    default: CaseSeverity.LOW
+  })
+  severity!: CaseSeverity;
 
-  @Column()
-  status!: string;
+  @Column({
+    type: 'enum',
+    enum: CaseStatus,
+    default: CaseStatus.PENDING_APPROVAL
+  })
+  status!: CaseStatus;
 
   @Column({ nullable: true })
   summary?: string;
