@@ -4,7 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn
+  PrimaryColumn,
 } from "typeorm";
 
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
@@ -16,6 +16,7 @@ import { Question } from "@/modules/questions/entity/question.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
 import { Role } from "@/modules/roles/entities/role.entity";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
+import { UserStatus } from "@/modules/users/enums/user.enum";
 
 @Entity("users")
 export class User {
@@ -40,14 +41,17 @@ export class User {
   @Column({ type: "timestamp" })
   date_attended!: Date;
 
-  @Column()
-  status!: string;
+  @Column({ type: "enum", enum: UserStatus })
+  status!: UserStatus;
 
   @Column({ type: "timestamp" })
   create_at!: Date;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
+
+  @Column({ nullable: true })
+  refresh_token?: string;
 
   // OneToMany
   @OneToMany(() => CaseUser, (caseUser) => caseUser.user)
@@ -56,7 +60,10 @@ export class User {
   @OneToMany(() => Evidence, (evidence) => evidence.user)
   evidences!: Evidence[];
 
-  @OneToMany(() => InvestigationPlan, (investigationPlan) => investigationPlan.createdOfficer)
+  @OneToMany(
+    () => InvestigationPlan,
+    (investigationPlan) => investigationPlan.createdOfficer
+  )
   investigationPlans!: InvestigationPlan[];
 
   @OneToMany(() => Interview, (interview) => interview.interviewer)

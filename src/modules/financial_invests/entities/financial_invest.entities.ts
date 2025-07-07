@@ -9,13 +9,12 @@ export class FinancialInvest {
 
   @Column()
   summary!: string;
-  
-  @Column({ type: 'boolean', default: false })
+
+  @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
   // OneToOne
   @OneToOne(() => Evidence, (evidence) => evidence.financialInvest)
-  @JoinColumn({ name: 'evidence_id' })
+  @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }
-

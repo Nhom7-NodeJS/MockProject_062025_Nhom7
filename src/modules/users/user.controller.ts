@@ -12,6 +12,7 @@ import { CreateUserDto, UserResponseDto } from "./dto/user.dto";
 // import { toUserResponseDto } from "./user.mapper";
 
 class UserController {
+<<<<<<< HEAD
   // async getAll(req: Request, res: Response) {
   //   const result = await userService.getAll();
 
@@ -59,6 +60,14 @@ class UserController {
   //     data: userDto,
   //   }).sendResponse(res);
   // }
+=======
+  async getAll(req: Request, res: Response) {
+    return new AppResponse({
+      message: SuccessMessages.USER.USER_GET,
+      statusCode: HttpStatusCode.OK,
+    }).sendResponse(res);
+  }
+>>>>>>> origin/dev
 }
 
 export default new UserController();

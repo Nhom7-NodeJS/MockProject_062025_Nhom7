@@ -16,6 +16,7 @@ export class UserService {
     this.userRepository = AppDataSource.getRepository(User);
   }
 
+<<<<<<< HEAD
   // async getAll(): Promise<User[]> {
   //   return await this.userRepository.find();
   // }
@@ -52,6 +53,11 @@ export class UserService {
   //   await this.userRepository.save(newUser);
   //   return newUser;
   // }
+=======
+  async getAll(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
+>>>>>>> origin/dev
 }
 
 export default new UserService();

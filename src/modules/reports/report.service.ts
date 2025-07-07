@@ -19,7 +19,6 @@ export class ReportService {
     const report = await this.reportRepository.findOne({
       where: { report_id: reportId, is_deleted: false },
     });
-
     if (!report) {
       throw new AppError(
         ErrorMessages.REPORT_NOT_FOUND,
