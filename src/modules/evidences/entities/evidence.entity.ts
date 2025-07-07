@@ -20,6 +20,7 @@ import { User } from "@/modules/users/entities/user.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
 import { DigitalInvest } from "@/modules/digital_invests/entities/digital_invest.entity";
+import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
 
 @Entity("evidences")
 export class Evidence {
@@ -44,8 +45,14 @@ export class Evidence {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  @Column({ type: "enum", enum: EvidenceType })
+  evidence_type!: EvidenceType;
+
   // OneToOne
-  @OneToOne(() => DigitalInvest, (digitalInvest: DigitalInvest) => digitalInvest.evidence)
+  @OneToOne(
+    () => DigitalInvest,
+    (digitalInvest: DigitalInvest) => digitalInvest.evidence
+  )
   digitalInvest?: DigitalInvest;
 
   @OneToOne(
@@ -54,7 +61,10 @@ export class Evidence {
   )
   financialInvest?: FinancialInvest;
 
-  @OneToOne(() => ForensicInvest, (forensicInvest: ForensicInvest) => forensicInvest.evidence)
+  @OneToOne(
+    () => ForensicInvest,
+    (forensicInvest: ForensicInvest) => forensicInvest.evidence
+  )
   forensicInvest?: ForensicInvest;
 
   @OneToOne(
@@ -67,7 +77,10 @@ export class Evidence {
   @OneToMany(() => CaseEvidence, (caseEvidence) => caseEvidence.evidence)
   caseEvidences!: CaseEvidence[];
 
-  @OneToMany(() => EvidenceSuspect, (evidenceSuspect) => evidenceSuspect.evidence)
+  @OneToMany(
+    () => EvidenceSuspect,
+    (evidenceSuspect) => evidenceSuspect.evidence
+  )
   evidenceSuspects!: EvidenceSuspect[];
 
   @OneToMany(() => MeasureSurvey, (measureSurvey) => measureSurvey.evidence)
