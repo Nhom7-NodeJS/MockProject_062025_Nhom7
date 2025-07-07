@@ -9,6 +9,7 @@ import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { EvidenceSuspect } from "@/modules/evidences_suspects/entities/evidence_suspect.entity";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
 import { ForensicInvest } from "@/modules/forensic_invests/entities/forensic_invest.entity";
+import { Holiday } from "@/modules/holidays/entities/holiday.entity";
 import { Indictment } from "@/modules/indictments/entities/indictment.entity";
 import { Inmate } from "@/modules/inmates/entities/inmate.entity";
 import { Interview } from "@/modules/interviews/entities/interview.entity";
@@ -74,5 +75,6 @@ export const entities = [
   Warrant,
   Witness,
   WitnessInterview,
+  Holiday,
 ];
 export default entities;

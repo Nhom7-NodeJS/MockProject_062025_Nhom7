@@ -14,6 +14,12 @@ export class CaseUser {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  @Column({ type: "text", nullable: true })
+  notes?: string;
+
+  @Column({ type: "timestamp" })
+  assigned_at!: Date;
+
   // ManyToOne
   @ManyToOne(() => Case, (case_) => case_.caseUsers)
   @JoinColumn({ name: "case_id" })
