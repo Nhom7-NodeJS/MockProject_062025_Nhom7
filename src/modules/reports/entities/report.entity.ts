@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from "typeorm";
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
@@ -6,17 +13,26 @@ import { ReportVictim } from "@/modules/reports_victims/entities/report_victim.e
 import { ReportWitness } from "@/modules/reports_witnesses/entities/report_witness.entity";
 import { Suspect } from "@/modules/suspects/entities/suspect.entity";
 import { User } from "@/modules/users/entities/user.entity";
+import {
+  CrimeType,
+  ReporterIncidentRelationship,
+  ReportStatus,
+  SeverityLevel,
+} from "@/modules/reports/enums/report.enum";
 
 @Entity("reports")
 export class Report {
   @PrimaryColumn()
   report_id!: string;
 
-  @Column()
-  type_report!: string;
+  @Column({ type: "enum", enum: CrimeType })
+  crime_type!: CrimeType;
 
-  @Column()
-  severity!: string;
+  @Column({
+    type: "enum",
+    enum: SeverityLevel,
+  })
+  severity!: SeverityLevel;
 
   @Column({ type: "timestamp" })
   incident_date!: Date;
@@ -45,8 +61,11 @@ export class Report {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @Column()
-  status!: string;
+  @Column({ type: "enum", enum: ReportStatus })
+  status!: ReportStatus;
+
+  @Column({ type: "enum", enum: ReporterIncidentRelationship })
+  reporter_incident_relationship!: ReporterIncidentRelationship;
 
   // OneToMany
   @OneToMany(() => Evidence, (evidence) => evidence.report)
