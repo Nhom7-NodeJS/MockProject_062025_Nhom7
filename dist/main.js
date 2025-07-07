@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const connect_database_1 = require("@/database/connect-database");
-const routes_1 = __importDefault(require("@/routes"));
+const modules_1 = __importDefault(require("@/modules"));
 const exception_filter_1 = require("@/middlewares/exception-filter");
 const load_env_1 = require("@/config/load-env");
 const logger_filter_1 = require("@/middlewares/logger-filter");
@@ -22,7 +22,7 @@ app.use(logger_filter_1.requestLogger);
 // Initialize database connection
 (0, connect_database_1.initDatabase)();
 // init routes
-app.use("/", routes_1.default);
+app.use("/", modules_1.default);
 // middleware handle exception
 app.use(exception_filter_1.exceptionHandler);
 // Start server

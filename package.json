@@ -10,7 +10,8 @@
     "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/config/config-database.ts",
     "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/config-database.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/config-database.ts",
-    "migration:show": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d src/config/config-database.ts"
+    "migration:show": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d src/config/config-database.ts",
+    "typeorm": "typeorm"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "joi": "^17.13.3",
     "joy": "^0.1.1",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "mysql2": "^3.14.1",
     "nodemon": "^3.1.9",
     "reflect-metadata": "^0.1.14",
@@ -47,5 +49,6 @@
   "bugs": {
     "url": "https://github.com/Nhom7-NodeJS/MockProject_062025_Nhom7/issues"
   },
+ 
   "homepage": "https://github.com/Nhom7-NodeJS/MockProject_062025_Nhom7#readme"
 }

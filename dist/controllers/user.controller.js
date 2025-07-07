@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const db_1 = require("@/config/db");
+// import { AppDataSource } from '@/config/db';
 const user_entity_1 = require("@/entities/user.entity");
+const database_config_1 = require("@/config/database.config");
 class UserController {
-    userRepository = db_1.AppDataSource.getRepository(user_entity_1.User);
+    userRepository = database_config_1.AppDataSource.getRepository(user_entity_1.User);
     async getAll(req, res) {
         try {
             const users = await this.userRepository.find();

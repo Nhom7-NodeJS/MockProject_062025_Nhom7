@@ -33,11 +33,11 @@ export class InvestigationPlan {
   @Column({ name: "is_deleted", default: false })
   is_deleted!: boolean;
 
-  @ManyToOne(() => Case, (case_) => case_.investigation_plans)
+  @ManyToOne(() => Case, (case_) => case_.investigationPlans)
   @JoinColumn({ name: "case_id" })
   case!: Case;
 
-  @ManyToOne(() => User, (user) => user.investigation_plans)
+  @ManyToOne(() => User, (user) => user.investigationPlans)
   @JoinColumn({ name: "user_id" })
   created_officer_id!: User;
 

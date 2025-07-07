@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 
-import { AppDataSource } from '@/config/db';
+// import { AppDataSource } from '@/config/db';
 import { User } from '@/entities/user.entity';
+import { AppDataSource } from '@/config/database.config';
 
 class UserController {
     private userRepository = AppDataSource.getRepository(User);

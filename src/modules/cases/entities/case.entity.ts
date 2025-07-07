@@ -14,6 +14,7 @@ import { Witness } from "@/modules/witnesses/entities/witness.entity";
 
 @Entity("cases")
 export class Case {
+  [x: string]: any;
   @PrimaryColumn()
   case_id!: string;
 

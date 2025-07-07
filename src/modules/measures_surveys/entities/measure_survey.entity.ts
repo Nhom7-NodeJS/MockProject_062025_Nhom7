@@ -18,7 +18,7 @@ export class MeasureSurvey {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @ManyToOne(() => Evidence, (evidence) => evidence.measure_surveys)
+  @ManyToOne(() => Evidence, (evidence) => evidence.measureSurveys)
   @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }

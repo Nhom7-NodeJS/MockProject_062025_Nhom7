@@ -33,13 +33,13 @@ export class CaseResult {
   @Column({ default: false, type: "boolean" })
   is_deleted!: boolean;
 
-  @OneToMany(() => Timeline, (timeline) => timeline.case_result)
+  @OneToMany(() => Timeline, (timeline) => timeline.caseResult)
   timelines!: Timeline[];
 
-  @ManyToOne(() => Case, (case_) => case_.case_results)
+  @ManyToOne(() => Case, (case_) => case_.caseResults)
   @JoinColumn({ name: "case_id" })
   case!: Case;
 
-  @OneToMany(() => Sentence, (sentence) => sentence.case_result)
+  @OneToMany(() => Sentence, (sentence) => sentence.caseResult)
   sentences!: Sentence[];
 }

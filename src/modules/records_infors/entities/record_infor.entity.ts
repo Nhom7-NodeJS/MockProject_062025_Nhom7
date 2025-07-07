@@ -21,7 +21,7 @@ export class RecordInfo {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @ManyToOne(() => Evidence, (evidence) => evidence.record_infos)
+  @ManyToOne(() => Evidence, (evidence) => evidence.recordInfos)
   @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }
