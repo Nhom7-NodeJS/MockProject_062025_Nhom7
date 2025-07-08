@@ -2,6 +2,7 @@ import { Entity, Column, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { User } from "@/modules/users/entities/user.entity";
+import { CaseUserRole } from "../enums/case_user.enum";
 
 @Entity("cases_users")
 export class CaseUser {
@@ -9,7 +10,7 @@ export class CaseUser {
   case_id!: string;
 
   @PrimaryColumn()
-  user_id!: string;
+  username!: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
@@ -26,6 +27,6 @@ export class CaseUser {
   case!: Case;
 
   @ManyToOne(() => User, (user) => user.caseUsers)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: "username" })
   user!: User;
 }

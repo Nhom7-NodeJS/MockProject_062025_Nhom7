@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { ReportVictim } from "@/modules/reports_victims/entities/report_victim.entity";
 import { VictimInterview } from "@/modules/victims_interviews/entities/victim_interview.entity";
+import { Gender } from "@/modules/users/enums/user.enum";
 
 @Entity("victims")
 export class Victim {
@@ -18,8 +19,8 @@ export class Victim {
   @Column({ nullable: true })
   national?: string;
 
-  @Column({ nullable: true })
-  gender?: string;
+  @Column({ type: "enum", enum: Gender, nullable: true })
+  gender?: Gender;
 
   @Column({ nullable: true })
   description?: string;

@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 
 import { Arrest } from "@/modules/arrests/entities/arrest.entity";
 import { EvidenceSuspect } from "@/modules/evidences_suspects/entities/evidence_suspect.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
+import { Gender } from "@/modules/users/enums/user.enum";
 
 @Entity("suspects")
 export class Suspect {
@@ -15,8 +16,8 @@ export class Suspect {
   @Column({ nullable: true })
   national?: string;
 
-  @Column()
-  gender!: string;
+  @Column({ type: "enum", enum: Gender })
+  gender!: Gender;
 
   @Column({ type: "timestamp" })
   dob!: Date;

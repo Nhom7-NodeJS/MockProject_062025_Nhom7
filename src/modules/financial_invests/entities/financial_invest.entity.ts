@@ -16,6 +16,5 @@ export class FinancialInvest {
   // OneToOne
   @OneToOne(() => Evidence, (evidence) => evidence.financialInvest)
   @JoinColumn({ name: "evidence_id" })
-  @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }

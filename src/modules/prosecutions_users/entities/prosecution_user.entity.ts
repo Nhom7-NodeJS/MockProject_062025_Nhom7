@@ -9,7 +9,7 @@ export class ProsecutionUser {
   prosecution_id!: string;
 
   @PrimaryColumn()
-  user_id!: string;
+  username!: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
@@ -20,6 +20,6 @@ export class ProsecutionUser {
   prosecution!: Prosecution;
 
   @ManyToOne(() => User, (user) => user.prosecutionUsers)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: "username" })
   user!: User;
 }
