@@ -1,4 +1,4 @@
-import { CaseStatus, CaseType, CaseSeverity } from '../entities/case.entity';
+import { CaseStatus, CaseType, CaseSeverity } from '../enums/case.enum';
 
 // Input DTO (from req.body)
 export interface CreateCaseDto {

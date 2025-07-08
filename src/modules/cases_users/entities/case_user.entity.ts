@@ -2,11 +2,7 @@ import { Entity, Column, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { User } from "@/modules/users/entities/user.entity";
-
-export enum CaseUserRole {
-  MAIN_INVESTIGATOR = 'Main Investigator',
-  SUPPORTING_INVESTIGATOR = 'Supporting Investigator',
-}
+import { CaseUserRole } from "../enums/case_user.enum";
 
 @Entity("cases_users")
 export class CaseUser {
@@ -22,7 +18,6 @@ export class CaseUser {
   @Column({
     type: 'enum',
     enum: CaseUserRole,
-    default: CaseUserRole.SUPPORTING_INVESTIGATOR
   })
   role!: CaseUserRole;
 

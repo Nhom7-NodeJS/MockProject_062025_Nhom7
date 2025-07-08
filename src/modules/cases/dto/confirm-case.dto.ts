@@ -1,4 +1,4 @@
-import { CaseStatus } from '../entities/case.entity';
+import { CaseStatus } from '../enums/case.enum';
 
 interface IConfirmCaseDto {
   username: string;

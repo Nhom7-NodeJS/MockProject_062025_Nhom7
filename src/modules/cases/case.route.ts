@@ -3,8 +3,7 @@ import CaseController from "./case.controller";
 import { asyncHandle } from "@/utils/handle-error";
 // import { validateQuery } from "@/middlewares/validate.middleware";
 import { QueryCaseSchema } from "./schemas/query-case-schema";
-import { authMiddleware } from "@/middlewares/auth.middleware";
-import { RoleType } from "@/modules/roles/entities/role.entity";
+// import { authMiddleware } from "@/middlewares/auth.middleware";
 
 const router = Router();
 
@@ -17,11 +16,11 @@ router.get(
 );
 
 // PUT /cases/:caseId/confirm - Confirm a case and assign main investigator
-router.put(
-  "/:caseId/confirm",
-  authMiddleware([RoleType.SHERIFF]), // Only sheriff can confirm cases
-  asyncHandle(CaseController.confirmCaseAndAssignInvestigator)
-);
+// router.put(
+//   "/:caseId/confirm",
+//   authMiddleware([RoleType.SHERIFF]), // Only sheriff can confirm cases
+//   asyncHandle(CaseController.confirmCaseAndAssignInvestigator)
+// );
 
 /**
  * TEST ROUTE - No authentication required

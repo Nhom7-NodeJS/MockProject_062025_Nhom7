@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { QueryCaseDto } from "@/modules/cases/dto/case.dto";
-import { CaseStatus, CaseType, CaseSeverity } from "../entities/case.entity";
+import { CaseStatus, CaseType, CaseSeverity } from "../enums/case.enum";
 
 export const QueryCaseSchema = Joi.object<QueryCaseDto>({
   status: Joi.string()

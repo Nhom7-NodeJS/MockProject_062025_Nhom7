@@ -1,8 +1,10 @@
-import { Case, CaseStatus } from "./entities/case.entity";
+import { Case} from "./entities/case.entity";
 import { AppDataSource } from "@/config/config-database";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { User } from "@/modules/users/entities/user.entity";
-import { CaseUserRole } from "@/modules/cases_users/entities/case_user.entity";
+import { CaseUserRole } from "@/modules/cases_users/enums/case_user.enum";
+
+import { CaseStatus } from "./enums/case.enum";
 
 export class CaseService {
   private caseRepository = AppDataSource.getRepository(Case);

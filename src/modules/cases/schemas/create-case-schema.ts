@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { CreateCaseDto } from "@/modules/cases/dto/case.dto";
-import { CaseType, CaseSeverity } from "../entities/case.entity";
+import { CaseType, CaseSeverity } from "../enums/case.enum";
 
 export const CreateCaseSchema = Joi.object<CreateCaseDto>({
   case_name: Joi.string().required().messages({

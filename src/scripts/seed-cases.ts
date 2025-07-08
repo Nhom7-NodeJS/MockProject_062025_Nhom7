@@ -1,8 +1,6 @@
 import { AppDataSource } from "@/config/config-database";
-import { Case, CaseType, CaseSeverity, CaseStatus } from "@/modules/cases/entities/case.entity";
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { Case } from "@/modules/cases/entities/case.entity";
+import { CaseSeverity, CaseStatus, CaseType } from "@/modules/cases/enums/case.enum";
 
 async function seedCases() {
   try {
