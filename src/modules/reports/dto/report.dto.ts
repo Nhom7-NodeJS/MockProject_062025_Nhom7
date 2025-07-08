@@ -1,24 +1,33 @@
+
+import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
+import {
+  CrimeType,
+  ReporterIncidentRelationship,
+  ReportStatus,
+  SeverityLevel,
+} from "@/modules/reports/enums/report.enum";
+
 // Interface representing an evidence item submitted in the incident report
-export interface Evidences {
-  evidenceType: string;
+export interface InitialEvidences {
+  evidenceType: EvidenceType;
   evidenceLocation: string | null;
   description: string | null;
-  attachments: string[];
+  attachments: string;
 }
 
 // Interface representing a relevant party involved in the incident
 export interface RelevantParties {
   fullname: string | null;
   incidentRelation: "Victim" | "Witness" | "Suspect";
-  gender: "Male" | "Female" | "Other";
+  gender: "Male" | "Female" | "Unknown";
   nationality: string | null;
   statement: string | null;
 }
 
 // Interface representing detailed information about the incident
 export interface IncidentInfo {
-  crimeType: string;
-  severity: "Minor" | "Moderate" | "Serious";
+  crimeType: CrimeType;
+  severity: SeverityLevel;
   dateOccur: string;
   detailAddress: string | null;
   description: string | null;
@@ -30,7 +39,7 @@ export interface ReporterInfo {
   email: string;
   address: string | null;
   phoneNumber: string;
-  incidentRelation: "Victim" | "Witness" | "Offender" | "Anonymous";
+  incidentRelation: ReporterIncidentRelationship;
 }
 
 // Interface representing basic metadata of the incident report
@@ -38,7 +47,7 @@ export interface BasicReportInfo {
   reportId: string;
   reportDate: string;
   reportTime: string;
-  reportStatus: "Pending" | "Approved" | "Rejected";
+  reportStatus: ReportStatus;
 }
 
 // Interface for the request body when creating a new incident report
@@ -46,7 +55,7 @@ export interface CreateIncidentReportDto {
   reporterInfo: ReporterInfo;
   incidentInfo: IncidentInfo;
   relevantParties: RelevantParties[];
-  evidences: Evidences[];
+  evidences: InitialEvidences[];
 }
 
 // Interface for the full response of an incident report
@@ -55,5 +64,5 @@ export interface IncidentReportResponseDto {
   reporterInfo: ReporterInfo;
   incidentInfo: IncidentInfo;
   relevantParties: RelevantParties[];
-  evidences: Evidences[];
+  evidences: InitialEvidences[];
 }
