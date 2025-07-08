@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 // import { AppDataSource } from '@/config/db';
 import { User } from '@/entities/user.entity';
-import { AppDataSource } from '@/config/database.config';
+import { AppDataSource } from '@/config/config-database'; // Adjust the import path as necessary
 
 class UserController {
     private userRepository = AppDataSource.getRepository(User);
