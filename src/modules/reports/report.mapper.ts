@@ -11,6 +11,7 @@ import {
   InitialEvidences,
   RelevantParties
 } from "@/modules/reports/dto/report.dto";
+import { Gender } from "@/modules/users/enums/user.enum"
 import { 
   formatUSDate, 
   formatUSDateTime, 
@@ -27,7 +28,7 @@ export const mapEvidence = (e: Evidence): InitialEvidences => ({
 export const mapSuspect = (s: Suspect): RelevantParties => ({
   fullname: s.fullname ?? null,
   incidentRelation: "Suspect",
-  gender: s.gender as "Male" | "Female" | "Unknown",
+  gender: s.gender ?? Gender.UNKNOWN,
   nationality: s.national ?? null,
   statement: s.description ?? null,
 });
@@ -35,7 +36,7 @@ export const mapSuspect = (s: Suspect): RelevantParties => ({
 export const mapVictim = (v: ReportVictim): RelevantParties => ({
   fullname: v.victim.fullname ?? null,
   incidentRelation: "Victim",
-  gender: v.victim.gender as "Male" | "Female" | "Unknown",
+  gender: v.victim.gender ?? Gender.UNKNOWN,
   nationality: v.victim.national ?? null,
   statement: v.victim.description ?? null,
 });
@@ -43,7 +44,7 @@ export const mapVictim = (v: ReportVictim): RelevantParties => ({
 export const mapWitness = (w: ReportWitness): RelevantParties => ({
   fullname: w.witness.fullname ?? null,
   incidentRelation: "Witness",
-  gender: w.witness.gender as "Male" | "Female" | "Unknown",
+  gender: w.witness.gender ?? Gender.UNKNOWN,
   nationality: w.witness.national ?? null,
   statement: w.witness.statement ?? null,
 });

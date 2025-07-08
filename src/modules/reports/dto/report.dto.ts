@@ -1,5 +1,6 @@
 
 import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
+import { Gender } from "@/modules/users/enums/user.enum"
 import {
   CrimeType,
   ReporterIncidentRelationship,
@@ -19,7 +20,7 @@ export interface InitialEvidences {
 export interface RelevantParties {
   fullname: string | null;
   incidentRelation: "Victim" | "Witness" | "Suspect";
-  gender: "Male" | "Female" | "Unknown";
+  gender: Gender;
   nationality: string | null;
   statement: string | null;
 }

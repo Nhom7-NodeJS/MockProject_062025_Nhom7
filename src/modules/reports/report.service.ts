@@ -34,18 +34,17 @@ import {
 } from "@/helpers/format-datetime";
 
 export class ReportService {
-	async createReport(reportDto: CreateIncidentReportDto): Promise<IncidentReportResponseDto> {
+	async createReport(reportDto: CreateIncidentReportDto): Promise<any> {
     try {
-      // This is only to see if the backend flow is working and will be changed later
-      // Testing format-datetime
-      const timestampExemple = new Date("2025-11-30T12:30:00.000Z")
-      console.log({Original: timestampExemple})
-      console.log({USDateFormat: formatUSDate(timestampExemple)})  
-      console.log({USTimeFormat: formatUSTime(timestampExemple)})
-      console.log({USDateTimeFormat: formatUSDateTime(timestampExemple)})
-	    
-      const savedReport = {} as Report;
-      return toIncidentReportResponseDto(savedReport);
+      const { reporterInfo, incidentInfo, relevantParties, evidences } = reportDto;
+
+      console.log("reporterInfo:", reporterInfo);
+      console.log("incidentInfo:", incidentInfo);
+      console.log("relevantParties:", relevantParties);
+      console.log("evidences:", evidences);
+
+      // Return a dummy object for now
+      return { reporterInfo, incidentInfo, relevantParties, evidences };
     } catch (error) {
       throw error
     }

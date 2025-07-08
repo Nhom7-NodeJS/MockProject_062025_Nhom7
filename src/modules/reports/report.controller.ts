@@ -41,9 +41,27 @@ export class ReportController {
 
   async createReport(req: Request, res: Response) {
     try{
-      // This is only to see if the backend flow is working and will be changed later
-      const service = this.reportService.createReport(req.body)
-      res.status(201).json({message: "Hi"})
+      const uploadedFiles = req.body.uploadedFiles;
+      const evidencesRaw = JSON.parse(req.body.evidences);
+
+      // Merge attachments to corresponding evidences
+      const evidences = evidencesRaw.map((evidence: any, index: number) => ({
+        ...evidence,
+        attachments: uploadedFiles?.[`evidence_${index}`] ?? [],
+      }));
+
+      const createDto = {
+        reporterInfo: JSON.parse(req.body.reporterInfo),
+        incidentInfo: JSON.parse(req.body.incidentInfo),
+        relevantParties: JSON.parse(req.body.relevantParties),
+        evidences,
+      };
+
+      const newReport = await this.reportService.createReport(createDto);
+      res.status(201).json({
+        message: "Report created sucessfully",
+        data: newReport,
+      })
     } catch (error) {
       throw error
     }

@@ -48,4 +48,7 @@ export const ErrorMessages = {
   PERMISSION_EXISTS: "Permission already exists for this user",
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
+  FILE_PROCESS_FAILED: "Failed to process files",
+  FILE_UPLOAD_FAILED: "Failed to upload files",
+  UNSUPPORTED_FILE_TYPE: "This file type is not supported",
 } as const;
