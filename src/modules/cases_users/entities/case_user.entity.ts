@@ -1,8 +1,8 @@
-import { Entity, Column, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Entity, Column, JoinColumn, ManyToOne, PrimaryColumn, OneToMany } from "typeorm";
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { User } from "@/modules/users/entities/user.entity";
-import { CaseUserRole } from "../enums/case_user.enum";
+import { Task } from "@/modules/tasks/entities/task.entity";
 
 @Entity("cases_users")
 export class CaseUser {
@@ -15,17 +15,15 @@ export class CaseUser {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @Column({
-    type: 'enum',
-    enum: CaseUserRole,
-  })
-  role!: CaseUserRole;
-
   @Column({ type: 'text', nullable: true })
   notes?: string;
 
   @Column({ type: 'timestamp' })
   assigned_at!: Date;
+
+  // OneToMany
+  @OneToMany(() => Task, (task) => task.caseUser)
+  tasks!: Task[];
 
   // ManyToOne
   @ManyToOne(() => Case, (case_) => case_.caseUsers)
