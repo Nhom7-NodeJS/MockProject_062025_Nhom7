@@ -2,12 +2,6 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 
-export enum FinancialInvestStatus {
-  WAITING_EXECUTING = "Waiting executing",
-  EXECUTING = "Executing",
-  COMPLETED = "Completed",
-}
-
 @Entity("financial_invests")
 export class FinancialInvest {
   @PrimaryColumn()

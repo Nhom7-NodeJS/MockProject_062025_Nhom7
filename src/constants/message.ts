@@ -38,6 +38,10 @@ export const SuccessMessages = {
   FINANCIAL_INVEST: {
     FINANCIAL_INVEST_GET: "Fetch financial invest data successfully",
   },
+
+  FORENSIC_INVEST: {
+    FORENSIC_INVEST_GET: "Fetch financial invest data successfully",
+  },
 } as const;
 
 export const ErrorMessages = {
@@ -70,4 +74,6 @@ export const ErrorMessages = {
   SENTENCE_EXISTS: "Sentence already exists",
 
   FINANCIAL_INVESTIGATION_NOT_FOUND: "Financial investigation not found",
+
+  FORENSIC_INVESTIGATION_NOT_FOUND: "Forensic investigation not found",
 } as const;

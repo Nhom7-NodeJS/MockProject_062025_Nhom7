@@ -1,4 +1,4 @@
-export class FinancialDetailResponseDto {
+export class ForensicDetailResponseDto {
   warrantId?: string;
   warrantName?: string;
   deadline?: Date;

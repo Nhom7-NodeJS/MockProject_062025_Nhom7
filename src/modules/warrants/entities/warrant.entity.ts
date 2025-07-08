@@ -10,7 +10,8 @@ import {
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { WarrantResult } from "@/modules/warrant_results/entities/warrant_result.entity";
-import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
+
+import { WarrantStatus } from "../enums/warrant.enum";
 
 @Entity("warrants")
 export class Warrant {

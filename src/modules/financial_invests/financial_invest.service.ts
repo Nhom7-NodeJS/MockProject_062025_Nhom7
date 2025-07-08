@@ -1,15 +1,12 @@
 import { Repository } from "typeorm";
 
 import { AppDataSource } from "@/config/config-database";
-import {
-  FinancialInvest,
-  FinancialInvestStatus,
-} from "./entities/financial_invest.entities";
-
 import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
+
+import { FinancialInvest } from "./entities/financial_invest.entity";
 import { FinancialDetailResponseDto } from "./dto/financial_detail-response.dto";
 
 export class FinancialInvestService {
@@ -29,28 +26,28 @@ export class FinancialInvestService {
       .select([
         "warrant.warrant_id AS warrant_id",
         "warrant.warrant_name AS warrant_name",
-        "financialInvest.deadline AS deadline",
-        "case.case_name AS case_name",
-        "financialInvest.status AS status",
+        "warrant.deadline AS deadline",
+        "case.case_id AS case_id",
+        "warrant.status AS status",
       ])
       .getRawMany();
   }
 
-  async getDetailByEvidenceId(
-    evidenceId: string
+  async getDetailByWarrantId(
+    warrantId: string
   ): Promise<FinancialDetailResponseDto> {
     const financialInvestExists = await this.financialInvestRepo
       .createQueryBuilder("financialInvest")
       .leftJoin("financialInvest.evidence", "evidence")
       .leftJoin("evidence.warrant", "warrant")
-      .where("financialInvest.evidence_id = :evidenceId", { evidenceId })
+      .where("warrant.warrant_id = :warrantId", { warrantId })
       .andWhere("financialInvest.is_deleted = :isDeleted", { isDeleted: false })
       .select([
-        "financialInvest.evidence_id AS evidenceId",
+        "warrant.warrant_id AS warrantId",
         "warrant.warrant_name AS warrantName",
-        "financialInvest.deadline AS deadline",
+        "warrant.deadline AS deadline",
         "financialInvest.summary AS summary",
-        "financialInvest.status AS status",
+        "warrant.status AS status",
       ])
       .getRawOne();
 
@@ -63,20 +60,6 @@ export class FinancialInvestService {
     }
     return financialInvestExists;
   }
-
-  // async getByStatus(status: FinancialInvestStatus): Promise<FinancialInvest[]> {
-  //   const financialInvestExists = await this.financialInvestRepo.find({
-  //     where: { status },
-  //   });
-  //   if (!financialInvestExists) {
-  //     throw new AppError(
-  //       ErrorMessages.FINANCIAL_INVESTIGATION_NOT_FOUND,
-  //       HttpStatusCode.NOT_FOUND,
-  //       ErrorCode.FINANCIAL_INVESTIGATION_NOT_FOUND
-  //     );
-  //   }
-  //   return financialInvestExists;
-  // }
 }
 
 export default new FinancialInvestService();

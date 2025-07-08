@@ -1,11 +1,9 @@
 import { AppDataSource } from "@/config/config-database";
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import {
-  FinancialInvest,
-  FinancialInvestStatus,
-} from "@/modules/financial_invests/entities/financial_invest.entities";
+import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
+import { WarrantStatus } from "@/modules/warrants/enums/warrant.enum";
 import { v4 as uuidv4 } from "uuid";
 
 async function seedFinancialData() {
@@ -23,42 +21,42 @@ async function seedFinancialData() {
 
     // Uncomment to insert test data
     // Insert Case 1
-    // const case1 = new Case();
-    // case1.case_id = uuidv4();
-    // case1.case_name = "Fraud Case";
-    // case1.type_case = "Murder";
-    // case1.severity = "High";
-    // case1.status = "Open";
-    // case1.create_at = new Date();
-    // await caseRepository.save(case1);
+    const case1 = new Case();
+    case1.case_id = uuidv4();
+    case1.case_name = "Fraud Case";
+    case1.type_case = "Murder";
+    case1.severity = "High";
+    case1.status = "Open";
+    case1.create_at = new Date();
+    await caseRepository.save(case1);
 
-    // const warrant1 = new Warrant();
-    // warrant1.warrant_id = uuidv4();
-    // warrant1.warrant_name = "Search Warrant";
-    // warrant1.time_publish = new Date();
-    // warrant1.case = case1;
-    // await warrantRepository.save(warrant1);
+    const warrant1 = new Warrant();
+    warrant1.warrant_id = uuidv4();
+    warrant1.warrant_name = "Search Warrant";
+    warrant1.time_publish = new Date();
+    warrant1.case = case1;
+    warrant1.deadline = new Date("2025-01-15");
+    warrant1.status = WarrantStatus.COMPLETED;
+    await warrantRepository.save(warrant1);
 
-    // // Insert Evidence for Case 1
-    // const evidence1 = new Evidence();
-    // evidence1.evidence_id = uuidv4();
-    // evidence1.description = "Suspicious bank transactions";
-    // evidence1.collected_at = new Date("2025-01-15");
-    // evidence1.current_location = "Financial Records";
-    // evidence1.attach_file = "bank_statement_1.pdf";
-    // evidence1.status = "Under Review";
-    // evidence1.case = case1;
-    // evidence1.warrant = warrant1;
-    // await evidenceRepository.save(evidence1);
+    // Insert Evidence for Case 1
+    const evidence1 = new Evidence();
+    evidence1.evidence_id = uuidv4();
+    evidence1.description = "Suspicious bank transactions";
+    evidence1.collected_at = new Date("2025-01-15");
+    evidence1.current_location = "Financial Records";
+    evidence1.attach_file = "bank_statement_1.pdf";
+    evidence1.status = "Under Review";
+    evidence1.case = case1;
+    evidence1.warrant = warrant1;
+    await evidenceRepository.save(evidence1);
 
-    // // Insert FinancialInvest for Evidence 1
-    // const financialInvest1 = new FinancialInvest();
-    // financialInvest1.evidence_id = evidence1.evidence_id;
-    // financialInvest1.summary =
-    //   "Multiple large transactions to offshore accounts";
-    // financialInvest1.deadline = new Date("2025-01-15");
-    // financialInvest1.status = FinancialInvestStatus.COMPLETED;
-    // await financialInvestRepository.save(financialInvest1);
+    // Insert FinancialInvest for Evidence 1
+    const financialInvest1 = new FinancialInvest();
+    financialInvest1.evidence_id = evidence1.evidence_id;
+    financialInvest1.summary =
+      "Multiple large transactions to offshore accounts";
+    await financialInvestRepository.save(financialInvest1);
 
     // Insert Case 2
     const case2 = new Case();
@@ -75,6 +73,8 @@ async function seedFinancialData() {
     warrant2.warrant_id = uuidv4();
     warrant2.warrant_name = "Digital Evidence Warrant";
     warrant2.time_publish = new Date("2025-02-01");
+    warrant2.deadline = new Date("2025-02-28");
+    warrant2.status = WarrantStatus.WAITING_EXECUTING;
     warrant2.case = case2;
     await warrantRepository.save(warrant2);
 
@@ -95,8 +95,6 @@ async function seedFinancialData() {
     financialInvest2.evidence_id = evidence2.evidence_id;
     financialInvest2.summary =
       "Multiple unauthorized transactions traced to fake accounts.";
-    financialInvest2.deadline = new Date("2025-02-28");
-    financialInvest2.status = FinancialInvestStatus.WAITING_EXECUTING;
     await financialInvestRepository.save(financialInvest2);
 
     console.log("Successfully inserted test financial data!");
