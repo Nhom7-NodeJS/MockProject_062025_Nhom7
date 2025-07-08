@@ -4,6 +4,7 @@ import { FinancialInvest } from "@/modules/financial_invests/entities/financial_
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { Case } from "@/modules/cases/entities/case.entity";
 import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
+import { CaseType, CaseSeverity, CaseStatus } from "@/modules/cases/enums/case.enum";
 import { v4 as uuidv4 } from "uuid";
 
 async function seedFinancialData() {
@@ -16,21 +17,17 @@ async function seedFinancialData() {
     const warrantRepository = AppDataSource.getRepository(Warrant);
     const caseRepository = AppDataSource.getRepository(Case);
 
-    //1. Check if data in table Case exists, if not create it
-    let existingCase = await caseRepository.findOneBy({ case_id: "C999" });
-    if (!existingCase) {
-      existingCase = caseRepository.create({
-        case_id: "C999",
-        case_name: "Fraud investigation case",
-        type_case: "Financial Crime", 
-        severity: "High",             
-        status: "Open",              
-        summary: "Investigation on corporate fraud",
-        create_at: new Date(),        
-        is_deleted: false            
-      });
-      await caseRepository.save(existingCase);
-    }
+    // 1. Create Case
+    const case_ = new Case();
+    case_.case_id = uuidv4();
+    case_.case_name = "Financial Fraud Investigation";
+    case_.type_case = CaseType.ROBBERY; // ✅ Chỉ được dùng giá trị enum có sẵn
+    case_.severity = CaseSeverity.MEDIUM;
+    case_.status = CaseStatus.IN_PROCESS;
+    case_.summary = "Suspected embezzlement involving company funds";
+    case_.create_at = new Date();
+    case_.is_deleted = false;
+    await caseRepository.save(case_);
 
     // 2. Create Warrant
     const warrant = new Warrant();
@@ -41,7 +38,7 @@ async function seedFinancialData() {
     warrant.deadline = new Date("2025-01-31");
     warrant.status = WarrantStatus.WAITING_EXECUTING;
     warrant.is_deleted = false;
-    warrant.case = existingCase;
+    warrant.case = case_;
 
     await warrantRepository.save(warrant);
 
@@ -54,7 +51,7 @@ async function seedFinancialData() {
     evidence1.attach_file = "bank_statement_1.pdf";
     evidence1.status = "Under Review";
     evidence1.is_deleted = false;
-    evidence1.case = existingCase;
+    evidence1.case = case_;
     evidence1.warrant = warrant;
     await evidenceRepository.save(evidence1);
 
@@ -74,7 +71,7 @@ async function seedFinancialData() {
     evidence2.attach_file = "company_records_2024.xlsx";
     evidence2.status = "Analysis Complete";
     evidence2.is_deleted = false;
-    evidence2.case = existingCase;
+    evidence2.case = case_;
     evidence2.warrant = warrant;
     await evidenceRepository.save(evidence2);
 

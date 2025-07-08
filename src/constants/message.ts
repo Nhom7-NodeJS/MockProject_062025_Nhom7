@@ -48,6 +48,4 @@ export const ErrorMessages = {
   PERMISSION_EXISTS: "Permission already exists for this user",
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
-
-
 } as const;
