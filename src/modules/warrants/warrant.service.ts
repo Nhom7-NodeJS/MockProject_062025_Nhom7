@@ -6,6 +6,7 @@ const warrantRepository = AppDataSource.getRepository(Warrant);
 export const WarrantService = {
     getAllWarrants: async () =>{
         try{
+
         return await warrantRepository.find();
          } catch (err) {
       console.error( err);
@@ -27,12 +28,12 @@ export const WarrantService = {
   },
   getCompletedWarrants: async () => {
     try{
-
- return await warrantRepository.find({
+return await warrantRepository.find({
         where: {
-          status: WarrantStatus.EXECUTING,
+          status: WarrantStatus.COMPLETED,
         },
       });
+
     } catch (err) {
     console.error(err);
     throw err; 

@@ -1,58 +1,80 @@
-// warrant.controller.ts
 import { Request, Response } from "express";
 import WarrantService from "./warrant.service";
-import { SuccessMessages, ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
+import { SuccessMessages, ErrorMessages } from "@/constants/message";
+import { AppResponse } from "@/common/success.response";
 
 class WarrantController {
-   getAllWarrants = async (req: Request, res: Response) =>{
+  // Lấy tất cả lệnh
+  async getAllWarrants(req: Request, res: Response) {
     try {
       const warrants = await WarrantService.getAllWarrants();
+
       if (!warrants) {
-        return res
-          .status(HttpStatusCode.NOT_FOUND)
-          .json({ error: ErrorMessages.Warrant_NOT_FOUND });
+        return new AppResponse({
+          message: ErrorMessages.Warrant_NOT_FOUND,
+          statusCode: HttpStatusCode.NOT_FOUND,
+        }).sendResponse(res);
       }
-      return res.status(HttpStatusCode.OK).json({
+
+      return new AppResponse({
         message: SuccessMessages.Warrant.WARRANT_GET,
+        statusCode: HttpStatusCode.OK,
         data: warrants,
-      });
+      }).sendResponse(res);
     } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
+      return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+        error: "Internal server error",
+      });
     }
   }
-  getExecutingWarrants = async (req: Request, res: Response) =>{
+
+  // Lấy lệnh đang thực thi
+  async getExecutingWarrants(req: Request, res: Response) {
     try {
       const warrants = await WarrantService.getExecutingWarrants();
+
       if (!warrants) {
-        return res
-          .status(HttpStatusCode.NOT_FOUND)
-          .json({ error: ErrorMessages.Warrant_NOT_FOUND });
+        return new AppResponse({
+          message: ErrorMessages.Warrant_NOT_FOUND,
+          statusCode: HttpStatusCode.NOT_FOUND,
+        }).sendResponse(res);
       }
-      return res.status(HttpStatusCode.OK).json({
+
+      return new AppResponse({
         message: SuccessMessages.Warrant.WARRANT_GET,
+        statusCode: HttpStatusCode.OK,
         data: warrants,
-      });
+      }).sendResponse(res);
     } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
+      return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+        error: "Internal server error",
+      });
     }
   }
-  getCompletedWarrants = async (req: Request, res: Response) =>{
+
+   async getCompletedWarrants(req: Request, res: Response) {
     try {
       const warrants = await WarrantService.getCompletedWarrants();
+
       if (!warrants) {
-        return res
-          .status(HttpStatusCode.NOT_FOUND)
-          .json({ error: ErrorMessages.Warrant_NOT_FOUND });
+        return new AppResponse({
+          message: ErrorMessages.Warrant_NOT_FOUND,
+          statusCode: HttpStatusCode.NOT_FOUND,
+        }).sendResponse(res);
       }
-      return res.status(HttpStatusCode.OK).json({
+
+      return new AppResponse({
         message: SuccessMessages.Warrant.WARRANT_GET,
+        statusCode: HttpStatusCode.OK,
         data: warrants,
-      });
+      }).sendResponse(res);
     } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
+      return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+        error: "Internal server error",
+      });
     }
   }
 }
 
-export default new  WarrantController();
+export default new WarrantController();
