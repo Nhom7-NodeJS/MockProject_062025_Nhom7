@@ -11,7 +11,7 @@ import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { WarrantResult } from "@/modules/warrant_results/entities/warrant_result.entity";
 import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
-
+import { User } from "@/modules/users/entities/user.entity";
 @Entity("warrants")
 export class Warrant {
   @PrimaryColumn()
@@ -33,7 +33,7 @@ export class Warrant {
   deadline!: Date;
 
   @Column({
-    type: "enum",
+    type: "enum", 
     enum: WarrantStatus,
     default: WarrantStatus.WAITING_EXECUTING,
   })
@@ -50,4 +50,8 @@ export class Warrant {
   @ManyToOne(() => Case, (case_) => case_.warrants)
   @JoinColumn({ name: "case_id" })
   case!: Case;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "police_response" }) 
+  police_response!: User;
 }

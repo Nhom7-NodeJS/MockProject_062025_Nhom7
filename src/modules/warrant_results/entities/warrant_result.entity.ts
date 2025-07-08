@@ -27,3 +27,4 @@ export class WarrantResult {
   @JoinColumn({ name: "warrant_id" })
   warrant!: Warrant;
 }
+  
