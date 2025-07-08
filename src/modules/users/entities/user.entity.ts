@@ -16,7 +16,8 @@ import { Question } from "@/modules/questions/entity/question.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
 import { Role } from "@/modules/roles/entities/role.entity";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
-import { UserStatus } from "@/modules/users/enums/user.enum";
+import { Gender, UserStatus } from "../enums/user.enum";
+import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 
 @Entity("users")
 export class User {
@@ -34,6 +35,9 @@ export class User {
 
   @Column({ nullable: true })
   phone_number?: string;
+
+  @Column({ type: "enum", enum: Gender, nullable: true })
+  gender?: Gender;
 
   @Column({ type: "timestamp" })
   dob!: Date;
@@ -80,6 +84,9 @@ export class User {
 
   @OneToMany(() => Report, (report) => report.user)
   reports!: Report[];
+
+  @OneToMany(() => Warrant, (warrant) => warrant.user)
+  warrants!: Warrant[];
 
   // ManyToOne
   @ManyToOne(() => Role, (role) => role.users)

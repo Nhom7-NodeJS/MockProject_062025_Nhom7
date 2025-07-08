@@ -1,0 +1,63 @@
+@baseUrl = http://localhost:4000/api/v1
+@contentType = application/json
+
+### 1. Get All Cases
+GET {{baseUrl}}/cases
+Content-Type: {{contentType}}
+
+### 2. Get Cases by Status - Pending Approval
+GET {{baseUrl}}/cases?status=Pending%20Approval
+Content-Type: {{contentType}}
+
+### 3. Get Cases by Status - In Process
+GET {{baseUrl}}/cases?status=In%20Process
+Content-Type: {{contentType}}
+
+### 4. Get Cases by Status - Invalid Status (should return 400)
+GET {{baseUrl}}/cases?status=InvalidStatus
+Content-Type: {{contentType}}
+
+### 5. Test Confirm Case (No Auth Required)
+# Test endpoint that bypasses authentication
+# WARNING: Only for development/testing - Remove in production
+# Using case ID from seed data (CASE-002 is PENDING_APPROVAL)
+POST {{baseUrl}}/cases/test-confirm
+Content-Type: {{contentType}}
+
+{
+  "caseId": "CASE-002",
+  "username": "officer.jane",
+  "notes": "Assigning lead investigator to bank robbery case"
+}
+
+### 6. Test Confirm Case - Already In Process
+# Trying to confirm a case that's already IN_PROCESS (should fail)
+POST {{baseUrl}}/cases/test-confirm
+Content-Type: {{contentType}}
+
+{
+  "caseId": "CASE-001",
+  "username": "detective_jones",
+  "notes": "This should fail - case already in process"
+}
+
+### 7. Test Confirm Case - Missing Required Fields
+POST {{baseUrl}}/cases/test-confirm
+Content-Type: {{contentType}}
+
+{
+  "caseId": "",
+  "username": ""
+}
+
+### 8. Confirm Case and Assign Main Investigator (Sheriff required)
+# Note: Replace {caseId} with an actual case ID and {username} with a valid username
+# Requires authentication with a user having the SHERIFF role
+PUT {{baseUrl}}/cases/{caseId}/confirm
+Content-Type: {{contentType}}
+Authorization: Bearer your_jwt_token_here
+
+{
+  "username": "{username}",
+  "notes": "Assigning main investigator to this case"
+}

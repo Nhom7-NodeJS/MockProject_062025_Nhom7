@@ -11,6 +11,7 @@ import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
+import { CaseSeverity, CaseStatus, CaseType } from "../enums/case.enum";
 
 @Entity("cases")
 export class Case {
@@ -20,14 +21,23 @@ export class Case {
   @Column()
   case_name!: string;
 
-  @Column()
-  type_case!: string;
+  @Column({
+    type: 'enum',
+    enum: CaseType,
+  })
+  type_case!: CaseType;
 
-  @Column()
-  severity!: string;
+  @Column({
+    type: 'enum',
+    enum: CaseSeverity,
+  })
+  severity!: CaseSeverity;
 
-  @Column()
-  status!: string;
+  @Column({
+    type: 'enum',
+    enum: CaseStatus,
+  })
+  status!: CaseStatus;
 
   @Column({ nullable: true })
   summary?: string;
