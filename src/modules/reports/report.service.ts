@@ -43,9 +43,9 @@ export class ReportService {
       severity: incidentInfo.severity,
       incident_date: new Date(incidentInfo.dateOccur),
       description: incidentInfo.description || undefined,
-      case_location: incidentInfo.detailAddress || "Unknown",
+      detail_address: incidentInfo.detailAddress || undefined,
       reported_at: new Date(),
-      reporter_location: reporterInfo.address || "Unknown",
+      reporter_address: reporterInfo.address || undefined,
       reporter_fullname: reporterInfo.fullname,
       reporter_email: reporterInfo.email,
       reporter_phone_number: reporterInfo.phoneNumber,
@@ -71,7 +71,7 @@ export class ReportService {
       );
     }
     // console.log(Object.keys(new Report()));
-    
+
     return {reporterInfo, incidentInfo, relevantParties, evidences};
   }
 }

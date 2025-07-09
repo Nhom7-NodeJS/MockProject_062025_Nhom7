@@ -20,7 +20,7 @@ import {
 
 export const mapEvidence = (e: Evidence): InitialEvidences => ({
   evidenceType: e.evidence_type,
-  evidenceLocation: e.current_location,
+  evidenceLocation: e.current_location ?? null,
   description: e.description ?? null,
   attachments: e.attach_file
     ? e.attach_file.split(" ; ").map((url) => url.trim())
