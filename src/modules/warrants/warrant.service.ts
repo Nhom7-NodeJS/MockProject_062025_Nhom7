@@ -60,8 +60,20 @@ return await warrantRepository.find({
     console.error("Error creating new warrant:", err);
     throw err;
   }
-}
+},
+searchWarrantByName: async (Name: string) => {
+  try {
 
+    return await warrantRepository.find({
+      where: {
+        warrant_name: Name,
+      },
+    });
+  } catch (err) {
+    console.error("Error searching warrant by name:", err);
+    throw err;
+  }
+}
 };
 
 export default WarrantService;

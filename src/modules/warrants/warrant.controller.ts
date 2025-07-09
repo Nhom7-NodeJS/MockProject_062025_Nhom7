@@ -3,7 +3,8 @@ import WarrantService from "./warrant.service";
 import { HttpStatusCode } from "@/constants/status-code";
 import { SuccessMessages, ErrorMessages } from "@/constants/message";
 import { AppResponse } from "@/common/success.response";
-import { validateWarrant } from "./warrant.validate";
+import { validateCreateWarrant } from "./warrant.validate";
+import { validateSearchWarrantByName } from "./warrant.validate";
 
 class WarrantController {
   // Lấy tất cả lệnh
@@ -78,7 +79,7 @@ class WarrantController {
   }
   createNewWarrant = async (req: Request, res: Response) => {
     // Validate the request body
-  const result = await validateWarrant(req.body);
+  const result = await validateCreateWarrant(req.body);
 if (!result.valid) {
   return res.status(400).json({
     message: "Validation failed",
@@ -106,6 +107,41 @@ if (!result.valid) {
       });
     }
   }
+  searchWarrantByName = async (req: Request, res: Response) => {
+    let warrant_name = req.body.warrant_name;
+     const result = await validateSearchWarrantByName(req.body);
+if (!result.valid) {
+  return res.status(400).json({
+    message: "Validation failed",
+    errors: result.errors.map((e) => ({
+      property: e.property,
+      constraints: e.constraints,
+    })),
+  });
+}
+    try {
+     
+      const warrants = await WarrantService.searchWarrantByName(warrant_name);
+
+      if (!warrants || warrants.length === 0) {
+        return new AppResponse({
+          message: ErrorMessages.Warrant_NOT_FOUND,
+          statusCode: HttpStatusCode.NOT_FOUND,
+        }).sendResponse(res);
+      }
+
+      return new AppResponse({
+        message: SuccessMessages.Warrant.WARRANT_GET,
+        statusCode: HttpStatusCode.OK,
+        data: warrants,
+      }).sendResponse(res);
+    } catch (error) {
+      return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+        error: "Internal server error",
+      });
+    }
+  };
+
 }
 
 export default new WarrantController();
