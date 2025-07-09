@@ -4,7 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { Case } from "@/modules/cases/entities/case.entity";
@@ -22,8 +22,8 @@ import {
 
 @Entity("reports")
 export class Report {
-  @PrimaryColumn()
-  report_id!: string;
+  @PrimaryGeneratedColumn()
+  report_id!: number;
 
   @Column({ type: "enum", enum: CrimeType })
   crime_type!: CrimeType;
