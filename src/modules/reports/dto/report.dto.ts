@@ -1,4 +1,3 @@
-
 import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
 import { Gender } from "@/modules/users/enums/user.enum"
 import {

@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { v4 as uuidv4 } from 'uuid';
+import { generateUUID } from "@/helpers/generate-uuid"
 
 import { AppDataSource } from "@/config/config-database";
 import { Report } from "@/modules/reports/entities/report.entity";
@@ -7,6 +7,9 @@ import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { Suspect } from "@/modules/suspects/entities/suspect.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
+import { ReportVictim } from "../reports_victims/entities/report_victim.entity";
+import { ReportWitness } from "../reports_witnesses/entities/report_witness.entity";
+import { Gender } from "@/modules/users/enums/user.enum";
 import {
 	CreateIncidentReportDto,
 	IncidentReportResponseDto
@@ -14,18 +17,21 @@ import {
 import {
 	toIncidentReportResponseDto
 } from "@/modules/reports/report.mapper"
-import { ReportStatus } from "./enums/report.enum";
+import { 
+  ReporterIncidentRelationship 
+} from "./enums/report.enum";
 import { AppError } from "@/common/error.response";
 import { ErrorCode } from "@/constants/error-code";
-import { SuccessMessages, ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 
 export class ReportService {
 	private reportRepository: Repository<Report>;
 	private evidenceRepository: Repository<Evidence>;
-	private suspectRepository: Repository<Suspect>
-	private victimRepository: Repository<Victim>
-	private witnessRepository: Repository<Witness>
+	private suspectRepository: Repository<Suspect>;
+	private victimRepository: Repository<Victim>;
+	private witnessRepository: Repository<Witness>;
+  private reportVictimRepository: Repository<ReportVictim>;
+  private reportWitnessRepository: Repository<ReportWitness>;
 
 	constructor() {
 		this.reportRepository = AppDataSource.getRepository(Report);
@@ -33,11 +39,14 @@ export class ReportService {
 		this.suspectRepository = AppDataSource.getRepository(Suspect);
 		this.victimRepository = AppDataSource.getRepository(Victim);
 		this.witnessRepository = AppDataSource.getRepository(Witness);
+    this.reportVictimRepository = AppDataSource.getRepository(ReportVictim);
+    this.reportWitnessRepository = AppDataSource.getRepository(ReportWitness)
 	}
 
 	async createReport(reportDto: CreateIncidentReportDto): Promise<any> {
     const { reporterInfo, incidentInfo, relevantParties, evidences } = reportDto;
-
+    
+    // Create a new report instance
     const newReport = this.reportRepository.create({
       crime_type: incidentInfo.crimeType,
       severity: incidentInfo.severity,
@@ -49,30 +58,109 @@ export class ReportService {
       reporter_fullname: reporterInfo.fullname,
       reporter_email: reporterInfo.email,
       reporter_phone_number: reporterInfo.phoneNumber,
-      is_deleted: false,
-      status: ReportStatus.PENDING,
       reporter_incident_relationship: reporterInfo.incidentRelation,
     })
-
+    // Save report instance to database
     await this.reportRepository.save(newReport)
 
+    // Process and save each relevant party (Victim, Witness, Suspect)
+    for (const party of relevantParties) {
+      const baseInfo = {
+        fullname: party.fullname ?? undefined,
+        gender: party.gender ?? Gender.UNKNOWN,
+        national: party.nationality ?? undefined,
+      };
+
+      switch (party.incidentRelation) {
+        // If the party is a witness
+        case ReporterIncidentRelationship.WITNESS: {
+          // Create and save a new witness
+          const newWitness = this.witnessRepository.create({
+            witness_id: generateUUID("WITNESS"),
+            ...baseInfo,
+            statement: party.statement ?? undefined,
+          });
+          await this.witnessRepository.save(newWitness);
+          // Link witness to report using ReportWitness 
+          const reportWitness = this.reportWitnessRepository.create({
+            report_id: newReport.report_id.toString(),
+            witness_id: newWitness.witness_id,
+            report: newReport,
+            witness: newWitness,
+          });
+          await this.reportWitnessRepository.save(reportWitness);
+          break;
+        }
+        // If the party is a victim
+        case ReporterIncidentRelationship.VICTIM: {
+          // Create and save a new victim
+          const newVictim = this.victimRepository.create({
+            victim_id: generateUUID("VICTIM"),
+            ...baseInfo,
+            description: party.statement ?? undefined,
+          });
+          await this.victimRepository.save(newVictim);
+          // Link victim to report via ReportVictim
+          const reportVictim = this.reportVictimRepository.create({
+            report_id: newReport.report_id.toString(),
+            victim_id: newVictim.victim_id,
+            report: newReport,
+            victim: newVictim,
+          });
+          await this.reportVictimRepository.save(reportVictim);
+          break;
+        }
+        // If the party is a suspect
+        case ReporterIncidentRelationship.SUSPECT: {
+          // Create and save a new suspect
+          const newSuspect = this.suspectRepository.create({
+            suspect_id: generateUUID("SUSPECT"),
+            ...baseInfo,
+            description: party.statement ?? undefined,
+            report: newReport,
+          });
+          await this.suspectRepository.save(newSuspect);
+          break;
+        }
+
+        default:
+          throw new AppError(
+            `Unknown party relation: ${party.incidentRelation}`,
+            HttpStatusCode.BAD_REQUEST,
+            ErrorCode.INVALID_RELATED_PARTY
+          );
+      }
+    }
+
+    // Create and save each evidence entry
     for (const ev of evidences) {
       await this.evidenceRepository.save(
         this.evidenceRepository.create({
-          evidence_id: uuidv4(),
+          evidence_id: generateUUID("EVIDENCE"),
           report: newReport,
           evidence_type: ev.evidenceType,
-          current_location: ev.evidenceLocation || "Unknown",
+          current_location: ev.evidenceLocation || undefined,
           description: ev.description || undefined,
-          collected_at: undefined,
           attach_file: ev.attachments?.length ? ev.attachments.join(" ; ") : undefined,
-          status: "Uncollected",
         })
       );
     }
-    // console.log(Object.keys(new Report()));
+    // Retrieve and return the full report with all relations populated
+    const savedReport = await this.reportRepository.findOneOrFail({
+      where: { report_id: newReport.report_id },
+      relations: {
+        evidences: true,
+        suspects: true,
+        reportVictims: {
+          victim: true,
+        },
+        reportWitnesses: {
+          witness: true,
+        },
+      },
+    });
 
-    return {reporterInfo, incidentInfo, relevantParties, evidences};
+    return savedReport;
   }
 }
 
