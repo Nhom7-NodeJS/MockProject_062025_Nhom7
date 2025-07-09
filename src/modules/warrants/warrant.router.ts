@@ -9,4 +9,5 @@ WarrantRouter.get("/getExecutingWarrant", WarrantController.getExecutingWarrants
 WarrantRouter.get("/getCompletedWarrant", WarrantController.getCompletedWarrants);
 WarrantRouter.post("/createNewWarrant", WarrantController.createNewWarrant);
 WarrantRouter.post("/searchWarrantByName", WarrantController.searchWarrantByName);
+WarrantRouter.get("/getWarrantById/:warrant_id", WarrantController.getWarrantById);
 export default WarrantRouter;

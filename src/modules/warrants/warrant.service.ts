@@ -2,6 +2,7 @@ import { AppDataSource } from "@/config/config-database";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
 import { CreateWarrantDto } from "@/modules/warrants/dto/warrant.create.dto";
+import { get } from "http";
 const warrantRepository = AppDataSource.getRepository(Warrant);
 
 export const WarrantService = {
@@ -71,6 +72,24 @@ searchWarrantByName: async (Name: string) => {
     });
   } catch (err) {
     console.error("Error searching warrant by name:", err);
+    throw err;
+  }
+},
+getWarrantById: async (warrantId: string) => {
+  try {
+    const warrant = await warrantRepository.findOne({
+      where: {
+        warrant_id: warrantId,
+      },
+    });
+
+    if (!warrant) {
+      throw new Error("Warrant not found");
+    }
+
+    return warrant;
+  }catch (err) {
+    console.error("Error getting warrant by ID:", err);
     throw err;
   }
 }

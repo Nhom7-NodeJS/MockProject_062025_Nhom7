@@ -141,6 +141,30 @@ if (!result.valid) {
       });
     }
   };
+  getWarrantById = async (req: Request, res: Response) => {
+    const { warrant_id } = req.params;
+
+    try {
+      const warrant = await WarrantService.getWarrantById(warrant_id);
+
+      if (!warrant) {
+        return new AppResponse({
+          message: ErrorMessages.Warrant_NOT_FOUND,
+          statusCode: HttpStatusCode.NOT_FOUND,
+        }).sendResponse(res);
+      }
+
+      return new AppResponse({
+        message: SuccessMessages.Warrant.WARRANT_GET,
+        statusCode: HttpStatusCode.OK,
+        data: warrant,
+      }).sendResponse(res);
+    } catch (error) {
+      return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+        error: "Internal server error",
+      });
+    }
+  };
 
 }
 
