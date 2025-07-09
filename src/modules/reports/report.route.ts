@@ -8,7 +8,7 @@ import { validateBody } from "@/middlewares/validate.middleware";
 const router = express.Router();
 
 router.post(
-  "/create-report", 
+  "/report", 
   processRequestFiles, 
   asyncHandle((req, res) =>
   reportController.createReport(req, res)

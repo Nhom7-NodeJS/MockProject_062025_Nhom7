@@ -28,10 +28,7 @@ export class Report {
   @Column({ type: "enum", enum: CrimeType })
   crime_type!: CrimeType;
 
-  @Column({
-    type: "enum",
-    enum: SeverityLevel,
-  })
+  @Column({ type: "enum", enum: SeverityLevel })
   severity!: SeverityLevel;
 
   @Column({ type: "timestamp" })
@@ -40,14 +37,14 @@ export class Report {
   @Column({ nullable: true })
   description?: string;
 
-  @Column()
-  case_location!: string;
+  @Column({ nullable: true })
+  detail_address?: string;
 
   @Column({ type: "timestamp" })
   reported_at!: Date;
 
-  @Column()
-  reporter_location!: string;
+  @Column({ nullable: true })
+  reporter_address?: string;
 
   @Column()
   reporter_fullname!: string;
@@ -55,13 +52,13 @@ export class Report {
   @Column()
   reporter_email!: string;
 
-  @Column({ nullable: true })
-  reporter_phone_number?: string;
+  @Column()
+  reporter_phone_number!: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @Column({ type: "enum", enum: ReportStatus })
+  @Column({ type: "enum", enum: ReportStatus, default:ReportStatus.PENDING })
   status!: ReportStatus;
 
   @Column({ type: "enum", enum: ReporterIncidentRelationship })

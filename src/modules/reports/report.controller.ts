@@ -10,27 +10,17 @@ import { Victim } from "@/modules/victims/entities/victim.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
 import { ReportService } from "@/modules/reports/report.service"
 import {
-	InitialEvidences,
-	RelevantParties,
-	IncidentInfo,
-	ReporterInfo,
-	BasicReportInfo,
 	CreateIncidentReportDto,
 	IncidentReportResponseDto
 } from "@/modules/reports/dto/report.dto";
 import {
-	mapEvidence,
-	mapSuspect,
-	mapVictim,
-	mapWitness,
-	mapBasicReportInfo,
-	mapIncidentInfo,
-	mapReporterInfo,
 	toIncidentReportResponseDto
 } from "@/modules/reports/report.mapper"
 import { ErrorCode } from "@/constants/error-code";
 import { SuccessMessages, ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
+import { AppResponse } from "@/common/success.response";
+import { AppError } from "@/common/error.response";
 
 export class ReportController {
   private reportService: ReportService;
@@ -40,31 +30,47 @@ export class ReportController {
   }
 
   async createReport(req: Request, res: Response) {
-    try{
-      const uploadedFiles = req.body.uploadedFiles;
-      const evidencesRaw = JSON.parse(req.body.evidences);
+    const uploadedFiles = req.body.uploadedFiles;
 
-      // Merge attachments to corresponding evidences
-      const evidences = evidencesRaw.map((evidence: any, index: number) => ({
-        ...evidence,
-        attachments: uploadedFiles?.[`evidence_${index}`] ?? [],
-      }));
-
-      const createDto = {
-        reporterInfo: JSON.parse(req.body.reporterInfo),
-        incidentInfo: JSON.parse(req.body.incidentInfo),
-        relevantParties: JSON.parse(req.body.relevantParties),
-        evidences,
-      };
-
-      const newReport = await this.reportService.createReport(createDto);
-      res.status(201).json({
-        message: "Report created sucessfully",
-        data: newReport,
-      })
-    } catch (error) {
-      throw error
+    let evidencesRaw, reporterInfo, incidentInfo, relevantParties;
+    try {
+      const body = req.body;
+  
+      evidencesRaw = body.evidences ? JSON.parse(body.evidences) : [];
+      reporterInfo = JSON.parse(body.reporterInfo);
+      incidentInfo = JSON.parse(body.incidentInfo);
+      relevantParties = body.relevantParties ? JSON.parse(body.relevantParties) : [];
+    } catch {
+      throw new AppError(
+        ErrorMessages.INVALID_JSON,
+        HttpStatusCode.BAD_REQUEST,
+        ErrorCode.INVALID_JSON,
+        [{ field: "request body", message: "One or more fields are invalid JSON" }]
+      );
     }
+
+    // Merge attachments to corresponding evidences
+    const evidences = evidencesRaw.map((evidence: any, index: number) => ({
+      ...evidence,
+      attachments: Array.isArray(uploadedFiles?.[`evidence_${index}`])
+        ? uploadedFiles[`evidence_${index}`]
+        : [],
+    }))
+
+    const createIncidentReportDto: CreateIncidentReportDto = {
+      reporterInfo,
+      incidentInfo,
+      relevantParties,
+      evidences,
+    };
+
+    const newReport = await this.reportService.createReport(createIncidentReportDto);
+    const reportDto: IncidentReportResponseDto = toIncidentReportResponseDto(newReport)
+    return new AppResponse({
+      message: SuccessMessages.REPORT.REPORT_CREATED,
+      statusCode: HttpStatusCode.CREATED,
+      data: reportDto,
+    }).sendResponse(res);
   }
 }
 

@@ -13,7 +13,7 @@ export interface InitialEvidences {
   evidenceType: EvidenceType;
   evidenceLocation: string | null;
   description: string | null;
-  attachments: string;
+  attachments: string[];
 }
 
 // Interface representing a relevant party involved in the incident

@@ -8,7 +8,7 @@ const router = express.Router();
 const API_V1 = "/api/v1";
 
 router.use(`${API_V1}/users`, userRouter);
-router.use(`${API_V1}/reports`, reportRouter);
+router.use(`${API_V1}/home`, reportRouter);
 router.use(`${API_V1}/cases`, caseRouter);
 
 export default router;

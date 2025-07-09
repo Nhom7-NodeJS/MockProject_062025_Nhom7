@@ -22,7 +22,9 @@ export const mapEvidence = (e: Evidence): InitialEvidences => ({
   evidenceType: e.evidence_type,
   evidenceLocation: e.current_location,
   description: e.description ?? null,
-  attachments: e.attach_file,
+  attachments: e.attach_file
+    ? e.attach_file.split(" ; ").map((url) => url.trim())
+    : [],
 });
 
 export const mapSuspect = (s: Suspect): RelevantParties => ({
@@ -52,8 +54,8 @@ export const mapWitness = (w: ReportWitness): RelevantParties => ({
 export const mapReporterInfo = (r: Report): ReporterInfo => ({
   fullname: r.reporter_fullname,
   email: r.reporter_email,
-  address: r.reporter_location,
-  phoneNumber: r.reporter_phone_number ?? "",
+  address: r.reporter_address ?? null,
+  phoneNumber: r.reporter_phone_number,
   incidentRelation: r.reporter_incident_relationship,
 });
 
@@ -61,7 +63,7 @@ export const mapIncidentInfo = (r: Report): IncidentInfo => ({
   crimeType: r.crime_type,
   severity: r.severity,
   dateOccur: formatUSDateTime(r.incident_date),
-  detailAddress: r.case_location,
+  detailAddress: r.detail_address ?? null,
   description: r.description ?? null,
 });
 
