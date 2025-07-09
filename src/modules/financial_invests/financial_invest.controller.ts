@@ -138,4 +138,33 @@ export class FinancialInvestController {
       }
     });
   }
+
+  static async startFinancialTask(req: Request, res: Response) {
+    const { warrant_id } = req.params;
+    const warrantRepo = AppDataSource.getRepository(Warrant);
+
+    const warrant = await warrantRepo.findOne({ where: { warrant_id } });
+
+    if (!warrant) {
+      return res.status(404).json({
+        code: ErrorCode.INVALID_PARAMS,
+        message: "Warrant not found"
+      });
+    }
+
+    if (warrant.status !== WarrantStatus.WAITING_EXECUTING) {
+      return res.status(400).json({
+        code: ErrorCode.INVALID_PARAMS,
+        message: "Can only start tasks in waiting status"
+      });
+    }
+
+    warrant.status = WarrantStatus.EXECUTING;
+    await warrantRepo.save(warrant);
+
+    return res.json({
+      message: "Task started",
+      data: { task_id: warrant.warrant_id, status: warrant.status }
+    });
+  }
 }
