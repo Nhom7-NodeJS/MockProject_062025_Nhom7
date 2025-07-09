@@ -77,6 +77,7 @@ class WarrantController {
     }
   }
   createNewWarrant = async (req: Request, res: Response) => {
+    // Validate the request body
   const result = await validateWarrant(req.body);
 if (!result.valid) {
   return res.status(400).json({

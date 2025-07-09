@@ -1,4 +1,4 @@
-// src/modules/warrants/dto/create-warrant.dto.ts
+
 
 import {
   IsString,
@@ -11,6 +11,7 @@ import {
 } from "class-validator";
 import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
 
+// DTO (Data Transfer Object) for creating a new warrant
 export class CreateWarrantDto {
   @IsString()
   @IsNotEmpty()
