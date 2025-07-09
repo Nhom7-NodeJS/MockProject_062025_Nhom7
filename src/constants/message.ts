@@ -30,6 +30,8 @@ export const SuccessMessages = {
   AUTH: {
     LOGIN_SUCCESS: "Login successfully",
     LOGOUT_SUCCESS: "Logout successfully",
+    INVALID_CREDENTIALS: "Invalid username or password",
+    USER_ALREADY_EXISTS: "User already exists",
   },
 } as const;
 

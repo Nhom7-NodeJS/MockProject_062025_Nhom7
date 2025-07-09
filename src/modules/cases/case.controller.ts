@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
-// import { AuthenticatedRequest } from "@/middlewares/auth.middleware";
-import { CaseService } from "./case.service";
-import { AppResponse } from "@/common/success.response";
-import { HttpStatusCode } from "@/constants/status-code";
-import { SuccessMessages } from "@/constants/message";
-import { CaseStatus } from "./enums/case.enum";
-import { ConfirmCaseDto, ConfirmCaseResponseDto } from "./dto/confirm-case.dto";
+import { Request, Response } from 'express';
+import { CaseService } from './case.service';
+import { AppResponse } from '@/common/success.response';
+import { HttpStatusCode } from '@/constants/status-code';
+import { SuccessMessages } from '@/constants/message';
+import { CaseStatus } from './enums/case.enum';
+import { ConfirmCaseDto, ConfirmCaseResponseDto } from './dto/confirm-case.dto';
+import { AuthenticatedRequest } from '@/middlewares/auth.middleware';
 
 const caseService = new CaseService();
 
@@ -40,44 +40,47 @@ class CaseController {
     }).sendResponse(res);
   }
 
-  // async confirmCaseAndAssignInvestigator(req: AuthenticatedRequest, res: Response) {
-  //   const { caseId } = req.params;
-  //   const { username, notes = null } = req.body as ConfirmCaseDto;
-  //   const currentUser = req.user; // Current user from auth middleware
+  async confirmCaseAndAssignInvestigator(req: AuthenticatedRequest, res: Response) {
+    const { caseId } = req.params;
+    const { username, notes } = req.body as ConfirmCaseDto;
+    const currentUser = req.user; // Current user from auth middleware
     
-  //   if (!currentUser) {
-  //     return new AppResponse({
-  //       message: 'User not authenticated',
-  //       statusCode: HttpStatusCode.UNAUTHORIZED,
-  //     }).sendResponse(res);
-  //   }
+    if (!currentUser) {
+      return new AppResponse({
+        message: 'User not authenticated',
+        statusCode: HttpStatusCode.UNAUTHORIZED,
+      }).sendResponse(res);
+    }
 
-  //   try {
-  //     const { case: updatedCase, caseUser } = await caseService.confirmCaseAndAssignInvestigator(
-  //       caseId,
-  //       username,
-  //       notes
-  //     );
+    try {
+      const { case: updatedCase, caseUser } = await caseService.confirmCaseAndAssignInvestigator(
+        caseId,
+        username,
+        notes || null
+      );
 
-  //     const response = new ConfirmCaseResponseDto(
-  //       updatedCase.case_id,
-  //       updatedCase.status,
-  //       caseUser.username,
-  //       new Date()
-  //     );
+      const response = new ConfirmCaseResponseDto(
+        updatedCase.case_id,
+        updatedCase.status,
+        caseUser.username,
+        caseUser.assigned_at
+      );
 
-  //     return new AppResponse({
-  //       message: SuccessMessages.CASE.CASE_UPDATED,
-  //       statusCode: HttpStatusCode.OK,
-  //       data: response
-  //     }).sendResponse(res);
-  //   } catch (error: any) {
-  //     return new AppResponse({
-  //       message: error.message || 'Failed to confirm case and assign investigator',
-  //       statusCode: HttpStatusCode.BAD_REQUEST
-  //     }).sendResponse(res);
-  //   }
-  // }
+      return new AppResponse({
+        message: 'Case confirmed and investigator assigned successfully',
+        statusCode: HttpStatusCode.OK,
+        data: response,
+      }).sendResponse(res);
+    } catch (error: any) {
+      const errorMessage = error?.message || 'Failed to confirm case and assign investigator';
+      const statusCode = error?.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
+      
+      return new AppResponse({
+        message: errorMessage,
+        statusCode: statusCode,
+      }).sendResponse(res);
+    }
+  }
 
   /**
    * TEST ONLY - Bypasses authentication for testing

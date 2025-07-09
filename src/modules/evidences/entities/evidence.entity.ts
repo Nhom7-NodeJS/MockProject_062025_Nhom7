@@ -30,17 +30,17 @@ export class Evidence {
   @Column({ nullable: true })
   description?: string;
 
-  @Column({ type: "timestamp" })
-  collected_at!: Date;
+  @Column({ type: "timestamp", nullable: true })
+  collected_at?: Date;
 
-  @Column()
-  current_location!: string;
+  @Column({ nullable: true })
+  current_location?: string;
 
-  @Column()
-  attach_file!: string;
+  @Column({ nullable: true })
+  attach_file?: string;
 
-  @Column()
-  status!: string;
+  @Column({ nullable: true })
+  status?: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
