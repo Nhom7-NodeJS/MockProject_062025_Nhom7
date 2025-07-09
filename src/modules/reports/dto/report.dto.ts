@@ -45,7 +45,7 @@ export interface ReporterInfo {
 
 // Interface representing basic metadata of the incident report
 export interface BasicReportInfo {
-  reportId: string;
+  reportId: number;
   reportDate: string;
   reportTime: string;
   reportStatus: ReportStatus;
