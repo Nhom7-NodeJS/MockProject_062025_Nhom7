@@ -8,7 +8,6 @@ export class FinancialTaskDetailDto {
   evidence_id?: string;
   evidence_description?: string;
   attach_file?: string;
-  note?: string;
 }
 
 export class UpdateFinancialTaskDto {

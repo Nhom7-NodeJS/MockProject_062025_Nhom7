@@ -1,12 +1,20 @@
 import express from "express";
-import { FinancialInvestController } from "./financial_invest.controller";
+import { FinancialInvestController } from "@/modules/financial_invests/financial_invest.controller";
+import { processRequestFiles } from "@/middlewares/upload.middleware";
+
 
 const router = express.Router();
 
-router.get("/:task_id", FinancialInvestController.financialTaskDetail);
-router.post("/:task_id/start", FinancialInvestController.startFinancialTask);
-router.put("/:task_id/update", FinancialInvestController.updateFinancialTask);
-router.put("/:task_id/confirm", FinancialInvestController.confirmFinancialTask);
+router.get("/financialTasks/:task_id", FinancialInvestController.financialTaskDetail);
+router.post("/financialTasks/:task_id/start", FinancialInvestController.startFinancialTask);
 
+router.put("/financialTasks/:task_id/update", 
+    processRequestFiles, 
+    FinancialInvestController.updateFinancialTask
+);
+router.put("/financialTasks/:task_id/confirm", 
+    processRequestFiles, 
+    FinancialInvestController.confirmFinancialTask
+);
 
 export default router;
