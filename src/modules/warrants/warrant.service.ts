@@ -43,15 +43,12 @@ return await warrantRepository.find({
   },
  createNewWarrant: async ( warrantData: CreateWarrantDto) => {
   try {
-    // Tạo đối tượng warrant từ dữ liệu đầu vào
     const newWarrant = warrantRepository.create({
-      warrant_id: warrantData.warrant_id,
       warrant_name: warrantData.warrant_name,
       police_response: warrantData.police_response,
       attached_file: warrantData.attached_file ?? [],
       time_publish: new Date(warrantData.time_publish),
       is_deleted: warrantData.is_deleted ?? false,
-      deadline: new Date(warrantData.deadline),
       status: warrantData.status ?? WarrantStatus.WAITING_EXECUTING,
       case: { case_id: warrantData.case_id },
     });

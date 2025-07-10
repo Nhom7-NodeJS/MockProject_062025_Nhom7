@@ -39,7 +39,6 @@ export const SuccessMessages = {
     WARRANT_UPDATED: "Warrant updated successfully",
     WARRANT_DELETED: "Warrant deleted successfully",
   },
-
 } as const;
 export const ErrorMessages = {
   USER_NOT_FOUND: "User not found",
@@ -59,5 +58,7 @@ export const ErrorMessages = {
   Warrant_NOT_FOUND: "Warrant not found",
   Warrant_EXISTS: "Warrant already exists",
   Warrant_INVALID: "Invalid warrant data",
- 
- } as const;
+  FILE_PROCESS_FAILED: "Failed to process files",
+  FILE_UPLOAD_FAILED: "Failed to upload files",
+  UNSUPPORTED_FILE_TYPE: "This file type is not supported",
+} as const;

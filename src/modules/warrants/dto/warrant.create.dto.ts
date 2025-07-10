@@ -15,9 +15,6 @@ import { WarrantStatus } from "@/modules/financial_invests/enums/financial_inves
 export class CreateWarrantDto {
   @IsString()
   @IsNotEmpty()
-  warrant_id!: string;
-
-  @IsString()
   warrant_name!: string;
 
   @IsString()
@@ -34,10 +31,6 @@ export class CreateWarrantDto {
   @IsBoolean()
   @IsOptional()
   is_deleted?: boolean;
-
-  @IsDateString()
-  deadline!: string;
-
 
   @IsEnum(WarrantStatus)
   @IsOptional()

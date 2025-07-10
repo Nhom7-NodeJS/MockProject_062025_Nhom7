@@ -5,7 +5,7 @@ import { SuccessMessages, ErrorMessages } from "@/constants/message";
 import { AppResponse } from "@/common/success.response";
 import { validateCreateWarrant } from "./warrant.validate";
 import { validateSearchWarrantByName } from "./warrant.validate";
-
+import { CreateWarrantDto } from "./dto/warrant.create.dto";
 class WarrantController {
   // Lấy tất cả lệnh
   async getAllWarrants(req: Request, res: Response) {
@@ -55,7 +55,7 @@ class WarrantController {
     }
   }
 
-   async getCompletedWarrants(req: Request, res: Response) {
+  async getCompletedWarrants(req: Request, res: Response) {
     try {
       const warrants = await WarrantService.getCompletedWarrants();
 
@@ -78,23 +78,27 @@ class WarrantController {
     }
   }
   createNewWarrant = async (req: Request, res: Response) => {
-    // Validate the request body
-  const result = await validateCreateWarrant(req.body);
-if (!result.valid) {
-  return res.status(400).json({
-    message: "Validation failed",
-    errors: result.errors.map((e) => ({
-      property: e.property,
-      constraints: e.constraints,
-    })),
-  });
-}
+    const uploaded = req.body.uploadedFiles;
+    const fileUrls = uploaded?.attached_file || [];
+
+    const data: CreateWarrantDto = {
+      ...req.body,
+      attached_file: fileUrls,
+    };
+    // validate the request body
+    const result = await validateCreateWarrant(data);
+    if (!result.valid) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: result.errors.map((e) => ({
+          property: e.property,
+          constraints: e.constraints,
+        })),
+      });
+    }
 
     try {
-     
-      const warrantData = req.body;
-
-      const newWarrant = await WarrantService.createNewWarrant(warrantData);
+      const newWarrant = await WarrantService.createNewWarrant(data);
 
       return new AppResponse({
         message: SuccessMessages.Warrant.WARRANT_CREATED,
@@ -106,21 +110,20 @@ if (!result.valid) {
         error: "Internal server error",
       });
     }
-  }
+  };
   searchWarrantByName = async (req: Request, res: Response) => {
     let warrant_name = req.body.warrant_name;
-     const result = await validateSearchWarrantByName(req.body);
-if (!result.valid) {
-  return res.status(400).json({
-    message: "Validation failed",
-    errors: result.errors.map((e) => ({
-      property: e.property,
-      constraints: e.constraints,
-    })),
-  });
-}
+    const result = await validateSearchWarrantByName(req.body);
+    if (!result.valid) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: result.errors.map((e) => ({
+          property: e.property,
+          constraints: e.constraints,
+        })),
+      });
+    }
     try {
-     
       const warrants = await WarrantService.searchWarrantByName(warrant_name);
 
       if (!warrants || warrants.length === 0) {
@@ -165,7 +168,6 @@ if (!result.valid) {
       });
     }
   };
-
 }
 
 export default new WarrantController();
