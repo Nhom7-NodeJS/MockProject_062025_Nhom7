@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "commonjs",            // ✅ sửa dòng này
+    "moduleResolution": "node",      // ✅ sửa dòng này
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"],
+      "@/*": ["*"]
     },
     "outDir": "./dist",
     "rootDir": "./src",

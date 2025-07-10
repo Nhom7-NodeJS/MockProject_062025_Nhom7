@@ -1,3 +1,5 @@
+import { Warrant } from "@/modules/warrants/entities/warrant.entity";
+
 export const SuccessMessages = {
   USER: {
     USER_GET: "Fetch user data successfully",
@@ -31,8 +33,13 @@ export const SuccessMessages = {
     LOGIN_SUCCESS: "Login successfully",
     LOGOUT_SUCCESS: "Logout successfully",
   },
+  Warrant: {
+    WARRANT_GET: "Fetch warrant data successfully",
+    WARRANT_CREATED: "Warrant created successfully",
+    WARRANT_UPDATED: "Warrant updated successfully",
+    WARRANT_DELETED: "Warrant deleted successfully",
+  },
 } as const;
-
 export const ErrorMessages = {
   USER_NOT_FOUND: "User not found",
   INVALID_ID: "Invalid id",
@@ -48,4 +55,10 @@ export const ErrorMessages = {
   PERMISSION_EXISTS: "Permission already exists for this user",
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
+  Warrant_NOT_FOUND: "Warrant not found",
+  Warrant_EXISTS: "Warrant already exists",
+  Warrant_INVALID: "Invalid warrant data",
+  FILE_PROCESS_FAILED: "Failed to process files",
+  FILE_UPLOAD_FAILED: "Failed to upload files",
+  UNSUPPORTED_FILE_TYPE: "This file type is not supported",
 } as const;
