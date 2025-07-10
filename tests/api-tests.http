@@ -1,0 +1,98 @@
+@baseUrl = http://localhost:4000/api/v1
+@contentType = application/json
+
+### 1. Get All Cases (Non-Paginated)
+GET {{baseUrl}}/cases
+Content-Type: {{contentType}}
+
+### 2. Get All Cases with Status Filter (Non-Paginated)
+GET {{baseUrl}}/cases?status=Pending%20Approval
+Content-Type: {{contentType}}
+
+### 3. Get Paginated Cases (First Page, Default Pagination)
+GET {{baseUrl}}/cases/paginated
+Content-Type: {{contentType}}
+
+### 4. Get Paginated Cases - Second Page with 2 Items
+GET {{baseUrl}}/cases/paginated?page=2&limit=2
+Content-Type: {{contentType}}
+
+### 5. Get Paginated Cases by Status
+GET {{baseUrl}}/cases/paginated?status=In%20Process
+Content-Type: {{contentType}}
+
+### 6. Get Paginated Cases with Status and Custom Pagination
+GET {{baseUrl}}/cases/paginated?status=In%20Process&page=2&limit=2
+Content-Type: {{contentType}}
+
+### 7. Get Cases with Invalid Status (should return 400)
+GET {{baseUrl}}/cases?status=InvalidStatus
+Content-Type: {{contentType}}
+
+### 8. Get Paginated Cases with Invalid Status (should return 400)
+GET {{baseUrl}}/cases/paginated?status=InvalidStatus
+Content-Type: {{contentType}}
+
+### 9. Login as Police Chief
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "sheriff.john",
+  "password": "Password123!"
+}
+
+### Auth Token
+@authToken = {{login.response.body.data.accessToken}}
+
+### 10. Confirm Case (Authenticated - Requires Police Chief Role)
+# Using case ID from seed data (CASE-002 is Pending Approval)
+PUT {{baseUrl}}/cases/CASE-002/confirm
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "investigators": ["officer.jane"],
+  "notes": "Case confirmed and lead investigator assigned"
+}
+
+### 11. Confirm Case - Missing Required Fields (should return 400)
+PUT {{baseUrl}}/cases/CASE-002/confirm
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "notes": "This request is missing the investigators array"
+}
+
+### 12. Confirm Case - Empty Investigators Array (should return 400)
+PUT {{baseUrl}}/cases/CASE-002/confirm
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "investigators": [],
+  "notes": "This should fail because investigators array is empty"
+}
+
+### 13. Confirm Case - Multiple Investigators
+PUT {{baseUrl}}/cases/CASE-002/confirm
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "investigators": ["officer.jane", "officer.mike"],
+  "notes": "Case confirmed with multiple investigators"
+}
+
+### 14. Test Confirm Case - Already In Process
+# Trying to confirm a case that's already In Process (should fail)
+PUT {{baseUrl}}/cases/CASE-002/confirm
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "investigators": ["officer.jane"],
+  "notes": "This should fail - case already in process"
+}

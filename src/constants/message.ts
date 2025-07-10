@@ -33,6 +33,13 @@ export const SuccessMessages = {
     INVALID_CREDENTIALS: "Invalid username or password",
     USER_ALREADY_EXISTS: "User already exists",
   },
+
+  TASK: {
+    TASK_GET: "Fetch task data successfully",
+    TASK_CREATED: "Task created successfully",
+    TASK_UPDATED: "Task updated successfully",
+    TASK_DELETED: "Task deleted successfully",
+  },
 } as const;
 
 export const ErrorMessages = {

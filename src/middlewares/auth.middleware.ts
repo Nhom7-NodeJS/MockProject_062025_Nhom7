@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import authService from '@/modules/auth/auth.service';
-import { AppResponse } from '@/common/success.response';
+import { AppError } from '@/common/error.response';
 import { HttpStatusCode } from '@/constants/status-code';
+import { ErrorCode } from '@/constants/error-code';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -17,10 +18,12 @@ export const authMiddleware = (roles?: string[]) => {
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-      return new AppResponse({
-        message: 'No token provided',
-        statusCode: HttpStatusCode.UNAUTHORIZED,
-      }).sendResponse(res);
+      throw new AppError(
+        'No authentication token provided',
+        HttpStatusCode.UNAUTHORIZED,
+        ErrorCode.UNAUTHORIZED,
+        { reason: 'missing_token' }
+      );
     }
 
     try {
@@ -28,18 +31,26 @@ export const authMiddleware = (roles?: string[]) => {
       const decoded = authService.verifyToken(token);
       console.log(decoded);
       if (!decoded) {
-        return new AppResponse({
-          message: 'Invalid token',
-          statusCode: HttpStatusCode.UNAUTHORIZED,
-        }).sendResponse(res);
+        throw new AppError(
+          'Invalid or malformed authentication token',
+          HttpStatusCode.UNAUTHORIZED,
+          ErrorCode.INVALID_TOKEN,
+          { reason: 'token_verification_failed' }
+        );
       }
 
       // Check if user has required role
       if (roles && roles.length > 0 && !roles.includes(decoded.role)) {
-        return new AppResponse({
-          message: 'Insufficient permissions',
-          statusCode: HttpStatusCode.FORBIDDEN,
-        }).sendResponse(res);
+        throw new AppError(
+          'Insufficient permissions to access this resource',
+          HttpStatusCode.FORBIDDEN,
+          ErrorCode.FORBIDDEN,
+          { 
+            requiredRoles: roles,
+            userRole: decoded.role,
+            reason: 'insufficient_permissions'
+          }
+        );
       }
 
       // Add user to request
@@ -50,10 +61,21 @@ export const authMiddleware = (roles?: string[]) => {
 
       next();
     } catch (error) {
-      return new AppResponse({
-        message: 'Invalid token',
-        statusCode: HttpStatusCode.UNAUTHORIZED,
-      }).sendResponse(res);
+      if (error instanceof AppError) {
+        throw error;
+      }
+      
+      // For unexpected errors, wrap them in AppError
+      const errorMessage = error instanceof Error ? error.message : 'Authentication failed';
+      throw new AppError(
+        errorMessage,
+        HttpStatusCode.UNAUTHORIZED,
+        ErrorCode.INVALID_TOKEN, // Using existing error code
+        {
+          reason: 'authentication_error',
+          originalError: error instanceof Error ? error.message : String(error)
+        }
+      );
     }
   };
 };

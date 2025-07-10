@@ -2,11 +2,20 @@ import { Case} from "./entities/case.entity";
 import { AppDataSource } from "@/config/config-database";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { User } from "@/modules/users/entities/user.entity";
-
 import { CaseStatus } from "./enums/case.enum";
+import { IPaginationParams } from "@/utils/pagination";
+import { AppError } from "@/common/error.response";
+import { HttpStatusCode } from "@/constants/status-code";
+import { Repository } from "typeorm";
 
 export class CaseService {
-  private caseRepository = AppDataSource.getRepository(Case);
+  private caseRepository: Repository<Case>;
+  private caseUserRepository: Repository<CaseUser>;
+
+  constructor() {
+    this.caseRepository = AppDataSource.getRepository(Case);
+    this.caseUserRepository = AppDataSource.getRepository(CaseUser);
+  }
 
   private getBaseQuery() {
     return this.caseRepository
@@ -15,21 +24,42 @@ export class CaseService {
       .orderBy('case.create_at', 'DESC');
   }
 
-  async getAll(): Promise<Case[]> {
-    return this.getBaseQuery().getMany();
+  async getAllCases(status?: CaseStatus): Promise<Case[]> {
+    const query = this.getBaseQuery();
+    
+    if (status) {
+      query.andWhere('case.status = :status', { status });
+    }
+    
+    return query.getMany();
   }
 
-  async getAllByStatus(status: CaseStatus): Promise<Case[]> {
-    return this.getBaseQuery()
-      .andWhere('case.status = :status', { status })
-      .getMany();
+  async getPaginatedCases(
+    paginationParams: IPaginationParams,
+    status?: CaseStatus
+  ): Promise<{ items: Case[]; total: number }> {
+    const { skip, limit } = paginationParams;
+    
+    const query = this.getBaseQuery();
+    
+    if (status) {
+      query.andWhere('case.status = :status', { status });
+    }
+    
+    // Get total count and paginated data in parallel
+    const [items, total] = await Promise.all([
+      query.skip(skip).take(limit).getMany(),
+      query.getCount()
+    ]);
+    
+    return { items, total };
   }
 
-  async confirmCaseAndAssignInvestigator(
+  async confirmCaseAndAssignInvestigators(
     caseId: string, 
-    username: string,
+    investigators: string[],
     notes: string | null = null
-  ): Promise<{ case: Case; caseUser: CaseUser }> {
+  ): Promise<{ case: Case; caseUsers: CaseUser[] }> {
     // 1. Get the case with related data using QueryBuilder
     const caseRecord = await this.getBaseQuery()
       .andWhere('case.case_id = :caseId', { caseId })
@@ -38,55 +68,73 @@ export class CaseService {
       .getOne();
 
     if (!caseRecord) {
-      throw new Error('Case not found');
+      throw new AppError(
+        `Case with ID ${caseId} not found`,
+        HttpStatusCode.NOT_FOUND,
+        'CASE_NOT_FOUND'
+      );
     }
 
     // 2. Check if case is already confirmed
     if (caseRecord.status !== CaseStatus.PENDING_APPROVAL) {
-      throw new Error('Case is not in pending approval status');
+      throw new AppError(
+        `Case with ID ${caseId} is not in pending approval status`,
+        HttpStatusCode.BAD_REQUEST,
+        'INVALID_CASE_STATUS'
+      );
     }
 
-    // 3. Get the investigator user by username using QueryBuilder
+    // 3. Get all investigators in one query
     const userRepository = AppDataSource.getRepository(User);
-    const investigator = await userRepository
+    const users = await userRepository
       .createQueryBuilder('user')
-      .where('user.username = :username', { username })
+      .where('user.username IN (:...usernames)', { usernames: investigators })
       .andWhere('user.is_deleted = :isDeleted', { isDeleted: false })
-      .getOne();
+      .getMany();
 
-    if (!investigator) {
-      throw new Error('Investigator not found');
+    // Check if all investigators were found
+    if (users.length !== investigators.length) {
+      const foundUsernames = new Set(users.map(u => u.username));
+      const missing = investigators.filter(username => !foundUsernames.has(username));
+      throw new AppError(
+        `The following investigators were not found: ${missing.join(', ')}`,
+        HttpStatusCode.NOT_FOUND,
+        'INVESTIGATORS_NOT_FOUND',
+        { missingInvestigators: missing }
+      );
     }
 
-    // 4. Check if the user is already assigned to this case using QueryBuilder
-    const caseUserRepository = AppDataSource.getRepository(CaseUser);
-    const existingAssignment = await caseUserRepository
-      .createQueryBuilder('caseUser')
-      .where('caseUser.case_id = :caseId', { caseId })
-      .andWhere('caseUser.username = :username', { username: investigator.username })
-      .andWhere('caseUser.is_deleted = :isDeleted', { isDeleted: false })
-      .getOne();
-
-    if (existingAssignment) {
-      throw new Error('This investigator is already assigned to this case');
-    }
+    // 4. No need to check for existing assignments as users can be assigned to multiple cases
+    // Remove any existing soft-deleted assignments for these users to this case
+    await this.caseUserRepository
+      .createQueryBuilder()
+      .update(CaseUser)
+      .set({ is_deleted: false })
+      .where('case_id = :caseId', { caseId })
+      .andWhere('username IN (:...usernames)', { usernames: investigators })
+      .andWhere('is_deleted = :isDeleted', { isDeleted: true })
+      .execute();
 
     // 5. Update case status to IN_PROCESS
     caseRecord.status = CaseStatus.IN_PROCESS;
     await this.caseRepository.save(caseRecord);
 
-    // 6. Create new case-user relationship
-    const caseUser = new CaseUser();
-    caseUser.case_id = caseId;
-    caseUser.username = investigator.username;
-    if (notes !== null) {
-      caseUser.notes = notes;
-    }
-    caseUser.assigned_at = new Date();
+    // 6. Create case-user relationships for all investigators
+    const caseUsers = investigators.map(username => {
+      const caseUser = new CaseUser();
+      caseUser.case_id = caseId;
+      caseUser.username = username;
+      if (notes) {
+        caseUser.notes = notes;
+      }
+      caseUser.assigned_at = new Date();
+      return caseUser;
+    });
+
+    // Save all case users in a single query
+    const savedCaseUsers = await this.caseUserRepository.save(caseUsers);
     
-    await caseUserRepository.save(caseUser);
-    
-    return { case: caseRecord, caseUser };
+    return { case: caseRecord, caseUsers: savedCaseUsers };
   }
 }
 

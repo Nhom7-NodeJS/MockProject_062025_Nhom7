@@ -1,16 +1,13 @@
 import { CaseStatus, CaseType, CaseSeverity } from '../enums/case.enum';
 
-// Input DTO (from req.body)
-export interface CreateCaseDto {
-  case_name: string;
-  type_case: CaseType;
-  severity: CaseSeverity;
-  summary?: string;
+export interface GetAllCasesQuery {
+  status?: CaseStatus;
 }
 
-// Input DTO for update (from req.body)
-export interface UpdateCaseDto extends Partial<CreateCaseDto> {
+export interface GetPaginatedCasesQuery {
   status?: CaseStatus;
+  page?: string;
+  limit?: string;
 }
 
 // Input DTO for query parameters
