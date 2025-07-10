@@ -7,16 +7,6 @@ import { CreateUserSchema } from "@/modules/users/schemas/create-user-schema";
 
 const router = express.Router();
 
-<<<<<<< HEAD:src/routes/user/index.ts
-// router.get("/", asyncHandle(userController.getAll));
-// router.post(
-//   "/",
-//   validateBody(CreateUserSchema),
-//   asyncHandle(userController.create)
-// );
-// router.get("/:id", asyncHandle(userController.getById));
-=======
 router.get("/", asyncHandle(userController.getAll));
->>>>>>> origin/dev:src/modules/users/user.route.ts
 
 export default router;

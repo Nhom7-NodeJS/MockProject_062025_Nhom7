@@ -29,6 +29,18 @@ export const SuccessMessages = {
     PERMISSION_GET: "Fetch permission data successfully",
   },
 
+  REPORT: {
+    REPORT_GET: "Fetch report data successfully",
+
+    REPORT_CREATED: "Report created successfully",
+
+    REPORT_UPDATED: "Report updated successfully",
+
+    REPORT_STATUS_UPDATED: "Report status updated successfully",
+   
+    REPORT_DELETED: "Report deleted successfully",
+  },
+
   AUTH: {
     LOGIN_SUCCESS: "Login successfully",
 
@@ -66,4 +78,10 @@ export const ErrorMessages = {
   SENTENCE_EXISTS: "Sentence already exists",
 
   REPORT_NOT_FOUND: "Report not found",
+
+  FORBIDDEN: "Access forbidden",
+
+  INVALID_REPORT_STATUS: "Invalid report status",
+
+  INTERNAL_SERVER_ERROR: "Internal server error",
 } as const;
