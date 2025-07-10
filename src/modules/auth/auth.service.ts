@@ -1,13 +1,15 @@
-import { sign, verify, SignOptions } from "jsonwebtoken";
 import { Repository } from "typeorm";
-import { User } from "@/modules/users/entities/user.entity";
-import { Role } from "@/modules/roles/entities/role.entity";
-import { AppDataSource } from "@/config/config-database";
+import { sign, verify, SignOptions } from "jsonwebtoken";
 import { compare, hash } from "bcryptjs";
+
+import { AppDataSource } from "@/config/config-database";
 import { AppError } from "@/common/error.response";
 import { HttpStatusCode } from "@/constants/status-code";
 import { RoleType } from "@/constants/role-type";
+import { Role } from "@/modules/roles/entities/role.entity";
+import { User } from "@/modules/users/entities/user.entity";
 import { UserStatus } from "@/modules/users/enums/user.enum";
+
 import { LoginResponseDto } from "./dto/login.dto";
 
 export class AuthService {

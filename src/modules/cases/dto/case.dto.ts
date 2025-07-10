@@ -33,5 +33,4 @@ export interface CaseResponseDto {
   status: CaseStatus;
   summary?: string;
   create_at: Date;
-  update_at?: Date;
 }

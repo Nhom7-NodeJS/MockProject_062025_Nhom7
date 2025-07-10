@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { authController } from './auth.controller';
+
 import { asyncHandle } from '@/utils/handle-error';
 import { authMiddleware } from '@/middlewares/auth.middleware';
 import { validateBody } from '@/middlewares/validate.middleware';
+
+import authController from './auth.controller';
 import { loginSchema } from './schemas/login.schema';
 import { signupSchema } from './schemas/signup.schema';
 

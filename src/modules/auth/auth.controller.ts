@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+
 import { AppResponse } from "@/common/success.response";
 import { AppError } from "@/common/error.response";
 import { HttpStatusCode } from "@/constants/status-code";
+
 import authService from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -66,4 +68,4 @@ export class AuthController {
   }
 }
 
-export const authController = new AuthController();
+export default new AuthController();

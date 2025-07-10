@@ -14,7 +14,7 @@ Content-Type: {{contentType}}
 ### Auth Token
 @authToken = {{login.response.body.data.accessToken}}
 
-### 3. Create a new task
+### 2. Create a new task
 # @name createTask
 POST {{baseUrl}}/tasks
 Content-Type: {{contentType}}

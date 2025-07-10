@@ -1,11 +1,15 @@
 import { Router } from "express";
-import CaseController from "./case.controller";
+
 import { asyncHandle } from "@/utils/handle-error";
 import { 
   validateQuery, 
   validateBody, 
   validateParams
 } from "@/middlewares/validate.middleware";
+import { authMiddleware } from "@/middlewares/auth.middleware";
+import { RoleType } from "@/constants/role-type";
+
+import CaseController from "./case.controller";
 import { 
   getAllCasesSchema, 
   getPaginatedCasesSchema 
@@ -14,8 +18,6 @@ import {
   confirmCaseBodySchema, 
   confirmCaseParamsSchema 
 } from "./schemas/confirm-case.schema";
-import { authMiddleware } from "@/middlewares/auth.middleware";
-import { RoleType } from "@/constants/role-type";
 
 const router = Router();
 
@@ -23,6 +25,7 @@ const router = Router();
 // Example: /cases?status=In%20Process
 router.get(
   "/",
+  authMiddleware([RoleType.POLICE_CHIEF]),
   validateQuery(getAllCasesSchema),
   asyncHandle(CaseController.getAllCases)
 );
@@ -31,11 +34,13 @@ router.get(
 // Example: /cases/paginated?status=In%20Process&page=1&limit=10
 router.get(
   "/paginated",
+  authMiddleware([RoleType.POLICE_CHIEF]),
   validateQuery(getPaginatedCasesSchema),
   asyncHandle(CaseController.getPaginatedCases)
 );
 
 // PUT /cases/:caseId/confirm - Confirm a case and assign main investigator
+// Example: /cases/CASE-002/confirm
 router.put(
   "/:caseId/confirm",
   authMiddleware([RoleType.POLICE_CHIEF]), // Only police chief can confirm cases
