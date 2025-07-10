@@ -32,7 +32,6 @@ import { Timeline } from "@/modules/timelines/entities/timeline.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
 import { VictimInterview } from "@/modules/victims_interviews/entities/victim_interview.entity";
-import { WarrantResult } from "@/modules/warrant_results/entities/warrant_result.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
 import { WitnessInterview } from "@/modules/witnesses_interviews/entities/witness_interview.entity";
@@ -71,9 +70,9 @@ export const entities = [
   User,
   Victim,
   VictimInterview,
-  WarrantResult,
   Warrant,
   Witness,
   WitnessInterview,
   Holiday,
 ];
+export default entities;
