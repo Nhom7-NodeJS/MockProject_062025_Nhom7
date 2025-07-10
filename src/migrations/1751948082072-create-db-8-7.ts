@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateDb871751940182716 implements MigrationInterface {
-    name = 'CreateDb871751940182716'
+export class CreateDb871751948082072 implements MigrationInterface {
+    name = 'CreateDb871751948082072'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE \`indictments\` (\`indictment_id\` varchar(255) NOT NULL, \`content\` varchar(255) NOT NULL, \`issued_at\` timestamp NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`prosecution_id\` varchar(255) NULL, PRIMARY KEY (\`indictment_id\`)) ENGINE=InnoDB`);
@@ -11,7 +11,8 @@ export class CreateDb871751940182716 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE \`permissions\` (\`permission_id\` varchar(255) NOT NULL, \`description\` varchar(255) NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, PRIMARY KEY (\`permission_id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`permissions_roles\` (\`role_id\` varchar(255) NOT NULL, \`permission_id\` varchar(255) NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, PRIMARY KEY (\`role_id\`, \`permission_id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`roles\` (\`role_id\` varchar(255) NOT NULL, \`description\` varchar(255) NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, PRIMARY KEY (\`role_id\`)) ENGINE=InnoDB`);
-        await queryRunner.query(`CREATE TABLE \`cases_users\` (\`case_id\` varchar(255) NOT NULL, \`username\` varchar(255) NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`role\` enum ('Main Investigator', 'Supporting Investigator') NOT NULL, \`notes\` text NULL, \`assigned_at\` timestamp NOT NULL, PRIMARY KEY (\`case_id\`, \`username\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`tasks\` (\`task_id\` varchar(255) NOT NULL, \`task_name\` varchar(255) NOT NULL, \`content\` text NULL, \`status\` enum ('Waiting executing', 'Executing', 'Completed') NOT NULL DEFAULT 'Waiting executing', \`start_date\` timestamp NOT NULL, \`due_date\` timestamp NULL, \`completed_at\` timestamp NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`case_id\` varchar(255) NOT NULL, \`username\` varchar(255) NOT NULL, PRIMARY KEY (\`task_id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`cases_users\` (\`case_id\` varchar(255) NOT NULL, \`username\` varchar(255) NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`notes\` text NULL, \`assigned_at\` timestamp NOT NULL, PRIMARY KEY (\`case_id\`, \`username\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`warrants\` (\`warrant_id\` varchar(255) NOT NULL, \`warrant_name\` varchar(255) NOT NULL, \`police_response\` varchar(255) NOT NULL, \`attached_file\` json NULL, \`time_publish\` timestamp NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`deadline\` timestamp NOT NULL, \`status\` enum ('Waiting executing', 'Executing', 'Completed') NOT NULL DEFAULT 'Waiting executing', \`case_id\` varchar(255) NULL, PRIMARY KEY (\`warrant_id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`users\` (\`username\` varchar(255) NOT NULL, \`password_hash\` varchar(255) NOT NULL, \`fullname\` varchar(255) NOT NULL, \`avatar_url\` varchar(255) NULL, \`phone_number\` varchar(255) NULL, \`gender\` enum ('male', 'female', 'unknown') NULL, \`dob\` timestamp NOT NULL, \`date_attended\` timestamp NOT NULL, \`status\` enum ('active', 'inactive') NOT NULL, \`create_at\` timestamp NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`refresh_token\` varchar(255) NULL, \`role_id\` varchar(255) NULL, PRIMARY KEY (\`username\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`investigation_plans\` (\`investigation_plan_id\` varchar(255) NOT NULL, \`deadline_date\` timestamp NOT NULL, \`result\` varchar(255) NULL, \`status\` varchar(255) NOT NULL, \`create_at\` timestamp NOT NULL, \`plan_content\` varchar(255) NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`case_id\` varchar(255) NULL, \`created_officer_id\` varchar(255) NULL, PRIMARY KEY (\`investigation_plan_id\`)) ENGINE=InnoDB`);
@@ -50,6 +51,7 @@ export class CreateDb871751940182716 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`questions\` ADD CONSTRAINT \`FK_5800cd25a5888174b2c40e67d4b\` FOREIGN KEY (\`user_id\`) REFERENCES \`users\`(\`username\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`permissions_roles\` ADD CONSTRAINT \`FK_3309f5fa8d95935f0701027f2bd\` FOREIGN KEY (\`permission_id\`) REFERENCES \`permissions\`(\`permission_id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`permissions_roles\` ADD CONSTRAINT \`FK_e08f6859eaac8cbf7f087f64e2b\` FOREIGN KEY (\`role_id\`) REFERENCES \`roles\`(\`role_id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE \`tasks\` ADD CONSTRAINT \`FK_d662c1112efff3322506ffac314\` FOREIGN KEY (\`case_id\`, \`username\`) REFERENCES \`cases_users\`(\`case_id\`,\`username\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`cases_users\` ADD CONSTRAINT \`FK_bca38ed4b5f75421a0a88fb343e\` FOREIGN KEY (\`case_id\`) REFERENCES \`cases\`(\`case_id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`cases_users\` ADD CONSTRAINT \`FK_9e9ee6e4561b9d58018d3e36958\` FOREIGN KEY (\`username\`) REFERENCES \`users\`(\`username\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`warrants\` ADD CONSTRAINT \`FK_79a07c6e38e37a422192d2f267c\` FOREIGN KEY (\`case_id\`) REFERENCES \`cases\`(\`case_id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -135,6 +137,7 @@ export class CreateDb871751940182716 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`warrants\` DROP FOREIGN KEY \`FK_79a07c6e38e37a422192d2f267c\``);
         await queryRunner.query(`ALTER TABLE \`cases_users\` DROP FOREIGN KEY \`FK_9e9ee6e4561b9d58018d3e36958\``);
         await queryRunner.query(`ALTER TABLE \`cases_users\` DROP FOREIGN KEY \`FK_bca38ed4b5f75421a0a88fb343e\``);
+        await queryRunner.query(`ALTER TABLE \`tasks\` DROP FOREIGN KEY \`FK_d662c1112efff3322506ffac314\``);
         await queryRunner.query(`ALTER TABLE \`permissions_roles\` DROP FOREIGN KEY \`FK_e08f6859eaac8cbf7f087f64e2b\``);
         await queryRunner.query(`ALTER TABLE \`permissions_roles\` DROP FOREIGN KEY \`FK_3309f5fa8d95935f0701027f2bd\``);
         await queryRunner.query(`ALTER TABLE \`questions\` DROP FOREIGN KEY \`FK_5800cd25a5888174b2c40e67d4b\``);
@@ -174,6 +177,7 @@ export class CreateDb871751940182716 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE \`users\``);
         await queryRunner.query(`DROP TABLE \`warrants\``);
         await queryRunner.query(`DROP TABLE \`cases_users\``);
+        await queryRunner.query(`DROP TABLE \`tasks\``);
         await queryRunner.query(`DROP TABLE \`roles\``);
         await queryRunner.query(`DROP TABLE \`permissions_roles\``);
         await queryRunner.query(`DROP TABLE \`permissions\``);

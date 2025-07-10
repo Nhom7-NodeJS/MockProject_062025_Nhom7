@@ -28,6 +28,7 @@ import { ReportWitness } from "@/modules/reports_witnesses/entities/report_witne
 import { Role } from "@/modules/roles/entities/role.entity";
 import { Sentence } from "@/modules/sentences/entities/sentence.entity";
 import { Suspect } from "@/modules/suspects/entities/suspect.entity";
+import { Task } from "@/modules/tasks/entities/task.entity";
 import { Timeline } from "@/modules/timelines/entities/timeline.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
@@ -66,6 +67,7 @@ export const entities = [
   Role,
   Sentence,
   Suspect,
+  Task,
   Timeline,
   User,
   Victim,
