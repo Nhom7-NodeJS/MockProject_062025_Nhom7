@@ -8,10 +8,12 @@ import taskService from "./task.service";
 
 export class TaskController {
   async getAllTaskByRoleId(req: Request, res: Response) {
-    const { username, roleId } = req.params;
-    const result = await taskService.getAllTaskByRoleId(username, roleId);
-
-    console.log(username, roleId);
+    const { username, roleId, caseId } = req.params;
+    const result = await taskService.getAllTaskByCaseId(
+      username,
+      roleId,
+      caseId
+    );
 
     return new AppResponse({
       message: SuccessMessages.TASK.TASK_GET,
@@ -23,8 +25,6 @@ export class TaskController {
   async getTaskDetailById(req: Request, res: Response) {
     const { roleId, taskId } = req.params;
     const result = await taskService.getTaskDetailById(roleId, taskId);
-
-    console.log(result);
 
     return new AppResponse({
       message: SuccessMessages.TASK.TASK_GET,

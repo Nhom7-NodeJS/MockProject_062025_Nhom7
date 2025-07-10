@@ -7,7 +7,7 @@ import taskController from "./task.controller";
 const router = express.Router();
 
 router.get(
-  "/all/:username/:roleId",
+  "/all/:username/:roleId/:caseId",
   asyncHandle(taskController.getAllTaskByRoleId)
 );
 router.get(

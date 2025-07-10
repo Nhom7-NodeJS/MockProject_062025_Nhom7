@@ -16,7 +16,11 @@ export class TaskService {
     this.taskRepository = AppDataSource.getRepository(Task);
   }
 
-  async getAllTaskByRoleId(username: string, roleId: string): Promise<Task[]> {
+  async getAllTaskByCaseId(
+    username: string,
+    roleId: string,
+    caseId: string
+  ): Promise<Task[]> {
     const taskList = await this.taskRepository
       .createQueryBuilder("task")
       .leftJoin("task.caseUser", "caseUser")
@@ -24,6 +28,7 @@ export class TaskService {
       .leftJoin("user.role", "role")
       .where("user.username = :username", { username: username })
       .andWhere("user.role_id = :roleId", { roleId: roleId })
+      .andWhere("caseUser.case_id = :caseId", { caseId: caseId })
       .andWhere("task.is_deleted = :isDeleted", { isDeleted: false })
       .select([
         "task.task_id AS taskId",
