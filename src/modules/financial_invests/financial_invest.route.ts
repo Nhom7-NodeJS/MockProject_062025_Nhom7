@@ -6,8 +6,9 @@ import financialInvestController from "./financial_invest.controller";
 
 const router = express.Router();
 
-router.get("/", asyncHandle(financialInvestController.getAll));
-
-router.get("/:warrantId", asyncHandle(financialInvestController.getById));
+router.put(
+  "/update/:evidenceId",
+  asyncHandle(financialInvestController.updateFinancialInvest)
+);
 
 export default router;

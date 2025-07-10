@@ -63,7 +63,6 @@ export class TaskService {
       .where("task.task_id = :taskId", { taskId })
       .andWhere("task.is_deleted = false");
 
-    // Base SELECT
     query.select([
       "task.task_id AS taskId",
       "task.task_name AS taskName",
@@ -75,10 +74,16 @@ export class TaskService {
     // Theo roleId chọn summary
     if (roleId === "FINANCIAL_INVESTIGATOR") {
       query.leftJoin("evidence.financialInvest", "financialInvest");
-      query.addSelect("financialInvest.summary AS summary");
+      query.addSelect([
+        "financialInvest.summary AS summary",
+        "financialInvest.attach_file AS investFile",
+      ]);
     } else if (roleId === "FORENSIC_OFFICER") {
       query.leftJoin("evidence.forensicInvest", "forensicInvest");
-      query.addSelect("forensicInvest.result_summary AS summary");
+      query.addSelect([
+        "forensicInvest.summary AS summary",
+        "forensicInvest.attach_file AS investFile",
+      ]);
     }
 
     query.addSelect([
@@ -87,10 +92,9 @@ export class TaskService {
       "evidence.attach_file AS attachFile",
     ]);
 
-    // Get nhiều dòng
-    const rawResult = await query.getRawMany();
+    const rawResult = await query.getRawOne();
 
-    if (!rawResult || rawResult.length === 0) {
+    if (!rawResult) {
       throw new AppError(
         ErrorMessages.TASK_NOT_FOUND,
         HttpStatusCode.NOT_FOUND,
@@ -98,25 +102,22 @@ export class TaskService {
       );
     }
 
-    // Gom evidences
-    const firstRow = rawResult[0];
-    const evidences = rawResult.map((row) => ({
-      evidenceId: row.evidenceId,
-      description: row.description,
-      attachFile: row.attachFile,
-      summary: row.summary || null,
-    }));
-
-    const result: TaskDetailResponseDto = {
-      taskId: firstRow.taskId,
-      taskName: firstRow.taskName,
-      deadline: firstRow.deadline,
-      status: firstRow.status,
-      content: firstRow.content,
-      evidences: evidences,
+    return {
+      taskId: rawResult.taskId,
+      taskName: rawResult.taskName,
+      deadline: rawResult.deadline,
+      status: rawResult.status,
+      content: rawResult.content,
+      evidences: {
+        evidenceId: rawResult.evidenceId,
+        description: rawResult.description,
+        attachFile: rawResult.attachFile,
+      },
+      invest: {
+        summary: rawResult.summary || null,
+        attachFile: rawResult.investFile,
+      },
     };
-
-    return result;
   }
 
   async changeTaskStatus(taskId: string): Promise<Task> {
@@ -136,6 +137,7 @@ export class TaskService {
         break;
       case TaskStatus.EXECUTING:
         task.status = TaskStatus.COMPLETED;
+        task.completed_at = new Date();
         break;
       default:
         throw new AppError(
@@ -148,6 +150,8 @@ export class TaskService {
     await this.taskRepository.save(task);
     return task;
   }
+
+  async updateTaskResult(taskId: string, fileUrl: string[]) {}
 }
 
 export default new TaskService();

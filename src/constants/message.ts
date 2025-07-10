@@ -34,10 +34,12 @@ export const SuccessMessages = {
 
   FINANCIAL_INVEST: {
     FINANCIAL_INVEST_GET: "Fetch financial invest data successfully",
+    FINANCIAL_INVEST_UPDATED: "Update financial investigation successfully",
   },
 
   FORENSIC_INVEST: {
     FORENSIC_INVEST_GET: "Fetch forensic invest data successfully",
+    FORENSIC_INVEST_UPDATED: "Update forensic investigation successfully",
   },
 
   TASK: {

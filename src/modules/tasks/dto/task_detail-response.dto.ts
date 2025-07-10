@@ -3,14 +3,18 @@ export class TaskDetailResponseDto {
   taskName?: string;
   deadline?: Date;
   status?: string;
-  summary?: string;
   content?: string;
-  evidences?: TaskEvidenceDto[];
+  evidences?: TaskEvidenceDto;
+  invest?: TaskInvestDto;
 }
 
 export interface TaskEvidenceDto {
   evidenceId: string;
   description: string;
   attachFile: string;
-  summary: string | null;
+}
+
+export interface TaskInvestDto {
+  summary?: string;
+  attachFile?: string[];
 }

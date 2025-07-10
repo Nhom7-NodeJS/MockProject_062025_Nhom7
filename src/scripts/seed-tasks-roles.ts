@@ -147,19 +147,6 @@ async function seedTasksRoles() {
     evidence1.user = user1;
     await evidenceRepository.save(evidence1);
 
-    // === Insert Evidence 3 ===
-    const evidence3 = new Evidence();
-    evidence3.evidence_id = uuidv4();
-    evidence3.description = "Additional fraud document.";
-    evidence3.collected_at = new Date();
-    evidence3.current_location = "Evidence Room B";
-    evidence3.attach_file = "document.pdf";
-    evidence3.status = "Collected";
-    evidence3.evidence_type = EvidenceType.DOCUMENTARY_EVIDENCE;
-    evidence3.case = case1;
-    evidence3.user = user1;
-    await evidenceRepository.save(evidence3);
-
     // === Insert Evidence 2 ===
     const evidence2 = new Evidence();
     evidence2.evidence_id = uuidv4();
@@ -196,14 +183,6 @@ async function seedTasksRoles() {
     caseEvidence1.evidence = evidence1;
     await caseEvidenceRepository.save(caseEvidence1);
 
-    // === Insert CaseEvidence 3 ===
-    const caseEvidence3 = new CaseEvidence();
-    caseEvidence3.case_id = case1.case_id;
-    caseEvidence3.evidence_id = evidence3.evidence_id;
-    caseEvidence3.case = case1;
-    caseEvidence3.evidence = evidence3;
-    await caseEvidenceRepository.save(caseEvidence3);
-
     // === Insert CaseEvidence 2 ===
     const caseEvidence2 = new CaseEvidence();
     caseEvidence2.case_id = case2.case_id;
@@ -216,16 +195,15 @@ async function seedTasksRoles() {
     const financialInvest = new FinancialInvest();
     financialInvest.evidence_id = evidence1.evidence_id; // match Evidence 1
     financialInvest.summary = "Financial summary of fraud transactions.";
+    financialInvest.attach_file = ["fraud_transactions_report.pdf"];
     financialInvest.is_deleted = false;
     await financialInvestRepository.save(financialInvest);
 
     // === Insert ForensicInvest ===
     const forensicInvest = new ForensicInvest();
     forensicInvest.evidence_id = evidence2.evidence_id; // match Evidence 2
-    forensicInvest.lab_name = "National Forensic Lab";
-    forensicInvest.report = "DNA matched with suspect profile.";
-    forensicInvest.result_summary = "Positive DNA match with suspect.";
-    forensicInvest.received_at = new Date();
+    forensicInvest.summary = "Positive DNA match with suspect.";
+    forensicInvest.attach_file = ["dna_report.pdf"];
     forensicInvest.is_deleted = false;
     await forensicInvestRepository.save(forensicInvest);
 

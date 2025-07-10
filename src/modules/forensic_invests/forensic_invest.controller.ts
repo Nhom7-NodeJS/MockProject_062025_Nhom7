@@ -7,24 +7,20 @@ import { HttpStatusCode } from "@/constants/status-code";
 import forensicInvestService from "./forensic_invest.service";
 
 export class ForensicInvestController {
-  async getAll(req: Request, res: Response) {
-    const result = await forensicInvestService.getAll();
+  async updateFinancialInvest(req: Request, res: Response) {
+    const { evidenceId } = req.params;
+    const { summary, fileUrl } = req.body;
+
+    const result = await forensicInvestService.updateForensicInvest(
+      evidenceId,
+      summary,
+      fileUrl
+    );
 
     return new AppResponse({
-      message: SuccessMessages.FORENSIC_INVEST.FORENSIC_INVEST_GET,
+      message: SuccessMessages.FORENSIC_INVEST.FORENSIC_INVEST_UPDATED,
       statusCode: HttpStatusCode.OK,
       data: result,
-    }).sendResponse(res);
-  }
-
-  async getById(req: Request, res: Response) {
-    const { warrantId } = req.params;
-    const data = await forensicInvestService.getDetailByWarrantId(warrantId);
-
-    return new AppResponse({
-      message: SuccessMessages.FORENSIC_INVEST.FORENSIC_INVEST_GET,
-      statusCode: HttpStatusCode.OK,
-      data: data,
     }).sendResponse(res);
   }
 }

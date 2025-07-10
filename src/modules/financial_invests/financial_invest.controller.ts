@@ -6,24 +6,20 @@ import { SuccessMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 
 class FinancialInvestController {
-  async getAll(req: Request, res: Response) {
-    const result = await financialInvestService.getAll();
+  async updateFinancialInvest(req: Request, res: Response) {
+    const { evidenceId } = req.params;
+    const { summary, fileUrl } = req.body;
+
+    const result = await financialInvestService.updateFinancialInvest(
+      evidenceId,
+      summary,
+      fileUrl
+    );
 
     return new AppResponse({
-      message: SuccessMessages.FINANCIAL_INVEST.FINANCIAL_INVEST_GET,
+      message: SuccessMessages.FINANCIAL_INVEST.FINANCIAL_INVEST_UPDATED,
       statusCode: HttpStatusCode.OK,
       data: result,
-    }).sendResponse(res);
-  }
-
-  async getById(req: Request, res: Response) {
-    const { warrantId } = req.params;
-    const data = await financialInvestService.getDetailByWarrantId(warrantId);
-
-    return new AppResponse({
-      message: SuccessMessages.FINANCIAL_INVEST.FINANCIAL_INVEST_GET,
-      statusCode: HttpStatusCode.OK,
-      data: data,
     }).sendResponse(res);
   }
 }
