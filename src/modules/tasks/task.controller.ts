@@ -32,6 +32,18 @@ export class TaskController {
       data: result,
     }).sendResponse(res);
   }
+
+  async changeTaskStatus(req: Request, res: Response) {
+    const { taskId } = req.params;
+
+    const result = await taskService.changeTaskStatus(taskId);
+
+    return new AppResponse({
+      message: SuccessMessages.TASK.TASK_UPDATED,
+      statusCode: HttpStatusCode.OK,
+      data: result,
+    }).sendResponse(res);
+  }
 }
 
 export default new TaskController();

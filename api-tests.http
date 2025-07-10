@@ -61,3 +61,19 @@ Authorization: Bearer your_jwt_token_here
   "username": "{username}",
   "notes": "Assigning main investigator to this case"
 }
+
+### Get All Tasks by User + Role + Case
+GET {{baseUrl}}/tasks/all/john_doe/FINANCIAL_INVESTIGATOR/CASE001
+Content-Type: {{contentType}}
+
+### Get Task Detail by Role and Task ID
+GET {{baseUrl}}/tasks/detail/FINANCIAL_INVESTIGATOR/c8f352bc-bdf0-4298-81dc-c3a406fd897e
+Content-Type: {{contentType}}
+
+### Change Task Status (auto flow)
+PUT {{baseUrl}}/tasks/status/c8f352bc-bdf0-4298-81dc-c3a406fd897e
+Content-Type: {{contentType}}
+
+{
+}
+

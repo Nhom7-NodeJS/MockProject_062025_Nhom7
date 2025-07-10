@@ -14,5 +14,6 @@ router.get(
   "/detail/:roleId/:taskId",
   asyncHandle(taskController.getTaskDetailById)
 );
+router.put("/status/:taskId", asyncHandle(taskController.changeTaskStatus));
 
 export default router;

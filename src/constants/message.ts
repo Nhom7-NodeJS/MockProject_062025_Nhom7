@@ -42,6 +42,7 @@ export const SuccessMessages = {
 
   TASK: {
     TASK_GET: "Fetch task data successfully",
+    TASK_UPDATED: "Update task status successfully",
   },
 } as const;
 
@@ -66,4 +67,6 @@ export const ErrorMessages = {
   FORENSIC_INVESTIGATION_NOT_FOUND: "Forensic investigation not found",
 
   TASK_NOT_FOUND: "Task not found",
+
+  TASK_INVALID_STATUS: "Task cannot be updated further",
 } as const;
