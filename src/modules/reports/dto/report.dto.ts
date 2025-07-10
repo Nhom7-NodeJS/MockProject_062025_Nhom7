@@ -2,7 +2,7 @@ import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
 import { Gender } from "@/modules/users/enums/user.enum"
 import {
   CrimeType,
-  ReporterIncidentRelationship,
+  IncidentRelationship,
   ReportStatus,
   SeverityLevel,
 } from "@/modules/reports/enums/report.enum";
@@ -18,7 +18,7 @@ export interface InitialEvidences {
 // Interface representing a relevant party involved in the incident
 export interface RelevantParties {
   fullname: string | null;
-  incidentRelation: "Victim" | "Witness" | "Suspect";
+  incidentRelation: IncidentRelationship;
   gender: Gender;
   nationality: string | null;
   statement: string | null;
@@ -39,7 +39,7 @@ export interface ReporterInfo {
   email: string;
   address: string | null;
   phoneNumber: string;
-  incidentRelation: ReporterIncidentRelationship;
+  incidentRelation: IncidentRelationship;
 }
 
 // Interface representing basic metadata of the incident report

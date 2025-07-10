@@ -10,16 +10,8 @@ import { Witness } from "@/modules/witnesses/entities/witness.entity";
 import { ReportVictim } from "../reports_victims/entities/report_victim.entity";
 import { ReportWitness } from "../reports_witnesses/entities/report_witness.entity";
 import { Gender } from "@/modules/users/enums/user.enum";
-import {
-	CreateIncidentReportDto,
-	IncidentReportResponseDto
-} from "@/modules/reports/dto/report.dto";
-import {
-	toIncidentReportResponseDto
-} from "@/modules/reports/report.mapper"
-import { 
-  ReporterIncidentRelationship 
-} from "./enums/report.enum";
+import { IncidentRelationship } from "./enums/report.enum";
+import { CreateIncidentReportDto } from "@/modules/reports/dto/report.dto";
 import { AppError } from "@/common/error.response";
 import { ErrorCode } from "@/constants/error-code";
 import { HttpStatusCode } from "@/constants/status-code";
@@ -45,7 +37,7 @@ export class ReportService {
 
 	async createReport(reportDto: CreateIncidentReportDto): Promise<any> {
     const { reporterInfo, incidentInfo, relevantParties, evidences } = reportDto;
-    
+
     // Create a new report instance
     const newReport = this.reportRepository.create({
       crime_type: incidentInfo.crimeType,
@@ -73,7 +65,7 @@ export class ReportService {
 
       switch (party.incidentRelation) {
         // If the party is a witness
-        case ReporterIncidentRelationship.WITNESS: {
+        case IncidentRelationship.WITNESS: {
           // Create and save a new witness
           const newWitness = this.witnessRepository.create({
             witness_id: generateUUID("WITNESS"),
@@ -92,7 +84,7 @@ export class ReportService {
           break;
         }
         // If the party is a victim
-        case ReporterIncidentRelationship.VICTIM: {
+        case IncidentRelationship.VICTIM: {
           // Create and save a new victim
           const newVictim = this.victimRepository.create({
             victim_id: generateUUID("VICTIM"),
@@ -111,7 +103,7 @@ export class ReportService {
           break;
         }
         // If the party is a suspect
-        case ReporterIncidentRelationship.SUSPECT: {
+        case IncidentRelationship.SUSPECT: {
           // Create and save a new suspect
           const newSuspect = this.suspectRepository.create({
             suspect_id: generateUUID("SUSPECT"),
@@ -149,7 +141,6 @@ export class ReportService {
     const savedReport = await this.reportRepository.findOneOrFail({
       where: { report_id: newReport.report_id },
       relations: {
-        evidences: true,
         suspects: true,
         reportVictims: {
           victim: true,
@@ -157,6 +148,7 @@ export class ReportService {
         reportWitnesses: {
           witness: true,
         },
+        evidences: true,
       },
     });
 

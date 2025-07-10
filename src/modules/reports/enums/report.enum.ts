@@ -16,7 +16,7 @@ export enum ReportStatus {
   REJECTED = "Rejected",
 }
 
-export enum ReporterIncidentRelationship {
+export enum IncidentRelationship {
   VICTIM = "Victim",
   WITNESS = "Witness",
   SUSPECT = "Suspect",

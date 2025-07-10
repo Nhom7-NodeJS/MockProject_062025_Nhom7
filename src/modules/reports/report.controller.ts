@@ -3,19 +3,12 @@ import {
   Response 
 } from "express";
 
-import { Report } from "@/modules/reports/entities/report.entity";
-import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { Suspect } from "@/modules/suspects/entities/suspect.entity";
-import { Victim } from "@/modules/victims/entities/victim.entity";
-import { Witness } from "@/modules/witnesses/entities/witness.entity";
 import { ReportService } from "@/modules/reports/report.service"
 import {
 	CreateIncidentReportDto,
 	IncidentReportResponseDto
 } from "@/modules/reports/dto/report.dto";
-import {
-	toIncidentReportResponseDto
-} from "@/modules/reports/report.mapper"
+import { toIncidentReportResponseDto } from "@/modules/reports/report.mapper"
 import { ErrorCode } from "@/constants/error-code";
 import { SuccessMessages, ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
@@ -30,24 +23,20 @@ export class ReportController {
   }
 
   async createReport(req: Request, res: Response) {
-    const uploadedFiles = req.body.uploadedFiles;
+    const uploadedFiles = (req as any).uploadedFiles;
+    // console.log(uploadedFiles)
 
-    let evidencesRaw, reporterInfo, incidentInfo, relevantParties;
-    try {
-      const body = req.body;
-  
-      evidencesRaw = body.evidences ? JSON.parse(body.evidences) : [];
-      reporterInfo = JSON.parse(body.reporterInfo);
-      incidentInfo = JSON.parse(body.incidentInfo);
-      relevantParties = body.relevantParties ? JSON.parse(body.relevantParties) : [];
-    } catch {
-      throw new AppError(
-        ErrorMessages.INVALID_JSON,
-        HttpStatusCode.BAD_REQUEST,
-        ErrorCode.INVALID_JSON,
-        [{ field: "request body", message: "One or more fields are invalid JSON" }]
-      );
-    }
+    const evidencesRaw = req.body.evidences ?? [];
+    const reporterInfo = req.body.reporterInfo;
+    const incidentInfo = req.body.incidentInfo;
+    const relevantParties = req.body.relevantParties ?? [];
+
+    // console.log("=== Field type check ===");
+    // console.log("reporterInfo:", typeof req.body.reporterInfo); 
+    // console.log("incidentInfo:", typeof req.body.incidentInfo); 
+    // console.log("relevantParties:", typeof req.body.relevantParties);
+    // console.log("evidences:", typeof req.body.evidences); 
+    // console.log("========================");
 
     // Merge attachments to corresponding evidences
     const evidences = evidencesRaw.map((evidence: any, index: number) => ({
@@ -55,7 +44,7 @@ export class ReportController {
       attachments: Array.isArray(uploadedFiles?.[`evidence_${index}`])
         ? uploadedFiles[`evidence_${index}`]
         : [],
-    }))
+    }));
 
     const createIncidentReportDto: CreateIncidentReportDto = {
       reporterInfo,
@@ -65,7 +54,8 @@ export class ReportController {
     };
 
     const newReport = await this.reportService.createReport(createIncidentReportDto);
-    const reportDto: IncidentReportResponseDto = toIncidentReportResponseDto(newReport)
+    const reportDto: IncidentReportResponseDto = toIncidentReportResponseDto(newReport);
+
     return new AppResponse({
       message: SuccessMessages.REPORT.REPORT_CREATED,
       statusCode: HttpStatusCode.CREATED,

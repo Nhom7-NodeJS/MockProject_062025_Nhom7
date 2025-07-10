@@ -31,7 +31,7 @@ const fileFilter: multer.Options["fileFilter"] = (req, file, cb) => {
 // Accept all incoming files into memory
 const upload = multer({ storage, fileFilter }).any();
 
-export const processRequestFiles = [
+export const processRequestFiles = (folder: string) => [
   upload,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -53,7 +53,7 @@ export const processRequestFiles = [
         for (const file of files) {
           const result = await new Promise<UploadApiResponse>((resolve, reject) => {
             const stream = Cloudinary.uploader.upload_stream(
-              { folder: "evidences" },
+              { folder },
               (error, result) => {
                 if (error || !result) {
                   return reject(
@@ -78,7 +78,7 @@ export const processRequestFiles = [
       }
 
       // Attach the upload results to request
-      req.body.uploadedFiles = uploadResults;
+      (req as any).uploadedFiles = uploadResults;
 
       next();
     } catch (err: any) {

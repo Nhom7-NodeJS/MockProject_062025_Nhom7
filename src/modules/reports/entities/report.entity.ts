@@ -15,7 +15,7 @@ import { Suspect } from "@/modules/suspects/entities/suspect.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import {
   CrimeType,
-  ReporterIncidentRelationship,
+  IncidentRelationship,
   ReportStatus,
   SeverityLevel,
 } from "@/modules/reports/enums/report.enum";
@@ -61,8 +61,8 @@ export class Report {
   @Column({ type: "enum", enum: ReportStatus, default:ReportStatus.PENDING })
   status!: ReportStatus;
 
-  @Column({ type: "enum", enum: ReporterIncidentRelationship })
-  reporter_incident_relationship!: ReporterIncidentRelationship;
+  @Column({ type: "enum", enum: IncidentRelationship })
+  reporter_incident_relationship!: IncidentRelationship;
 
   // OneToMany
   @OneToMany(() => Evidence, (evidence) => evidence.report)
