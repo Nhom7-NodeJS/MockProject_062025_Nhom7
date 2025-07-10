@@ -11,6 +11,6 @@ const API_V1 = "/api/v1";
 
 router.use(`${API_V1}/cases`, caseRouter);
 router.use(`${API_V1}/users`, userRouter);
-router.use(`${API_V1}/financial-invests`, financialInvestRouter);
+router.use(`${API_V1}/financialtask`, financialInvestRouter);
 
 export default router;
