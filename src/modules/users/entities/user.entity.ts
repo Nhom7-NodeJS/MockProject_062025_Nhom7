@@ -36,7 +36,7 @@ export class User {
   @Column({ nullable: true })
   phone_number?: string;
 
-  @Column({ type: "enum", enum: Gender, nullable: true })
+  @Column({ type: "enum", enum: Gender, default: Gender.Unknown, nullable: true })
   gender?: Gender;
 
   @Column({ type: "timestamp" })
@@ -91,5 +91,4 @@ export class User {
   // ManyToOne
   @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn({ name: "role_id" })
-  role!: Role;
-}
+  role!: Role;}

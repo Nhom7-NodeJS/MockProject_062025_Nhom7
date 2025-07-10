@@ -19,7 +19,7 @@ export class Victim {
   @Column({ nullable: true })
   national?: string;
 
-  @Column({ type: "enum", enum: Gender, nullable: true })
+  @Column({ type: "enum", enum: Gender, default: Gender.Unknown, nullable: true })
   gender?: Gender;
 
   @Column({ nullable: true })

@@ -1,0 +1,77 @@
+@baseUrl = http://localhost:4000/api/v1
+
+### 1. User Signup
+# @name signup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "username": "testuser2",
+  "password": "Test@123",
+  "fullname": "Test User",
+  "dob": "1990-01-01T00:00:00.000Z",
+  "phone_number": "0123456789",
+  "gender": "male",
+  "date_attended": "2020-01-01T00:00:00.000Z",
+  "roleType": "CENSOR"
+}
+
+### 2. User Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser1",
+  "password": "Test@123"
+}
+
+### 3. Get User Profile
+@authToken = {{login.response.body.data.accessToken}}
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{authToken}}
+
+### 4. Try to signup with existing username
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "username": "testuser1",
+  "password": "Test@123",
+  "fullname": "Test User",
+  "dob": "1990-01-01T00:00:00.000Z",
+  "date_attended": "2020-01-01T00:00:00.000Z"
+}
+
+### 5. Login with invalid credentials
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser1",
+  "password": "wrongpassword"
+}
+
+### 6. Get profile without token
+GET {{baseUrl}}/auth/profile
+
+### 7. Signup with missing required fields
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "",
+  "fullname": "",
+  "dob": "",
+  "date_attended": ""
+}
+
+### 8. Login with missing fields
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
