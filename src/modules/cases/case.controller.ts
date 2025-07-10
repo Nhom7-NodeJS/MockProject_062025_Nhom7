@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { AppError } from '@/common/error.response';
 import { AppResponse } from "@/common/success.response";
 import { HttpStatusCode } from "@/constants/status-code";
 import { SuccessMessages } from "@/constants/message";
@@ -8,6 +9,7 @@ import { IConfirmCaseDto, IConfirmCaseResponseDto } from './dto/confirm-case.dto
 import { AuthenticatedRequest } from '@/middlewares/auth.middleware';
 import { PaginationUtils } from "@/utils/pagination";
 
+import { CaseStatus } from './enums/case.enum';
 import caseService from "./case.service";
 
 class CaseController {
@@ -74,6 +76,27 @@ class CaseController {
       message: 'Case confirmed and investigators assigned successfully',
       statusCode: HttpStatusCode.OK,
       data: response,
+    }).sendResponse(res);
+  }
+
+  async getCasesByUser(req: AuthenticatedRequest, res: Response) {
+    const { status } = req.query as GetAllCasesQuery;
+    const username = req.user?.username;
+
+    if (!username) {
+      throw new AppError(
+        'User not authenticated',
+        HttpStatusCode.UNAUTHORIZED,
+        'AUTH.USER_NOT_AUTHENTICATED'
+      );
+    }
+
+    const cases = await caseService.getCasesByUser(username, status);
+    
+    return new AppResponse({
+      message: SuccessMessages.CASE.CASE_GET,
+      statusCode: HttpStatusCode.OK,
+      data: cases,
     }).sendResponse(res);
   }
 }

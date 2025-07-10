@@ -138,6 +138,21 @@ export class CaseService {
     
     return { case: caseRecord, caseUsers: savedCaseUsers };
   }
+
+  async getCasesByUser(username: string, status?: CaseStatus): Promise<Case[]> {
+    const query = this.caseRepository
+      .createQueryBuilder('case')
+      .innerJoin('case.caseUsers', 'caseUser', 'caseUser.username = :username', { username })
+      .where('case.is_deleted = :isDeleted', { isDeleted: false })
+      .andWhere('caseUser.is_deleted = :isDeleted', { isDeleted: false })
+      .orderBy('case.create_at', 'DESC');
+
+    if (status) {
+      query.andWhere('case.status = :status', { status });
+    }
+
+    return query.getMany();
+  }
 }
 
 export default new CaseService();

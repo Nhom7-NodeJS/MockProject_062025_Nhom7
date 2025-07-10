@@ -49,4 +49,18 @@ router.put(
   asyncHandle(CaseController.confirmCaseAndAssignInvestigator)
 );
 
+// GET /cases/me - Get cases assigned to the authenticated user
+// Example: /cases/me?status=In%20Process
+router.get(
+  "/me",
+  authMiddleware([
+    RoleType.POLICE_CHIEF,
+    RoleType.INVESTIGATOR,
+    RoleType.FORENSIC_OFFICER,
+    RoleType.FINANCIAL_INVESTIGATOR
+  ]),
+  validateQuery(getAllCasesSchema),
+  asyncHandle(CaseController.getCasesByUser)
+);
+
 export default router;

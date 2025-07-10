@@ -1,7 +1,35 @@
 @baseUrl = http://localhost:4000/api/v1
 @contentType = application/json
 
-### 1. Login as Police Chief
+### 1. Login as an Investigator
+# @name loginInvestigator
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "officer.jane",
+  "password": "Password123!"
+}
+
+### Investigator Token
+@investigatorToken = {{loginInvestigator.response.body.data.accessToken}}
+
+### 2. Get Cases Assigned to Authenticated User
+GET {{baseUrl}}/cases/me
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+### 3. Get Cases Assigned to Investigator
+GET {{baseUrl}}/cases/me
+Authorization: Bearer {{investigatorToken}}
+Content-Type: {{contentType}}
+
+### 4. Get Cases Assigned to Authenticated User with Status Filter
+GET {{baseUrl}}/cases/me?status=In%20Process
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+### 5. Login as Police Chief
 # @name login
 POST {{baseUrl}}/auth/login
 Content-Type: {{contentType}}
@@ -14,47 +42,47 @@ Content-Type: {{contentType}}
 ### Auth Token
 @authToken = {{login.response.body.data.accessToken}}
 
-### 2. Get All Cases (Non-Paginated)
+### 6. Get All Cases (Non-Paginated)
 GET {{baseUrl}}/cases
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 3. Get All Cases with Status Filter (Non-Paginated)
+### 7. Get All Cases with Status Filter (Non-Paginated)
 GET {{baseUrl}}/cases?status=Pending%20Approval
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 4. Get Paginated Cases (First Page, Default Pagination)
+### 8. Get Paginated Cases (First Page, Default Pagination)
 GET {{baseUrl}}/cases/paginated
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 5. Get Paginated Cases - Second Page with 2 Items
+### 9. Get Paginated Cases - Second Page with 2 Items
 GET {{baseUrl}}/cases/paginated?page=2&limit=2
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 6. Get Paginated Cases by Status
+### 10. Get Paginated Cases by Status
 GET {{baseUrl}}/cases/paginated?status=In%20Process
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 7. Get Paginated Cases with Status and Custom Pagination
+### 11. Get Paginated Cases with Status and Custom Pagination
 GET {{baseUrl}}/cases/paginated?status=In%20Process&page=2&limit=2
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 8. Get Cases with Invalid Status (should return 400)
+### 12. Get Cases with Invalid Status (should return 400)
 GET {{baseUrl}}/cases?status=InvalidStatus
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 9. Get Paginated Cases with Invalid Status (should return 400)
+### 13. Get Paginated Cases with Invalid Status (should return 400)
 GET {{baseUrl}}/cases/paginated?status=InvalidStatus
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
-### 10. Confirm Case (Authenticated - Requires Police Chief Role)
+### 14. Confirm Case (Authenticated - Requires Police Chief Role)
 # Using case ID from seed data (CASE-002 is Pending Approval)
 PUT {{baseUrl}}/cases/CASE-002/confirm
 Authorization: Bearer {{authToken}}
@@ -65,7 +93,7 @@ Content-Type: {{contentType}}
   "notes": "Case confirmed and lead investigator assigned"
 }
 
-### 11. Confirm Case - Missing Required Fields (should return 400)
+### 15. Confirm Case - Missing Required Fields (should return 400)
 PUT {{baseUrl}}/cases/CASE-002/confirm
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
@@ -74,7 +102,7 @@ Content-Type: {{contentType}}
   "notes": "This request is missing the investigators array"
 }
 
-### 12. Confirm Case - Empty Investigators Array (should return 400)
+### 16. Confirm Case - Empty Investigators Array (should return 400)
 PUT {{baseUrl}}/cases/CASE-002/confirm
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
@@ -84,7 +112,7 @@ Content-Type: {{contentType}}
   "notes": "This should fail because investigators array is empty"
 }
 
-### 13. Confirm Case - Multiple Investigators
+### 17. Confirm Case - Multiple Investigators
 PUT {{baseUrl}}/cases/CASE-002/confirm
 Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
@@ -94,7 +122,7 @@ Content-Type: {{contentType}}
   "notes": "Case confirmed with multiple investigators"
 }
 
-### 14. Test Confirm Case - Already In Process
+### 18. Test Confirm Case - Already In Process
 # Trying to confirm a case that's already In Process (should fail)
 PUT {{baseUrl}}/cases/CASE-002/confirm
 Authorization: Bearer {{authToken}}
