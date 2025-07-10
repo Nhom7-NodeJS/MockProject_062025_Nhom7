@@ -4,6 +4,7 @@ import authRouter from "@/modules/auth/auth.route";
 import caseRouter from "@/modules/cases/case.route";
 import taskRouter from "@/modules/tasks/task.route";
 
+import UserRouter from "@/modules/users/user.route";
 const router = express.Router();
 const API_V1 = "/api/v1";
 

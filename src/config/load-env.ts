@@ -11,4 +11,9 @@ export const loadedEnv = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
   },
+  cloudinary: {
+    name: process.env.CLOUD_NAME,
+    key: process.env.CLOUD_KEY,
+    secret: process.env.CLOUD_SECRET,
+  }
 };
