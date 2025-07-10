@@ -20,51 +20,7 @@ async function seedFinancialData() {
     const caseRepository = AppDataSource.getRepository(Case);
     const userRepository = AppDataSource.getRepository(User);
     
-    // Create test data for api update and confirm financial investigation task
-    // 1. Create User
-
-    // const user = new User();
-    // user.username = "baocuong123";
-    // user.password_hash = "123456";
-    // user.fullname = "Bảo Cường";
-    // user.dob = new Date("2003-09-06");
-    // user.date_attended = new Date("2025-06-18");
-    // user.status = UserStatus.ACTIVE;
-    // user.create_at = new Date();
-    // user.is_deleted = false;
-
-    // await userRepository.save(user);
-
-    // 2. Create Case
-
-    // const case_ = new Case();
-    // case_.case_id = uuidv4();
-    // case_.case_name = "Financial Fraud Investigation";
-    // case_.type_case = CaseType.ROBBERY; 
-    // case_.severity = CaseSeverity.MEDIUM;
-    // case_.status = CaseStatus.IN_PROCESS;
-    // case_.summary = "Suspected embezzlement involving company funds";
-    // case_.create_at = new Date();
-    // case_.is_deleted = false;
-
-    // await caseRepository.save(case_);
-
-    // 3. Create Warrant
-
-    // const warrant = new Warrant();
-    // warrant.warrant_id = uuidv4();
-    // warrant.warrant_name = "Inspect Corporate Financial Records";
-    // warrant.attached_file= ["corporate_records.pdf"];
-    // warrant.time_publish = new Date("2025-01-01");
-    // warrant.deadline = new Date("2025-01-31");
-    // warrant.status = WarrantStatus.WAITING_EXECUTING;
-    // warrant.is_deleted = false;
-    // warrant.police_response = "baocuong123";
-    // warrant.case = case_;
-
-    // await warrantRepository.save(warrant);
-
-    // 4. Insert Evidence 1
+    // 1. Insert Evidence 1
 
     // const evidence1 = new Evidence();
     // evidence1.evidence_id = uuidv4();
@@ -79,7 +35,7 @@ async function seedFinancialData() {
 
     // await evidenceRepository.save(evidence1);
 
-    // 5. Insert FinancialInvest for Evidence 1
+    // 2. Insert FinancialInvest for Evidence 1
 
     // const financialInvest1 = new FinancialInvest();
     // financialInvest1.evidence_id = evidence1.evidence_id;
@@ -88,7 +44,7 @@ async function seedFinancialData() {
 
     // await financialInvestRepository.save(financialInvest1);
 
-    // 6. Insert Evidence 2
+    // 3. Insert Evidence 2
 
     // const evidence2 = new Evidence();
     // evidence2.evidence_id = uuidv4();
@@ -103,7 +59,7 @@ async function seedFinancialData() {
 
     // await evidenceRepository.save(evidence2);
 
-    // 7. Insert FinancialInvest for Evidence 2
+    // 4. Insert FinancialInvest for Evidence 2
 
     // const financialInvest2 = new FinancialInvest();
     // financialInvest2.evidence_id = evidence2.evidence_id;

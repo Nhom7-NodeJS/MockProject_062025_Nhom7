@@ -3,9 +3,10 @@ import { FinancialInvestController } from "./financial_invest.controller";
 
 const router = express.Router();
 
-router.get("/:warrant_id", FinancialInvestController.financialTaskDetail);
-router.put("/:warrant_id/update", FinancialInvestController.updateFinancialTask);
-router.put("/:warrant_id/confirm", FinancialInvestController.confirmFinancialTask);
-router.post("/:warrant_id/start", FinancialInvestController.startFinancialTask);
+router.get("/:task_id", FinancialInvestController.financialTaskDetail);
+router.post("/:task_id/start", FinancialInvestController.startFinancialTask);
+router.put("/:task_id/update", FinancialInvestController.updateFinancialTask);
+router.put("/:task_id/confirm", FinancialInvestController.confirmFinancialTask);
+
 
 export default router;

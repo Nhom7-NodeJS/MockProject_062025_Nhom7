@@ -1,170 +1,147 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "@/config/config-database";
 import { FinancialInvest } from "./entities/financial_invest.entities";
-import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { Case } from "@/modules/cases/entities/case.entity";
-import { WarrantStatus } from "./enums/financial_invest.enum";
+import { Task } from "@/modules/tasks/entities/task.entity";
+import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
+import { TaskStatus } from "@/modules/tasks/enums/task.enum";
 import { ErrorCode } from "@/constants/error-code";
-import { ErrorMessages } from "@/constants/message";
 import { UpdateFinancialTaskDto } from "./dto/financial_invest.dto";
 
 export class FinancialInvestController {
   static async financialTaskDetail(req: Request, res: Response) {
-    const { warrant_id } = req.params;
-    const warrantRepo = AppDataSource.getRepository(Warrant);
-    const financialInvestRepo = AppDataSource.getRepository(FinancialInvest);
+    const { task_id } = req.params;
+    const taskRepo = AppDataSource.getRepository(Task);
 
-    const warrant = await warrantRepo.findOne({
-      where: { warrant_id },
-      relations: ["case", "evidences", "evidences.financialInvest"],
+    const task = await taskRepo.findOne({
+      where: { task_id },
+      relations: ["caseUser", "caseUser.case", "caseUser.tasks", "caseUser.case.evidences", "caseUser.case.evidences.financialInvest"]
     });
 
-    if (!warrant) {
+    if (!task) {
       return res.status(404).json({
         code: ErrorCode.INVALID_PARAMS,
-        message: "Warrant not found"
+        message: "Task not found"
       });
     }
 
-    const evidence = warrant.evidences.find(e => e.financialInvest);
+    const evidence = task.caseUser.case.evidences.find(e => e.financialInvest);
     const financialInvest = evidence?.financialInvest;
 
     return res.json({
-      task_id: warrant.warrant_id,
-      task_name: warrant.warrant_name, 
-      deadline: warrant.deadline,
-      status: warrant.status,
-      case_name: warrant.case.case_name,
-      content: financialInvest?.summary,
+      task_id: task.task_id,
+      task_name: task.task_name,
+      deadline: task.due_date,
+      status: task.status,
+      case_name: task.caseUser.case.case_name,
+      content:  task.content,
       evidence_id: evidence?.evidence_id,
       evidence_description: evidence?.description,
-      attach_file: evidence?.attach_file,
+      attach_file: evidence?.attach_file
     });
   }
 
   static async updateFinancialTask(req: Request, res: Response) {
-    const { warrant_id } = req.params;
+    const { task_id } = req.params;
     const updateData: UpdateFinancialTaskDto = req.body;
-    
-    const warrantRepo = AppDataSource.getRepository(Warrant);
+
+    const taskRepo = AppDataSource.getRepository(Task);
     const financialInvestRepo = AppDataSource.getRepository(FinancialInvest);
 
-    const warrant = await warrantRepo.findOne({
-      where: { warrant_id },
-      relations: ["evidences", "evidences.financialInvest"],
+    const task = await taskRepo.findOne({
+      where: { task_id },
+      relations: ["caseUser", "caseUser.case", "caseUser.case.evidences", "caseUser.case.evidences.financialInvest"]
     });
 
-    if (!warrant) {
-      return res.status(404).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Warrant not found"
-      });
+    if (!task) {
+      return res.status(404).json({ code: ErrorCode.INVALID_PARAMS, message: "Task not found" });
     }
 
-    if (warrant.status === WarrantStatus.COMPLETED) {
-      return res.status(400).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Cannot update completed task"
-      });
+    if (task.status === TaskStatus.COMPLETED) {
+      return res.status(400).json({ code: ErrorCode.INVALID_PARAMS, message: "Cannot update completed task" });
     }
 
-    const evidence = warrant.evidences.find(e => e.financialInvest);
+    const evidence = task.caseUser.case.evidences.find(e => e.financialInvest);
     if (!evidence?.financialInvest) {
-      return res.status(404).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Financial investigation not found"
-      });
+      return res.status(404).json({ code: ErrorCode.INVALID_PARAMS, message: "Financial investigation not found" });
     }
 
     const financialInvest = evidence.financialInvest;
     financialInvest.summary = updateData.summary;
-
-    warrant.status = WarrantStatus.EXECUTING;
+    task.status = TaskStatus.EXECUTING;
 
     await AppDataSource.transaction(async transactionalEntityManager => {
       await transactionalEntityManager.save(financialInvest);
-      await transactionalEntityManager.save(warrant);
+      await transactionalEntityManager.save(task);
     });
 
     return res.json({
       message: "Financial task updated successfully",
       data: {
-        task_id: warrant.warrant_id,
-        status: warrant.status,
-        content: financialInvest.summary
+        task_id: task.task_id,
+        status: task.status,
+        summary: financialInvest.summary
       }
     });
   }
 
   static async confirmFinancialTask(req: Request, res: Response) {
-    const { warrant_id } = req.params;
-    const warrantRepo = AppDataSource.getRepository(Warrant);
+    const { task_id } = req.params;
+    const taskRepo = AppDataSource.getRepository(Task);
 
-    const warrant = await warrantRepo.findOne({
-      where: { warrant_id },
-      relations: ["evidences", "evidences.financialInvest"],
+    const task = await taskRepo.findOne({
+      where: { task_id },
+      relations: ["caseUser", "caseUser.case", "caseUser.case.evidences", "caseUser.case.evidences.financialInvest"]
     });
 
-    if (!warrant) {
-      return res.status(404).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Warrant not found"
-      });
+    if (!task) {
+      return res.status(404).json({ code: ErrorCode.INVALID_PARAMS, message: "Task not found" });
     }
 
-    if (warrant.status !== WarrantStatus.EXECUTING) {
-      return res.status(400).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Can only confirm tasks that are in executing status"
-      });
+    if (task.status !== TaskStatus.EXECUTING) {
+      return res.status(400).json({ code: ErrorCode.INVALID_PARAMS, message: "Can only confirm tasks in executing status" });
     }
 
-    const evidence = warrant.evidences.find(e => e.financialInvest);
+    const evidence = task.caseUser.case.evidences.find(e => e.financialInvest);
     if (!evidence?.financialInvest) {
-      return res.status(404).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Financial investigation not found"
-      });
+      return res.status(404).json({ code: ErrorCode.INVALID_PARAMS, message: "Financial investigation not found" });
     }
 
-    warrant.status = WarrantStatus.COMPLETED;
-    await warrantRepo.save(warrant);
+    task.status = TaskStatus.COMPLETED;
+    task.completed_at = new Date();
+
+    await taskRepo.save(task);
 
     return res.json({
       message: "Financial task confirmed successfully",
       data: {
-        task_id: warrant.warrant_id,
-        status: warrant.status
+        task_id: task.task_id,
+        status: task.status
       }
     });
   }
 
   static async startFinancialTask(req: Request, res: Response) {
-    const { warrant_id } = req.params;
-    const warrantRepo = AppDataSource.getRepository(Warrant);
+    const { task_id } = req.params;
+    const taskRepo = AppDataSource.getRepository(Task);
 
-    const warrant = await warrantRepo.findOne({ where: { warrant_id } });
+    const task = await taskRepo.findOne({ where: { task_id } });
 
-    if (!warrant) {
-      return res.status(404).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Warrant not found"
-      });
+    if (!task) {
+      return res.status(404).json({ code: ErrorCode.INVALID_PARAMS, message: "Task not found" });
     }
 
-    if (warrant.status !== WarrantStatus.WAITING_EXECUTING) {
-      return res.status(400).json({
-        code: ErrorCode.INVALID_PARAMS,
-        message: "Can only start tasks in waiting status"
-      });
+    if (task.status !== TaskStatus.WAITING_EXECUTING) {
+      return res.status(400).json({ code: ErrorCode.INVALID_PARAMS, message: "Can only start tasks in waiting status" });
     }
 
-    warrant.status = WarrantStatus.EXECUTING;
-    await warrantRepo.save(warrant);
+    task.status = TaskStatus.EXECUTING;
+    task.start_date = new Date();
+    await taskRepo.save(task);
 
     return res.json({
       message: "Task started",
-      data: { task_id: warrant.warrant_id, status: warrant.status }
+      data: { task_id: task.task_id, status: task.status }
     });
   }
 }

@@ -4,12 +4,10 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "nodemon --watch ./src --ext ts --exec ts-node -r tsconfig-paths/register src/main.ts",
-
     "seed:cases": "ts-node -r tsconfig-paths/register src/scripts/seed-cases.ts",
     "seed:financial-investigation": "ts-node -r tsconfig-paths/register src/scripts/seed-financial-investigation.ts",
     "seed:physical-investigation": "ts-node -r tsconfig-paths/register src/scripts/seed-physical-investigation.ts",
     "seed:users-roles": "ts-node -r tsconfig-paths/register src/scripts/seed-users-roles.ts",
-    
     "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/config/config-database.ts",
     "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/config-database.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/config-database.ts",
@@ -20,12 +18,15 @@
   "description": "Một khung dự án backend sử dụng Express với TypeScript, tích hợp migration.",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.14.1",
     "nodemon": "^3.1.9",
     "reflect-metadata": "^0.1.14",
