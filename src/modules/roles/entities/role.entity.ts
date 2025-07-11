@@ -23,7 +23,6 @@ export class Role {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  // OneToMany
   @OneToMany(() => User, (user) => user.role)
   users!: User[];
 

@@ -1,6 +1,5 @@
+import { AppDataSource } from "@/config/database.config";
 import { Repository } from "typeorm";
-
-import { AppDataSource } from "@/config/config-database";
 import { AppError } from "@/common/error.response";
 import { CaseStatus } from "./enums/case.enum";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
@@ -121,6 +120,7 @@ export class CaseService {
     caseRecord.status = CaseStatus.IN_PROCESS;
     await this.caseRepository.save(caseRecord);
 
+
     // 6. Create case-user relationships for all investigators
     const caseUsers = investigators.map(username => {
       const caseUser = new CaseUser();
@@ -135,6 +135,7 @@ export class CaseService {
 
     // Save all case users in a single query
     const savedCaseUsers = await this.caseUserRepository.save(caseUsers);
+
     
     return { case: caseRecord, caseUsers: savedCaseUsers };
   }

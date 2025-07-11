@@ -13,23 +13,23 @@ export class Victim {
   @Column({ nullable: true })
   fullname?: string;
 
-  @Column()
-  contact!: string;
+  @Column({ nullable: true })
+  contact?: string;
 
   @Column({ nullable: true })
   national?: string;
 
-  @Column({ type: "enum", enum: Gender, default: Gender.Unknown, nullable: true })
-  gender?: Gender;
+  @Column({ type: "enum", enum: Gender, default: Gender.UNKNOWN })
+  gender!: Gender;
 
   @Column({ nullable: true })
   description?: string;
 
-  @Column()
-  injuries!: string;
+  @Column({ nullable: true })
+  injuries?: string;
 
-  @Column()
-  status!: string;
+  @Column({ nullable: true })
+  status?: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;

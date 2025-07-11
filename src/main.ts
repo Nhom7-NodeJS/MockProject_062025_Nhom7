@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { initDatabase } from "@/database/connect-database";
+
 import router from "@/modules";
+import { initDatabase } from "@/database/connect-database";
 import { exceptionHandler } from "@/middlewares/exception-filter";
 import { loadedEnv } from "@/config/load-env";
 import { requestLogger } from "@/middlewares/logger-filter";

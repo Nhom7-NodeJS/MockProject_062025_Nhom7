@@ -4,13 +4,12 @@ import { AppError } from '@/common/error.response';
 import { AppResponse } from "@/common/success.response";
 import { HttpStatusCode } from "@/constants/status-code";
 import { SuccessMessages } from "@/constants/message";
-import { GetAllCasesQuery, GetPaginatedCasesQuery } from "./dto/case.dto";
-import { IConfirmCaseDto, IConfirmCaseResponseDto } from './dto/confirm-case.dto';
 import { AuthenticatedRequest } from '@/middlewares/auth.middleware';
 import { PaginationUtils } from "@/utils/pagination";
 
-import { CaseStatus } from './enums/case.enum';
 import caseService from "./case.service";
+import { GetAllCasesQuery, GetPaginatedCasesQuery } from "./dto/case.dto";
+import { IConfirmCaseDto, IConfirmCaseResponseDto } from './dto/confirm-case.dto';
 
 class CaseController {
   async getAllCases(req: Request, res: Response) {

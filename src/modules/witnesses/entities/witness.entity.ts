@@ -10,20 +10,20 @@ export class Witness {
   @PrimaryColumn()
   witness_id!: string;
 
-  @Column()
-  fullname!: string;
+  @Column({ nullable: true })
+  fullname?: string;
 
-  @Column()
-  contact!: string;
+  @Column({ nullable: true })
+  contact?: string;
 
   @Column({ nullable: true })
   national?: string;
 
-  @Column({ type: "enum", enum: Gender, default: Gender.Unknown, nullable: true })
-  gender?: Gender;
+  @Column({ type: "enum", enum: Gender, default: Gender.UNKNOWN })
+  gender!: Gender;
 
-  @Column()
-  statement!: string;
+  @Column({ nullable: true })
+  statement?: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;

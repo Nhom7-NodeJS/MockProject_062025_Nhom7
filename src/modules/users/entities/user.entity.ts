@@ -36,7 +36,7 @@ export class User {
   @Column({ nullable: true })
   phone_number?: string;
 
-  @Column({ type: "enum", enum: Gender, default: Gender.Unknown, nullable: true })
+  @Column({ type: "enum", enum: Gender, default: Gender.UNKNOWN, nullable: true })
   gender?: Gender;
 
   @Column({ type: "timestamp" })
@@ -45,7 +45,7 @@ export class User {
   @Column({ type: "timestamp" })
   date_attended!: Date;
 
-  @Column({ type: "enum", enum: UserStatus })
+  @Column({ type: "enum", enum: UserStatus, default: UserStatus.ACTIVE })
   status!: UserStatus;
 
   @Column({ type: "timestamp" })
@@ -57,6 +57,8 @@ export class User {
   @Column({ nullable: true })
   refresh_token?: string;
 
+  @Column({nullable: true})
+  email?: string;
   // OneToMany
   @OneToMany(() => CaseUser, (caseUser) => caseUser.user)
   caseUsers!: CaseUser[];

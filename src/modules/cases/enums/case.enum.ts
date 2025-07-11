@@ -1,7 +1,8 @@
 export enum CaseType {
   ROBBERY = "Robbery",
   MURDER = "Murder",
-  RAPE = "Rape"
+  RAPE = "Rape",
+  CYBER_CRIME= "Cyber Crime"
 }
 
 export enum CaseSeverity {

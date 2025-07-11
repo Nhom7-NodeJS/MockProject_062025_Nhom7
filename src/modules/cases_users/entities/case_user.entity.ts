@@ -12,14 +12,14 @@ export class CaseUser {
   @PrimaryColumn()
   username!: string;
 
-  @Column({ type: "boolean", default: false })
-  is_deleted!: boolean;
-
   @Column({ type: 'text', nullable: true })
   notes?: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: "timestamp" })
   assigned_at!: Date;
+
+  @Column({ type: "boolean", default: false })
+  is_deleted!: boolean;
 
   // OneToMany
   @OneToMany(() => Task, (task) => task.caseUser)

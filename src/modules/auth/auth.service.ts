@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { sign, verify, SignOptions } from "jsonwebtoken";
 import { compare, hash } from "bcryptjs";
 
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { AppError } from "@/common/error.response";
 import { HttpStatusCode } from "@/constants/status-code";
 import { RoleType } from "@/constants/role-type";
@@ -70,6 +70,7 @@ export class AuthService {
 
   async signup(userData: {
     username: string;
+    email?: string;
     password: string;
     fullname: string;
     avatar_url?: string;
@@ -82,6 +83,7 @@ export class AuthService {
     const {
       username,
       password,
+      email,
       fullname,
       dob,
       roleType = RoleType.CENSOR,
@@ -122,6 +124,7 @@ export class AuthService {
     const newUser = this.userRepository.create({
       username,
       password_hash: hashedPassword,
+      email,
       fullname,
       avatar_url: userData.avatar_url,
       dob,

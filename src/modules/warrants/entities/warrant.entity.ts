@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   JoinColumn,
@@ -9,13 +10,20 @@ import {
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
 import { User } from "@/modules/users/entities/user.entity";
+import { v4 as uuidv4 } from "uuid";
+
+import { WarrantStatus } from "../enums/warrant.enum";
 
 @Entity("warrants")
 export class Warrant {
   @PrimaryColumn()
   warrant_id!: string;
+
+  @BeforeInsert()
+  generateId() {
+    this.warrant_id = `WR${uuidv4().replace(/-/g, "").slice(0, 10)}`; // ví dụ: WR1a2b3c4d5e
+  }
 
   @Column()
   warrant_name!: string;
@@ -35,8 +43,18 @@ export class Warrant {
   @Column({ type: "timestamp" })
   deadline!: Date;
 
+  // Set default deadline to 30 days from now if not provided
+  @BeforeInsert()
+  setDefaultDeadline() {
+  if (!this.deadline) {
+    const defaultDeadline = new Date();
+    defaultDeadline.setDate(defaultDeadline.getDate() + 30); 
+    this.deadline = defaultDeadline;
+  }
+}
+
   @Column({
-    type: "enum",
+    type: "enum", 
     enum: WarrantStatus,
     default: WarrantStatus.WAITING_EXECUTING,
   })
@@ -52,6 +70,6 @@ export class Warrant {
   case!: Case;
 
   @ManyToOne(() => User, (user) => user.warrants)
-  @JoinColumn({ name: "police_response" }) 
-  user!: User
+  @JoinColumn({ name: "police_response" })
+  user!: User;
 }
