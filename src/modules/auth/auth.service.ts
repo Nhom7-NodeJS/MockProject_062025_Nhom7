@@ -104,7 +104,7 @@ export class AuthService {
       );
     }
 
-    // Get the default role ()
+    // Get the default role
     const role = await this.roleRepository.findOne({
       where: { role_id: roleType },
     });

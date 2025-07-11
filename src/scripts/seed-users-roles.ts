@@ -4,6 +4,8 @@ import { AppDataSource } from "@/config/database.config";
 import { User } from "@/modules/users/entities/user.entity";
 import { Role } from "@/modules/roles/entities/role.entity";
 import { Gender, UserStatus } from "@/modules/users/enums/user.enum";
+import { UserRole } from "@/modules/roles/enums/role.enum";
+
 
 const SALT_ROUNDS = 10;
 
@@ -27,31 +29,31 @@ async function seedUsersAndRoles() {
     // Create roles
     const censorRole = roleRepository.create({
       role_id: 'CENSOR',
-      description: 'Censor',
+      description: UserRole.CENSOR,
       is_deleted: false
     });
 
     const investigatorRole = roleRepository.create({
       role_id: 'INVESTIGATOR',
-      description: 'Investigator',
+      description: UserRole.INVESTIGATOR,
       is_deleted: false
     });
 
     const policeChiefRole = roleRepository.create({
       role_id: 'POLICE_CHIEF',
-      description: 'Police Chief',
+      description: UserRole.POLICE_CHIEF,
       is_deleted: false
     });
 
     const forensicOfficerRole = roleRepository.create({
       role_id: 'FORENSIC_OFFICER',
-      description: 'Forensic Officer',
+      description: UserRole.FORENSIC_OFFICER,
       is_deleted: false
     });
 
     const financialInvestigatorRole = roleRepository.create({
       role_id: 'FINANCIAL_INVESTIGATOR',
-      description: 'Financial Investigator',
+      description: UserRole.FINANCIAL_INVESTIGATOR,
       is_deleted: false
     });
 
@@ -64,7 +66,6 @@ async function seedUsersAndRoles() {
     const sheriffUser = userRepository.create({
       username: 'sheriff.john',
       password_hash: hashedPassword,
-      email: "Gx0kW@example.com",
       fullname: 'John Smith',
       gender: Gender.MALE,
       dob: new Date('1980-05-15'),
@@ -78,7 +79,6 @@ async function seedUsersAndRoles() {
     const officer1 = userRepository.create({
       username: 'officer.jane',
       password_hash: hashedPassword,
-      email: "tWcM4@example.com",
       fullname: 'Jane Doe',
       gender: Gender.FEMALE,
       dob: new Date('1990-08-22'),
@@ -115,3 +115,5 @@ async function seedUsersAndRoles() {
 }
 
 seedUsersAndRoles();
+
+
