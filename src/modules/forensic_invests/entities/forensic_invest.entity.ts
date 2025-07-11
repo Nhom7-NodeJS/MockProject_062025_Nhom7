@@ -8,22 +8,16 @@ export class ForensicInvest {
   evidence_id!: string;
 
   @Column()
-  lab_name!: string;
+  summary?: string;
 
-  @Column()
-  report!: string;
-
-  @Column()
-  result_summary!: string;
-
-  @Column({ type: "timestamp" })
-  received_at!: Date;
+  @Column({ type: "json" })
+  attach_file?: string[];
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
   // OneToOne
   @OneToOne(() => Evidence, (evidence) => evidence.forensicInvest)
-  @JoinColumn({ name: 'evidence_id' })
+  @JoinColumn({ name: "evidence_id" })
   evidence!: Evidence;
 }

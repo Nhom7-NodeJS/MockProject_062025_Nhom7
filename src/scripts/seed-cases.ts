@@ -1,4 +1,4 @@
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { Case } from "@/modules/cases/entities/case.entity";
 import { CaseSeverity, CaseStatus, CaseType } from "@/modules/cases/enums/case.enum";
 

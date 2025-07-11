@@ -7,7 +7,7 @@ import { DigitalInvest } from "@/modules/digital_invests/entities/digital_invest
 import { Event } from "@/modules/events/entities/event.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { EvidenceSuspect } from "@/modules/evidences_suspects/entities/evidence_suspect.entity";
-import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
+import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { ForensicInvest } from "@/modules/forensic_invests/entities/forensic_invest.entity";
 import { Holiday } from "@/modules/holidays/entities/holiday.entity";
 import { Indictment } from "@/modules/indictments/entities/indictment.entity";
@@ -28,6 +28,7 @@ import { ReportWitness } from "@/modules/reports_witnesses/entities/report_witne
 import { Role } from "@/modules/roles/entities/role.entity";
 import { Sentence } from "@/modules/sentences/entities/sentence.entity";
 import { Suspect } from "@/modules/suspects/entities/suspect.entity";
+import { Task } from "@/modules/tasks/entities/task.entity";
 import { Timeline } from "@/modules/timelines/entities/timeline.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
@@ -66,6 +67,7 @@ export const entities = [
   Role,
   Sentence,
   Suspect,
+  Task,
   Timeline,
   User,
   Victim,

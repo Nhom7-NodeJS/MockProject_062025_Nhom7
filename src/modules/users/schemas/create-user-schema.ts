@@ -2,7 +2,7 @@ import Joi from "joi";
 import { CreateUserDto } from "@/modules/users/dto/user.dto";
 
 export const CreateUserSchema = Joi.object<CreateUserDto>({
-  name: Joi.string().required().messages({
+  fullname: Joi.string().required().messages({
     "string.base": "Name must be a string",
     "string.empty": "Name must be not empty",
     "any.required": "Name is required",

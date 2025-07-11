@@ -29,6 +29,19 @@ export const SuccessMessages = {
     PERMISSION_DELETED: "Permission deleted successfully",
   },
 
+
+  REPORT: {
+    REPORT_GET: "Fetch report data successfully",
+
+    REPORT_CREATED: "Report created successfully",
+
+    REPORT_UPDATED: "Report updated successfully",
+
+    REPORT_STATUS_UPDATED: "Report status updated successfully",
+   
+    REPORT_DELETED: "Report deleted successfully",
+  },
+
   AUTH: {
     LOGIN_SUCCESS: "Login successfully",
     LOGOUT_SUCCESS: "Logout successfully",
@@ -38,6 +51,21 @@ export const SuccessMessages = {
     WARRANT_CREATED: "Warrant created successfully",
     WARRANT_UPDATED: "Warrant updated successfully",
     WARRANT_DELETED: "Warrant deleted successfully",
+
+
+  FINANCIAL_INVEST: {
+    FINANCIAL_INVEST_GET: "Fetch financial invest data successfully",
+    FINANCIAL_INVEST_UPDATED: "Update financial investigation successfully",
+  },
+
+  FORENSIC_INVEST: {
+    FORENSIC_INVEST_GET: "Fetch forensic invest data successfully",
+    FORENSIC_INVEST_UPDATED: "Update forensic investigation successfully",
+  },
+
+  TASK: {
+    TASK_GET: "Fetch task data successfully",
+    TASK_UPDATED: "Update task status successfully",
   },
 } as const;
 export const ErrorMessages = {
@@ -55,10 +83,27 @@ export const ErrorMessages = {
   PERMISSION_EXISTS: "Permission already exists for this user",
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
+  
   Warrant_NOT_FOUND: "Warrant not found",
   Warrant_EXISTS: "Warrant already exists",
   Warrant_INVALID: "Invalid warrant data",
   FILE_PROCESS_FAILED: "Failed to process files",
   FILE_UPLOAD_FAILED: "Failed to upload files",
   UNSUPPORTED_FILE_TYPE: "This file type is not supported",
+  FINANCIAL_INVESTIGATION_NOT_FOUND: "Financial investigation not found",
+
+  FORENSIC_INVESTIGATION_NOT_FOUND: "Forensic investigation not found",
+
+  TASK_NOT_FOUND: "Task not found",
+
+  TASK_INVALID_STATUS: "Task cannot be updated further",
+  INVALID_JSON: "Invalid JSON",
+
+  REPORT_NOT_FOUND: "Report not found",
+
+  FORBIDDEN: "Access forbidden",
+
+  INVALID_REPORT_STATUS: "Invalid report status",
+
+  INTERNAL_SERVER_ERROR: "Internal server error",
 } as const;
