@@ -4,6 +4,7 @@ import { v2 as cloudinaryV2, UploadApiResponse } from "cloudinary";
 
 import Cloudinary from "@/config/config-cloudinary";
 import { MimeTypes } from "@/constants/mimetype";
+import { CloudinaryFolder } from "@/constants/cloudinary-folder";
 import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
@@ -31,7 +32,7 @@ const fileFilter: multer.Options["fileFilter"] = (req, file, cb) => {
 // Accept all incoming files into memory
 const upload = multer({ storage, fileFilter }).any();
 
-export const processRequestFiles = (folder: string) => [
+export const processRequestFiles = (folder: string = CloudinaryFolder.GENERAL) => [
   upload,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
