@@ -1,6 +1,4 @@
-
 import { Entity, Column, JoinColumn, ManyToOne, PrimaryColumn, OneToMany } from "typeorm";
-
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { User } from "@/modules/users/entities/user.entity";
@@ -14,13 +12,6 @@ export class CaseUser {
   @PrimaryColumn()
   username!: string;
 
-<<<<<<< HEAD
-  @Column({ type: "boolean", default: false })
-  is_deleted!: boolean;
-
-
-=======
->>>>>>> origin/dev3
   @Column({ type: 'text', nullable: true })
 
   notes?: string;
