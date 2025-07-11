@@ -1,5 +1,3 @@
-import TaskController from "./task.controller";
-
 import express from "express";
 
 import { RoleType } from "@/constants/role-type";
@@ -11,6 +9,12 @@ import taskController from "./task.controller";
 import { createTaskSchema } from "./schemas/create-task.schema";
 
 const router = express.Router();
+
+router.get(
+  "/all/:caseId",
+  authMiddleware([RoleType.FINANCIAL_INVESTIGATOR, RoleType.FORENSIC_OFFICER]),
+  asyncHandle(taskController.getAllTaskByRoleId)
+);
 
 router.get(
   "/detail/:taskId",
