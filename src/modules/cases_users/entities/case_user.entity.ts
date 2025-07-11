@@ -1,11 +1,6 @@
-import {
-  Entity,
-  Column,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
-  OneToMany,
-} from "typeorm";
+
+import { Entity, Column, JoinColumn, ManyToOne, PrimaryColumn, OneToMany } from "typeorm";
+
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { User } from "@/modules/users/entities/user.entity";
@@ -22,8 +17,9 @@ export class CaseUser {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @Column({ type: "text", nullable: true })
-  @Column({ type: "text", nullable: true })
+
+  @Column({ type: 'text', nullable: true })
+
   notes?: string;
 
   @Column({ type: "timestamp" })

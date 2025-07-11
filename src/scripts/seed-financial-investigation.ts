@@ -3,16 +3,19 @@ import { AppDataSource } from "@/config/database.config";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
-import { WarrantStatus } from "@/modules/warrants/enums/warrant.enum";
-import { v4 as uuidv4 } from "uuid";
+
+import { Case } from "@/modules/cases/entities/case.entity";
+import { User } from "@/modules/users/entities/user.entity";
+import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
+import { UserStatus } from "@/modules/users/enums/user.enum";
 import { CaseType, CaseSeverity, CaseStatus } from "@/modules/cases/enums/case.enum";
+import { v4 as uuidv4 } from "uuid";
+
 async function seedFinancialData() {
   try {
-    // Initialize the data source
     await AppDataSource.initialize();
     console.log("Data Source has been initialized!");
 
-    // Get repositories
     const evidenceRepository = AppDataSource.getRepository(Evidence);
     const financialInvestRepository =
       AppDataSource.getRepository(FinancialInvest);
@@ -191,7 +194,6 @@ async function seedFinancialData() {
   } catch (error) {
     console.error("Error during financial data seeding:", error);
   } finally {
-    // Close the data source connection
     if (AppDataSource.isInitialized) {
       await AppDataSource.destroy();
       console.log("Data Source has been closed!");
@@ -199,5 +201,4 @@ async function seedFinancialData() {
   }
 }
 
-// Run the seed function
 seedFinancialData().catch(console.error);
