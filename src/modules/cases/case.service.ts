@@ -120,6 +120,7 @@ export class CaseService {
     caseRecord.status = CaseStatus.IN_PROCESS;
     await this.caseRepository.save(caseRecord);
 
+
     // 6. Create case-user relationships for all investigators
     const caseUsers = investigators.map(username => {
       const caseUser = new CaseUser();
@@ -134,6 +135,7 @@ export class CaseService {
 
     // Save all case users in a single query
     const savedCaseUsers = await this.caseUserRepository.save(caseUsers);
+
     
     return { case: caseRecord, caseUsers: savedCaseUsers };
   }

@@ -49,6 +49,7 @@ export class Task {
   ])
   caseUser!: CaseUser;
 
+
   toJSON() {
     const { is_deleted, ...rest } = this;
     return rest;
