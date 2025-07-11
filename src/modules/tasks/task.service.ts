@@ -7,8 +7,8 @@ import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
-
 import { Task } from "./entities/task.entity";
+import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { TaskStatus } from "./enums/task.enum";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { TaskDetailResponseDto } from "./dto/task_detail-response.dto";

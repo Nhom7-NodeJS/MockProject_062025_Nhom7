@@ -28,6 +28,7 @@ Authorization: Bearer {{authToken}}
   "case_id": "CASE-002",
   "username": "officer.jane"
 }
+<<<<<<< baotnn
 
 // === INVESTIGATOR ===
 
@@ -69,3 +70,5 @@ Content-Type: {{contentType}}
   "summary": "Updated forensic investigation summary.",
   "fileUrl": ["report1.docx", "image1.png"]
 }
+=======
+>>>>>>> dev3

@@ -46,15 +46,15 @@ export class Warrant {
   // Set default deadline to 30 days from now if not provided
   @BeforeInsert()
   setDefaultDeadline() {
-    if (!this.deadline) {
-      const defaultDeadline = new Date();
-      defaultDeadline.setDate(defaultDeadline.getDate() + 30);
-      this.deadline = defaultDeadline;
-    }
+  if (!this.deadline) {
+    const defaultDeadline = new Date();
+    defaultDeadline.setDate(defaultDeadline.getDate() + 30); 
+    this.deadline = defaultDeadline;
   }
+}
 
   @Column({
-    type: "enum",
+    type: "enum", 
     enum: WarrantStatus,
     default: WarrantStatus.WAITING_EXECUTING,
   })

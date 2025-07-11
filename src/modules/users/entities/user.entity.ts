@@ -36,12 +36,7 @@ export class User {
   @Column({ nullable: true })
   phone_number?: string;
 
-  @Column({
-    type: "enum",
-    enum: Gender,
-    default: Gender.UNKNOWN,
-    nullable: true,
-  })
+  @Column({ type: "enum", enum: Gender, default: Gender.UNKNOWN, nullable: true })
   gender?: Gender;
 
   @Column({ type: "timestamp" })
