@@ -4,6 +4,7 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "nodemon --watch ./src --ext ts --exec ts-node -r tsconfig-paths/register src/main.ts",
+    
     "seed:cases": "ts-node -r tsconfig-paths/register src/scripts/seed-cases.ts",
     "seed:users-roles": "ts-node -r tsconfig-paths/register src/scripts/seed-users-roles.ts",
     "seed:tasks-roles": "ts-node -r tsconfig-paths/register src/scripts/seed-tasks-roles.ts",

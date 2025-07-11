@@ -1,19 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
+import * as bcrypt from "bcryptjs";
 
-<<<<<<< HEAD
-import { AppDataSource } from "@/config/config-database";
-=======
 import { AppDataSource } from "@/config/database.config";
->>>>>>> origin/dev3
 import { Role } from "@/modules/roles/entities/role.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Case } from "@/modules/cases/entities/case.entity";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { Task } from "@/modules/tasks/entities/task.entity";
-<<<<<<< HEAD
-import { UserRole } from "@/modules/roles/enums/role.enum";
-=======
->>>>>>> origin/dev3
 import { Gender, UserStatus } from "@/modules/users/enums/user.enum";
 import { TaskStatus } from "@/modules/tasks/enums/task.enum";
 import {
@@ -26,6 +19,12 @@ import { CaseEvidence } from "@/modules/cases_evidences/entities/case_evidence.e
 import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { ForensicInvest } from "@/modules/forensic_invests/entities/forensic_invest.entity";
+
+const SALT_ROUNDS = 10;
+
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, SALT_ROUNDS);
+}
 
 async function seedTasksRoles() {
   try {
@@ -87,26 +86,20 @@ async function seedTasksRoles() {
     // === Insert Role ===
     const role1 = new Role();
     role1.role_id = "FINANCIAL_INVESTIGATOR";
-<<<<<<< HEAD
-    role1.description = UserRole.FINANCIAL_INVESTIGATOR;
-=======
     role1.description = "Financial Investigator";
->>>>>>> origin/dev3
     await roleRepository.save(role1);
 
     const role2 = new Role();
     role2.role_id = "FORENSIC_OFFICER";
-<<<<<<< HEAD
-    role2.description = UserRole.FORENSIC_OFFICER;
-=======
     role2.description = "Forensic Officer";
->>>>>>> origin/dev3
     await roleRepository.save(role2);
 
     // === Insert User 1 ===
+    const hashedPassword = await hashPassword("Password123!");
+
     const user1 = new User();
     user1.username = "john_doe";
-    user1.password_hash = "hashed_password1";
+    user1.password_hash = hashedPassword;
     user1.fullname = "John Doe";
     user1.dob = new Date("1990-01-01");
     user1.date_attended = new Date();
@@ -119,7 +112,7 @@ async function seedTasksRoles() {
     // === Insert User 2 ===
     const user2 = new User();
     user2.username = "jane_smith";
-    user2.password_hash = "hashed_password2";
+    user2.password_hash = hashedPassword;
     user2.fullname = "Jane Smith";
     user2.dob = new Date("1992-05-15");
     user2.date_attended = new Date();

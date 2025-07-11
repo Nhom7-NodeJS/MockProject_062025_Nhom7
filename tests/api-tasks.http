@@ -28,3 +28,47 @@ Authorization: Bearer {{authToken}}
   "case_id": "CASE-002",
   "username": "officer.jane"
 }
+<<<<<<< baotnn
+
+// === INVESTIGATOR ===
+
+### 1. Login as an Investigator
+# @name loginInvestigator
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "john_doe",
+  "password": "Password123!"
+}
+
+### Investigator Token
+@investigatorToken = {{loginInvestigator.response.body.data.accessToken}}
+
+### Get All Tasks by User + Role + Case
+GET {{baseUrl}}/tasks/all/CASE001
+Authorization: Bearer {{investigatorToken}}
+Content-Type: {{contentType}}
+
+### Get Task Detail by Role and Task ID
+GET {{baseUrl}}/tasks/detail/b903afa0-2b6a-406b-93b3-582f31a3ccd3
+Authorization: Bearer {{investigatorToken}}
+Content-Type: {{contentType}}
+
+### Change Task Status (auto flow)
+PUT {{baseUrl}}/tasks/status/b903afa0-2b6a-406b-93b3-582f31a3ccd3
+Content-Type: {{contentType}}
+
+{
+}
+
+### 2. Update Forensic Investigation Result
+PUT {{baseUrl}}/forensic-invest/update/11f3f792-16e2-4c41-9ac5-d12882a34659
+Content-Type: {{contentType}}
+
+{
+  "summary": "Updated forensic investigation summary.",
+  "fileUrl": ["report1.docx", "image1.png"]
+}
+=======
+>>>>>>> dev3
