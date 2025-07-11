@@ -9,8 +9,8 @@
     "seed:physical-investigation": "ts-node -r tsconfig-paths/register src/scripts/seed-physical-investigation.ts",
     "seed:users-roles": "ts-node -r tsconfig-paths/register src/scripts/seed-users-roles.ts",
     "seed:tasks-roles": "ts-node -r tsconfig-paths/register src/scripts/seed-tasks-roles.ts",
-    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/config/config-database.ts",
-    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/config-database.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/config/database.config.ts",
+    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/database.config.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/config-database.ts",
     "migration:show": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d src/config/config-database.ts",
     "typeorm": "typeorm"

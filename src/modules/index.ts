@@ -3,7 +3,7 @@ import userRouter from "@/modules/users/user.route";
 
 import reportRouter from "./reports/report.route";
 import authRouter from "./auth/auth.route";
-
+import warrantRouter from "@/modules/warrants/warrant.router";
 import financialInvestRouter from "@/modules/financial_invests/financial_invest.route";
 import forensicInvestRouter from "@/modules/forensic_invests/forensic_invest.route";
 
@@ -22,11 +22,12 @@ router.use(`${API_V1}/home`, reportRouter);
 // Public routes
 router.use(`${API_V1}/auth`, authRouter);
 
+router.use(`${API_V1}/users`, userRouter);
 // Protected routes
 router.use(`${API_V1}/cases`, caseRouter);
 router.use(`${API_V1}/tasks`, taskRouter);
 
-
+router.use(`${API_V1}/warrant`, warrantRouter);
 router.use(`${API_V1}/report`, reportRouter)
 router.use("/account", authRouter);
 export default router;
