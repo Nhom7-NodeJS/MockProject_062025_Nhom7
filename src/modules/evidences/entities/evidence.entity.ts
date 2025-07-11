@@ -18,7 +18,7 @@ import { RecordInfo } from "@/modules/records_infos/entities/record_info.entity"
 import { Report } from "@/modules/reports/entities/report.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
-import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
+import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { DigitalInvest } from "@/modules/digital_invests/entities/digital_invest.entity";
 import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
 

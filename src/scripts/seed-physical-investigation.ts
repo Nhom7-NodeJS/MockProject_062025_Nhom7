@@ -1,7 +1,7 @@
 import { AppDataSource } from "@/config/config-database";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { PhysicalInvest } from "@/modules/physical_invests/entities/physical_invest.entity";
-import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
+import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { v4 as uuidv4 } from 'uuid';
 
 async function seedData() {
