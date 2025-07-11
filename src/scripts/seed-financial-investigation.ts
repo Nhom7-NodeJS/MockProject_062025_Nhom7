@@ -3,8 +3,6 @@ import { AppDataSource } from "@/config/database.config";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
-
-import { Case } from "@/modules/cases/entities/case.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
 import { UserStatus } from "@/modules/users/enums/user.enum";
