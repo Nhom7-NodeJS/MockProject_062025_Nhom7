@@ -1,18 +1,19 @@
 import { AppDataSource } from "@/config/database.config";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { PhysicalInvest } from "@/modules/physical_invests/entities/physical_invest.entity";
-import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
-import { v4 as uuidv4 } from 'uuid';
+import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
+import { v4 as uuidv4 } from "uuid";
 
 async function seedData() {
   try {
     // Initialize the data source
     await AppDataSource.initialize();
-    console.log('Data Source has been initialized!');
+    console.log("Data Source has been initialized!");
 
     // Get repositories
     const evidenceRepository = AppDataSource.getRepository(Evidence);
-    const physicalInvestRepository = AppDataSource.getRepository(PhysicalInvest);
+    const physicalInvestRepository =
+      AppDataSource.getRepository(PhysicalInvest);
 
     // // Insert Evidence 1
     // const evidence1 = new Evidence();
@@ -50,34 +51,40 @@ async function seedData() {
 
     // Query 1: All evidence with their physical investigations (using QueryBuilder)
     const evidencesWithPhysicalInvest = await evidenceRepository
-      .createQueryBuilder('evidence')
-      .leftJoinAndSelect('evidence.physicalInvest', 'physicalInvest')
-      .where('evidence.is_deleted = :isDeleted', { isDeleted: false })
-      .orderBy('evidence.collected_at', 'DESC')
+      .createQueryBuilder("evidence")
+      .leftJoinAndSelect("evidence.physicalInvest", "physicalInvest")
+      .where("evidence.is_deleted = :isDeleted", { isDeleted: false })
+      .orderBy("evidence.collected_at", "DESC")
       .getMany();
 
-    console.log('\n=== Query 1: All Evidence with Physical Investigations (using QueryBuilder) ===');
+    console.log(
+      "\n=== Query 1: All Evidence with Physical Investigations (using QueryBuilder) ==="
+    );
     console.log(JSON.stringify(evidencesWithPhysicalInvest, null, 2));
 
     // Query 2: All physical investigations with their evidence (using Repository methods)
     const physicalInvestigations = await physicalInvestRepository.find({
-      relations: ['evidence'],
+      relations: ["evidence"],
       where: { is_deleted: false },
-      order: { evidence: { collected_at: 'DESC' } }
+      order: { evidence: { collected_at: "DESC" } },
     });
 
-    console.log('\n=== Query 2: All Physical Investigations with Evidence (using Repository) ===');
+    console.log(
+      "\n=== Query 2: All Physical Investigations with Evidence (using Repository) ==="
+    );
     console.log(JSON.stringify(physicalInvestigations, null, 2));
 
     // Query 3: Get evidence with specific status and their physical investigations
     const evidenceByStatus = await evidenceRepository.find({
-      relations: ['physicalInvest'],
+      relations: ["physicalInvest"],
       where: {
-        is_deleted: false
+        is_deleted: false,
       },
     });
 
-    console.log('\n=== Query 3: Evidence with Status "Under Analysis" and their Physical Investigations ===');
+    console.log(
+      '\n=== Query 3: Evidence with Status "Under Analysis" and their Physical Investigations ==='
+    );
     console.log(JSON.stringify(evidenceByStatus, null, 2));
 
     // Query 4: Using raw SQL query for more complex scenarios
@@ -98,16 +105,15 @@ async function seedData() {
         e.collected_at DESC
     `);
 
-    console.log('\n=== Query 4: Raw SQL Query Results ===');
+    console.log("\n=== Query 4: Raw SQL Query Results ===");
     console.log(JSON.stringify(rawData, null, 2));
-
   } catch (error) {
-    console.error('Error during data seeding:', error);
+    console.error("Error during data seeding:", error);
   } finally {
     // Close the data source connection
     if (AppDataSource.isInitialized) {
       await AppDataSource.destroy();
-      console.log('Data Source has been closed!');
+      console.log("Data Source has been closed!");
     }
   }
 }

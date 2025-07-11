@@ -9,8 +9,9 @@ import {
 
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
-import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
 import { User } from "@/modules/users/entities/user.entity";
+
+import { WarrantStatus } from "../enums/warrant.enum";
 
 @Entity("warrants")
 export class Warrant {
@@ -52,6 +53,6 @@ export class Warrant {
   case!: Case;
 
   @ManyToOne(() => User, (user) => user.warrants)
-  @JoinColumn({ name: "police_response" }) 
-  user!: User
+  @JoinColumn({ name: "police_response" })
+  user!: User;
 }

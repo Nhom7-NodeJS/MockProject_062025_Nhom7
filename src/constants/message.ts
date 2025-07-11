@@ -35,6 +35,21 @@ export const SuccessMessages = {
     LOGIN_SUCCESS: "Login successfully",
     LOGOUT_SUCCESS: "Logout successfully",
   },
+
+  FINANCIAL_INVEST: {
+    FINANCIAL_INVEST_GET: "Fetch financial invest data successfully",
+    FINANCIAL_INVEST_UPDATED: "Update financial investigation successfully",
+  },
+
+  FORENSIC_INVEST: {
+    FORENSIC_INVEST_GET: "Fetch forensic invest data successfully",
+    FORENSIC_INVEST_UPDATED: "Update forensic investigation successfully",
+  },
+
+  TASK: {
+    TASK_GET: "Fetch task data successfully",
+    TASK_UPDATED: "Update task status successfully",
+  },
 } as const;
 
 export const ErrorMessages = {
@@ -52,6 +67,13 @@ export const ErrorMessages = {
   PERMISSION_EXISTS: "Permission already exists for this user",
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
+  FINANCIAL_INVESTIGATION_NOT_FOUND: "Financial investigation not found",
+
+  FORENSIC_INVESTIGATION_NOT_FOUND: "Forensic investigation not found",
+
+  TASK_NOT_FOUND: "Task not found",
+
+  TASK_INVALID_STATUS: "Task cannot be updated further",
   FILE_PROCESS_FAILED: "Failed to process files",
   FILE_UPLOAD_FAILED: "Failed to upload files",
   UNSUPPORTED_FILE_TYPE: "This file type is not supported",
