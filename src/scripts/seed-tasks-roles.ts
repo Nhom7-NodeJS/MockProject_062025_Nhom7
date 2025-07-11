@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import * as bcrypt from "bcryptjs";
 
 import { AppDataSource } from "@/config/database.config";
 import { Role } from "@/modules/roles/entities/role.entity";
@@ -18,6 +19,12 @@ import { CaseEvidence } from "@/modules/cases_evidences/entities/case_evidence.e
 import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { ForensicInvest } from "@/modules/forensic_invests/entities/forensic_invest.entity";
+
+const SALT_ROUNDS = 10;
+
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, SALT_ROUNDS);
+}
 
 async function seedTasksRoles() {
   try {
@@ -88,9 +95,11 @@ async function seedTasksRoles() {
     await roleRepository.save(role2);
 
     // === Insert User 1 ===
+    const hashedPassword = await hashPassword("Password123!");
+
     const user1 = new User();
     user1.username = "john_doe";
-    user1.password_hash = "hashed_password1";
+    user1.password_hash = hashedPassword;
     user1.fullname = "John Doe";
     user1.dob = new Date("1990-01-01");
     user1.date_attended = new Date();
@@ -103,7 +112,7 @@ async function seedTasksRoles() {
     // === Insert User 2 ===
     const user2 = new User();
     user2.username = "jane_smith";
-    user2.password_hash = "hashed_password2";
+    user2.password_hash = hashedPassword;
     user2.fullname = "Jane Smith";
     user2.dob = new Date("1992-05-15");
     user2.date_attended = new Date();

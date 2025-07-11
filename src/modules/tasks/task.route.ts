@@ -11,12 +11,14 @@ import { createTaskSchema } from "./schemas/create-task.schema";
 const router = express.Router();
 
 router.get(
-  "/all/:username/:roleId/:caseId",
+  "/all/:caseId",
+  authMiddleware([RoleType.FINANCIAL_INVESTIGATOR, RoleType.FORENSIC_OFFICER]),
   asyncHandle(taskController.getAllTaskByRoleId)
 );
 
 router.get(
-  "/detail/:roleId/:taskId",
+  "/detail/:taskId",
+  authMiddleware([RoleType.FINANCIAL_INVESTIGATOR, RoleType.FORENSIC_OFFICER]),
   asyncHandle(taskController.getTaskDetailById)
 );
 

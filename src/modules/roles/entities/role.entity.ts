@@ -17,8 +17,8 @@ export class Role {
   @PrimaryColumn()
   role_id!: string;
 
-  @Column({ type: "enum", enum: UserRole })
-  description!: UserRole;
+  @Column()
+  description!: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
