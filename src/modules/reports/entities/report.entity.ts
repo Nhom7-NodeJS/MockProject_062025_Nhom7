@@ -4,7 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { Case } from "@/modules/cases/entities/case.entity";
@@ -15,23 +15,20 @@ import { Suspect } from "@/modules/suspects/entities/suspect.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import {
   CrimeType,
-  ReporterIncidentRelationship,
+  IncidentRelationship,
   ReportStatus,
   SeverityLevel,
 } from "@/modules/reports/enums/report.enum";
 
 @Entity("reports")
 export class Report {
-  @PrimaryColumn()
-  report_id!: string;
+  @PrimaryGeneratedColumn()
+  report_id!: number;
 
   @Column({ type: "enum", enum: CrimeType })
   crime_type!: CrimeType;
 
-  @Column({
-    type: "enum",
-    enum: SeverityLevel,
-  })
+  @Column({ type: "enum", enum: SeverityLevel })
   severity!: SeverityLevel;
 
   @Column({ type: "timestamp" })
@@ -40,14 +37,14 @@ export class Report {
   @Column({ nullable: true })
   description?: string;
 
-  @Column()
-  case_location!: string;
+  @Column({ nullable: true })
+  detail_address?: string;
 
   @Column({ type: "timestamp" })
   reported_at!: Date;
 
-  @Column()
-  reporter_location!: string;
+  @Column({ nullable: true })
+  reporter_address?: string;
 
   @Column()
   reporter_fullname!: string;
@@ -55,17 +52,17 @@ export class Report {
   @Column()
   reporter_email!: string;
 
-  @Column({ nullable: true })
-  reporter_phone_number?: string;
+  @Column()
+  reporter_phone_number!: string;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
-  @Column({ type: "enum", enum: ReportStatus })
+  @Column({ type: "enum", enum: ReportStatus, default:ReportStatus.PENDING })
   status!: ReportStatus;
 
-  @Column({ type: "enum", enum: ReporterIncidentRelationship })
-  reporter_incident_relationship!: ReporterIncidentRelationship;
+  @Column({ type: "enum", enum: IncidentRelationship })
+  reporter_incident_relationship!: IncidentRelationship;
 
   // OneToMany
   @OneToMany(() => Evidence, (evidence) => evidence.report)

@@ -1,8 +1,6 @@
 export enum SeverityLevel {
-  MINOR = "Minor",
-  MODERATE = "Moderate",
-  SERIOUS = "Serious",
-  CRITICAL = "Critical",
+  URGENT = "Urgent",
+  NOT_URGENT = "Not urgent",
 }
 export enum CrimeType {
   CRIMES_AGAINST_PERSONS = "Crimes Against Persons",
@@ -18,8 +16,8 @@ export enum ReportStatus {
   REJECTED = "Rejected",
 }
 
-export enum ReporterIncidentRelationship {
+export enum IncidentRelationship {
   VICTIM = "Victim",
   WITNESS = "Witness",
-  BYSTANDER = "Bystander",
+  SUSPECT = "Suspect",
 }

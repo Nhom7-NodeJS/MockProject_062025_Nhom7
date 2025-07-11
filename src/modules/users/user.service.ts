@@ -20,9 +20,9 @@ export class UserService {
     this.userRepository = AppDataSource.getRepository(User);
   }
 
-  async getAll(): Promise<User[]> {
-    return await this.userRepository.find();
-  }
+  // async getAll(): Promise<User[]> {
+  //   return await this.userRepository.find();
+  // }
 
   async registerUser(userData: CreateUserDto): Promise<{ user: UserResponseDto, token: string }> {
     try {

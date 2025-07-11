@@ -1,5 +1,5 @@
 import { Case} from "./entities/case.entity";
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { User } from "@/modules/users/entities/user.entity";
 

@@ -1,7 +1,8 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+
+import { loadedEnv } from "./load-env";
 import { entities } from "@/config/load-entities";
-import { loadedEnv } from "@/config/load-env";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
