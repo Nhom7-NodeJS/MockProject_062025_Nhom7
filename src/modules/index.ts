@@ -1,6 +1,6 @@
 import express from "express";
 
-
+import warrantRouter from "@/modules/warrants/warrant.router";
 import authRouter from "@/modules/auth/auth.route";
 import caseRouter from "@/modules/cases/case.route";
 import financialInvestRouter from "@/modules/financial_invests/financial_invest.route";
@@ -16,11 +16,14 @@ const API_V1 = "/api/v1";
 router.use(`${API_V1}/auth`, authRouter);
 router.use(`${API_V1}/report`, reportRouter);
 
+
 // Protected routes
 router.use(`${API_V1}/cases`, caseRouter);
 router.use(`${API_V1}/financial-invest`, financialInvestRouter);
 router.use(`${API_V1}/forensic-invest`, forensicInvestRouter);
 router.use(`${API_V1}/tasks`, taskRouter);
+
+router.use(`${API_V1}/warrant`, warrantRouter);
 router.use(`${API_V1}/report`, reportRouter)
 router.use("/account", authRouter);
 export default router;
