@@ -5,8 +5,8 @@ import authRouter from "./auth/auth.route";
 
 import financialInvestRouter from "@/modules/financial_invests/financial_invest.route";
 import forensicInvestRouter from "@/modules/forensic_invests/forensic_invest.route";
-import taskRouter from "@/modules/tasks/task.route";
 import caseRouter from "@/modules/cases/case.route";
+import taskRouter from "@/modules/tasks/task.route";
 
 import UserRouter from "@/modules/users/user.route";
 const router = express.Router();
@@ -17,7 +17,12 @@ router.use(`${API_V1}/forensic-invest`, forensicInvestRouter);
 router.use(`${API_V1}/tasks`, taskRouter);
 router.use(`${API_V1}/users`, userRouter);
 router.use(`${API_V1}/home`, reportRouter);
+// Public routes
+router.use(`${API_V1}/auth`, authRouter);
+
+// Protected routes
 router.use(`${API_V1}/cases`, caseRouter);
+router.use(`${API_V1}/tasks`, taskRouter);
 
 router.use(`${API_V1}/report`, reportRouter)
 router.use("/account", authRouter);

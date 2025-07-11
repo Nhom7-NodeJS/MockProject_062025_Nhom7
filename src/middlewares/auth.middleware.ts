@@ -1,57 +1,81 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import authService from '@/modules/auth/auth.service';
+import { AppError } from '@/common/error.response';
 import { HttpStatusCode } from '@/constants/status-code';
+import { ErrorCode } from '@/constants/error-code';
 
-interface AuthRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: {
-    id: string;
+    username: string;
     role: string;
-    email: string;
   };
 }
 
-const VALID_REPORT_STATUS = ['Approved', 'Rejected', 'Pending'];
+export const authMiddleware = (roles?: string[]) => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    // Get token from header
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
 
-export const reportAuthMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-  // 1. Check x-access-token header
-  const token = req.headers['x-access-token'] as string;
-  
-  if (!token) {
-    return res.status(HttpStatusCode.UNAUTHORIZED).json({
-      code: 401,
-      message: 'Access token is required'
-    });
-  }
-
-  try {
-    // 2. Verify JWT token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as any;
-    req.user = decoded;
-
-    // 3. Validate reportStatus for PUT requests
-    if (req.method === 'PUT') {
-      const { reportStatus } = req.body;
-      
-      if (!reportStatus) {
-        return res.status(HttpStatusCode.BAD_REQUEST).json({
-          code: 400,
-          message: 'reportStatus is required'
-        });
-      }
-
-      if (!VALID_REPORT_STATUS.includes(reportStatus)) {
-        return res.status(HttpStatusCode.BAD_REQUEST).json({
-          code: 400,
-          message: `reportStatus must be one of: ${VALID_REPORT_STATUS.join(', ')}`
-        });
-      }
+    if (!token) {
+      throw new AppError(
+        'No authentication token provided',
+        HttpStatusCode.UNAUTHORIZED,
+        ErrorCode.UNAUTHORIZED,
+        { reason: 'missing_token' }
+      );
     }
 
-    next();
-  } catch (error) {
-    return res.status(HttpStatusCode.UNAUTHORIZED).json({
-      code: 401,
-      message: 'Invalid or expired token'
-    });
-  }
+    try {
+      // Verify token
+      const decoded = authService.verifyToken(token);
+      console.log(decoded);
+      if (!decoded) {
+        throw new AppError(
+          'Invalid or malformed authentication token',
+          HttpStatusCode.UNAUTHORIZED,
+          ErrorCode.INVALID_TOKEN,
+          { reason: 'token_verification_failed' }
+        );
+      }
+
+      // Check if user has required role
+      if (roles && roles.length > 0 && !roles.includes(decoded.role)) {
+        throw new AppError(
+          'Insufficient permissions to access this resource',
+          HttpStatusCode.FORBIDDEN,
+          ErrorCode.FORBIDDEN,
+          { 
+            requiredRoles: roles,
+            userRole: decoded.role,
+            reason: 'insufficient_permissions'
+          }
+        );
+      }
+
+      // Add user to request
+      req.user = {
+        username: decoded.username,
+        role: decoded.role,
+      };
+
+      next();
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+      
+      // For unexpected errors, wrap them in AppError
+      const errorMessage = error instanceof Error ? error.message : 'Authentication failed';
+      throw new AppError(
+        errorMessage,
+        HttpStatusCode.UNAUTHORIZED,
+        ErrorCode.INVALID_TOKEN, // Using existing error code
+        {
+          reason: 'authentication_error',
+          originalError: error instanceof Error ? error.message : String(error)
+        }
+      );
+    }
+  };
 };

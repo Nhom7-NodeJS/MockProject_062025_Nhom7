@@ -45,6 +45,15 @@ export const SuccessMessages = {
   AUTH: {
     LOGIN_SUCCESS: "Login successfully",
     LOGOUT_SUCCESS: "Logout successfully",
+    INVALID_CREDENTIALS: "Invalid username or password",
+    USER_ALREADY_EXISTS: "User already exists",
+  },
+
+  TASK: {
+    TASK_GET: "Fetch task data successfully",
+    TASK_CREATED: "Task created successfully",
+    TASK_UPDATED: "Task updated successfully",
+    TASK_DELETED: "Task deleted successfully",
   },
   Warrant: {
     WARRANT_GET: "Fetch warrant data successfully",
@@ -61,11 +70,6 @@ export const SuccessMessages = {
   FORENSIC_INVEST: {
     FORENSIC_INVEST_GET: "Fetch forensic invest data successfully",
     FORENSIC_INVEST_UPDATED: "Update forensic investigation successfully",
-  },
-
-  TASK: {
-    TASK_GET: "Fetch task data successfully",
-    TASK_UPDATED: "Update task status successfully",
   },
 } as const;
 

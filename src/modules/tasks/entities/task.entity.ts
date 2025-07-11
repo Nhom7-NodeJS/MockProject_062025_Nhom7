@@ -48,4 +48,9 @@ export class Task {
     { name: 'username', referencedColumnName: 'username' },
   ])
   caseUser!: CaseUser;
+
+  toJSON() {
+    const { is_deleted, ...rest } = this;
+    return rest;
+  }
 }
