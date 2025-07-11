@@ -1,6 +1,6 @@
 
 import { Request, Response } from "express";
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { FinancialInvest } from "./entities/financial_invest.entity";
 import { Case } from "@/modules/cases/entities/case.entity";
 import { Task } from "@/modules/tasks/entities/task.entity";

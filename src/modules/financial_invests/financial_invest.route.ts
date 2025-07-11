@@ -17,8 +17,5 @@ router.put("/:task_id/confirm",
     processRequestFiles, 
     FinancialInvestController.confirmFinancialTask
 );
-router.put(
-  "/update/:evidenceId",
-  asyncHandle(FinancialInvestController.updateFinancialInvest)
-);
+
 export default router;
