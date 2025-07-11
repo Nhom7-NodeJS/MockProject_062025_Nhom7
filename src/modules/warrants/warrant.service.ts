@@ -1,24 +1,30 @@
-import { AppDataSource } from "@/config/config-database";
-import { Warrant } from "@/modules/warrants/entities/warrant.entity";
+import { Repository } from "typeorm";
+
+import { AppDataSource } from "@/config/database.config";
 import { WarrantStatus } from "@/modules/financial_invests/enums/financial_invest.enum";
-import { CreateWarrantDto } from "@/modules/warrants/dto/warrant.create.dto";
-import { get } from "http";
-const warrantRepository = AppDataSource.getRepository(Warrant);
 
-export const WarrantService = {
-    getAllWarrants: async () =>{
-        try{
+import { Warrant } from "./entities/warrant.entity";
+import { CreateWarrantDto } from "./dto/warrant.create.dto";
 
-        return await warrantRepository.find();
-         } catch (err) {
-      console.error( err);
+export class WarrantService {
+  private warrantRepository: Repository<Warrant>;
+
+  constructor() {
+    this.warrantRepository = AppDataSource.getRepository(Warrant);
+  }
+
+  async getAllWarrants(): Promise<Warrant[]> {
+    try {
+      return await this.warrantRepository.find();
+    } catch (err) {
+      console.error(err);
       throw err; // <-- để controller bắt được lỗi
     }
-    },
-    getExecutingWarrants: async () => {
+  }
+
+  async getExecutingWarrants(): Promise<Warrant[]> {
     try {
-    
-      return await warrantRepository.find({
+      return await this.warrantRepository.find({
         where: {
           status: WarrantStatus.EXECUTING,
         },
@@ -27,69 +33,71 @@ export const WarrantService = {
       console.error(err);
       throw err;
     }
-  },
-  getCompletedWarrants: async () => {
-    try{
-return await warrantRepository.find({
+  }
+
+  async getCompletedWarrants(): Promise<Warrant[]> {
+    try {
+      return await this.warrantRepository.find({
         where: {
           status: WarrantStatus.COMPLETED,
         },
       });
-
     } catch (err) {
-    console.error(err);
-    throw err; 
+      console.error(err);
+      throw err;
     }
-  },
- createNewWarrant: async ( warrantData: CreateWarrantDto) => {
-  try {
-    const newWarrant = warrantRepository.create({
-      warrant_name: warrantData.warrant_name,
-      police_response: warrantData.police_response,
-      attached_file: warrantData.attached_file ?? [],
-      time_publish: new Date(warrantData.time_publish),
-      is_deleted: warrantData.is_deleted ?? false,
-      status: warrantData.status ?? WarrantStatus.WAITING_EXECUTING,
-      case: { case_id: warrantData.case_id },
-    });
-
-    return await warrantRepository.save(newWarrant);
-  } catch (err) {
-    console.error("Error creating new warrant:", err);
-    throw err;
   }
-},
-searchWarrantByName: async (Name: string) => {
-  try {
 
-    return await warrantRepository.find({
-      where: {
-        warrant_name: Name,
-      },
-    });
-  } catch (err) {
-    console.error("Error searching warrant by name:", err);
-    throw err;
-  }
-},
-getWarrantById: async (warrantId: string) => {
-  try {
-    const warrant = await warrantRepository.findOne({
-      where: {
-        warrant_id: warrantId,
-      },
-    });
+  async createNewWarrant(warrantData: CreateWarrantDto) {
+    try {
+      const newWarrant = this.warrantRepository.create({
+        warrant_name: warrantData.warrant_name,
+        police_response: warrantData.police_response,
+        attached_file: warrantData.attached_file ?? [],
+        time_publish: new Date(warrantData.time_publish),
+        is_deleted: warrantData.is_deleted ?? false,
+        status: warrantData.status ?? WarrantStatus.WAITING_EXECUTING,
+        case: { case_id: warrantData.case_id },
+      });
 
-    if (!warrant) {
-      throw new Error("Warrant not found");
+      return await this.warrantRepository.save(newWarrant);
+    } catch (err) {
+      console.error("Error creating new warrant:", err);
+      throw err;
     }
+  }
 
-    return warrant;
-  }catch (err) {
-    console.error("Error getting warrant by ID:", err);
-    throw err;
+  async searchWarrantByName(name: string) {
+    try {
+      return await this.warrantRepository.find({
+        where: {
+          warrant_name: name,
+        },
+      });
+    } catch (err) {
+      console.error("Error searching warrant by name:", err);
+      throw err;
+    }
+  }
+
+  async getWarrantById(warrantId: string) {
+    try {
+      const warrant = await this.warrantRepository.findOne({
+        where: {
+          warrant_id: warrantId,
+        },
+      });
+
+      if (!warrant) {
+        throw new Error("Warrant not found");
+      }
+
+      return warrant;
+    } catch (err) {
+      console.error("Error getting warrant by ID:", err);
+      throw err;
+    }
   }
 }
-};
 
-export default WarrantService;
+export default new WarrantService;

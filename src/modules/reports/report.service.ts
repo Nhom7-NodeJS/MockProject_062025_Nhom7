@@ -1,22 +1,21 @@
 import { Repository } from "typeorm";
-import { generateUUID } from "@/helpers/generate-uuid"
 
 import { AppDataSource } from "@/config/database.config";
+import { AppError } from "@/common/error.response";
+import { ErrorCode } from "@/constants/error-code";
+import { HttpStatusCode } from "@/constants/status-code";
+import { generateUUID } from "@/helpers/generate-uuid"
 import { Report } from "@/modules/reports/entities/report.entity";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { Suspect } from "@/modules/suspects/entities/suspect.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
-import { ReportVictim } from "../reports_victims/entities/report_victim.entity";
-import { ReportWitness } from "../reports_witnesses/entities/report_witness.entity";
 import { Gender } from "@/modules/users/enums/user.enum";
-import { IncidentRelationship } from "./enums/report.enum";
 import { CreateIncidentReportDto } from "@/modules/reports/dto/report.dto";
 
-import { ReportStatus } from "./enums/report.enum";
-import { AppError } from "@/common/error.response";
-import { ErrorCode } from "@/constants/error-code";
-import { HttpStatusCode } from "@/constants/status-code";
+import { ReportStatus, IncidentRelationship } from "./enums/report.enum";
+import { ReportVictim } from "../reports_victims/entities/report_victim.entity";
+import { ReportWitness } from "../reports_witnesses/entities/report_witness.entity";
 
 export class ReportService {
 	private reportRepository: Repository<Report>;

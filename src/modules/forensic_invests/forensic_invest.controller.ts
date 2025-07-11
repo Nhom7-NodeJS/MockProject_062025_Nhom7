@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 import { AppResponse } from "@/common/success.response";
 import { SuccessMessages } from "@/constants/message";

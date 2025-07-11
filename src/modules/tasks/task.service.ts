@@ -1,17 +1,16 @@
 import { Repository } from "typeorm";
+import { v4 as uuidv4 } from 'uuid';
+
 import { AppDataSource } from "@/config/database.config";
 import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
-
-import { Task } from "./entities/task.entity";
-import { TaskDetailResponseDto } from "./dto/task_detail-response.dto";
-import { v4 as uuidv4 } from 'uuid';
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
-import { CreateTaskDto } from "./dto/create-task.dto";
-
+import { Task } from "./entities/task.entity";
 import { TaskStatus } from "./enums/task.enum";
+import { CreateTaskDto } from "./dto/create-task.dto";
+import { TaskDetailResponseDto } from "./dto/task_detail-response.dto";
 
 export class TaskService {
   private taskRepository: Repository<Task>;

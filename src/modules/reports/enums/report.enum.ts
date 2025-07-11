@@ -1,6 +1,6 @@
 export enum SeverityLevel {
   URGENT = "Urgent",
-  NOT_URGENT = "Not urgent",
+  NOT_URGENT = "Not Urgent",
 }
 export enum CrimeType {
   CRIMES_AGAINST_PERSONS = "Crimes Against Persons",

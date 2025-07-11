@@ -8,7 +8,6 @@ export class FinancialInvest {
   evidence_id!: string;
 
   @Column()
-
   summary?: string;
 
   @Column({ type: "json" })

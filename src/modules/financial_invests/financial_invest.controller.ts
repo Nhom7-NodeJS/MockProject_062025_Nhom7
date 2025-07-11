@@ -1,12 +1,12 @@
-
 import { Request, Response } from "express";
+
 import { AppDataSource } from "@/config/database.config";
-import { FinancialInvest } from "./entities/financial_invest.entity";
-import { Case } from "@/modules/cases/entities/case.entity";
+import { ErrorCode } from "@/constants/error-code";
 import { Task } from "@/modules/tasks/entities/task.entity";
 import { TaskStatus } from "@/modules/tasks/enums/task.enum";
-import { ErrorCode } from "@/constants/error-code";
 import { UpdateFinancialTaskDto } from "@/modules/financial_invests/dto/financial_invest.dto";
+
+import { FinancialInvest } from "./entities/financial_invest.entity";
 
 export class FinancialInvestController {
   static async financialTaskDetail(req: Request, res: Response) {
