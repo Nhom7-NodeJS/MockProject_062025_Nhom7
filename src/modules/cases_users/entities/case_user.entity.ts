@@ -13,6 +13,7 @@ export class CaseUser {
   username!: string;
 
   @Column({ type: 'text', nullable: true })
+
   notes?: string;
 
   @Column({ type: "timestamp" })

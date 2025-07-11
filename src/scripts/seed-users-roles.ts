@@ -1,5 +1,8 @@
+<<<<<<< HEAD
+=======
 import * as bcrypt from 'bcryptjs';
 
+>>>>>>> origin/dev3
 import { AppDataSource } from "@/config/database.config";
 import { User } from "@/modules/users/entities/user.entity";
 import { Role } from "@/modules/roles/entities/role.entity";

@@ -4,7 +4,6 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "nodemon --watch ./src --ext ts --exec ts-node -r tsconfig-paths/register src/main.ts",
-    
     "seed:cases": "ts-node -r tsconfig-paths/register src/scripts/seed-cases.ts",
     "seed:users-roles": "ts-node -r tsconfig-paths/register src/scripts/seed-users-roles.ts",
     "seed:tasks-roles": "ts-node -r tsconfig-paths/register src/scripts/seed-tasks-roles.ts",
@@ -27,6 +26,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "joi": "^17.13.3",
+    "joy": "^0.1.1",
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "multer": "^2.0.1",

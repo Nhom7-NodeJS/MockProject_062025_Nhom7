@@ -20,12 +20,10 @@ router.post(
   validateBody(CreateReportSchema), 
   asyncHandle((req, res) => reportController.createReport(req, res)
 ));
-
 router.get(
   "/",
   asyncHandle(ReportController.getAllReports)
 );
-
 router.put(
   "/:reportId/status",
   validateBody(UpdateReportStatusSchema),

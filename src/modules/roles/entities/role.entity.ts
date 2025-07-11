@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm";
 
 import { PermissionRole } from "@/modules/permissions_roles/entities/permission_role.entity";
 import { User } from "@/modules/users/entities/user.entity";
+import { UserRole } from "@/modules/roles/enums/role.enum";
 
 // No enum type in database, roles_id is this
 // export enum RoleType {
@@ -17,8 +18,8 @@ export class Role {
   @PrimaryColumn()
   role_id!: string;
 
-  @Column()
-  description!: string;
+  @Column({ type: "enum", enum: UserRole })
+  description!: UserRole;
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;

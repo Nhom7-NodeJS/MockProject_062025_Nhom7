@@ -1,3 +1,5 @@
+import { Warrant } from "@/modules/warrants/entities/warrant.entity";
+
 export const SuccessMessages = {
   USER: {
     USER_GET: "Fetch user data successfully",
