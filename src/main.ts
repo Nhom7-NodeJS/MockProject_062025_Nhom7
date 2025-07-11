@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import { initDatabase } from "@/database/connect-database";
-import router from "@/modules";
+import rootRoutes from "./router/index.router";
 import { exceptionHandler } from "@/middlewares/exception-filter";
 import { loadedEnv } from "@/config/load-env";
 import { requestLogger } from "@/middlewares/logger-filter";
 import { logger } from "@/utils/logger";
+import { AppDataSource } from "@/config/config-database"; // Adjust the import path as necessary
 
 const app = express();
 const PORT = loadedEnv.port;
@@ -21,8 +22,9 @@ app.use(requestLogger);
 // Initialize database connection
 initDatabase();
 
+
 // init routes
-app.use("/", router);
+app.use("/api/v1", rootRoutes);
 
 // middleware handle exception
 app.use(exceptionHandler);

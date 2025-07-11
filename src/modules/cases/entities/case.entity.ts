@@ -15,6 +15,7 @@ import { CaseSeverity, CaseStatus, CaseType } from "../enums/case.enum";
 
 @Entity("cases")
 export class Case {
+  [x: string]: any;
   @PrimaryColumn()
   case_id!: string;
 

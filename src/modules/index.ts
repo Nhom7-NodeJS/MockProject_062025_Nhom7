@@ -8,6 +8,7 @@ import forensicInvestRouter from "@/modules/forensic_invests/forensic_invest.rou
 import taskRouter from "@/modules/tasks/task.route";
 import caseRouter from "@/modules/cases/case.route";
 
+import UserRouter from "@/modules/users/user.route";
 const router = express.Router();
 const API_V1 = "/api/v1";
 
