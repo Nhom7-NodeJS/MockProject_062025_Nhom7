@@ -9,6 +9,7 @@ import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { EvidenceSuspect } from "@/modules/evidences_suspects/entities/evidence_suspect.entity";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entities";
 import { ForensicInvest } from "@/modules/forensic_invests/entities/forensic_invest.entity";
+import { Holiday } from "@/modules/holidays/entities/holiday.entity";
 import { Indictment } from "@/modules/indictments/entities/indictment.entity";
 import { Inmate } from "@/modules/inmates/entities/inmate.entity";
 import { Interview } from "@/modules/interviews/entities/interview.entity";
@@ -27,11 +28,11 @@ import { ReportWitness } from "@/modules/reports_witnesses/entities/report_witne
 import { Role } from "@/modules/roles/entities/role.entity";
 import { Sentence } from "@/modules/sentences/entities/sentence.entity";
 import { Suspect } from "@/modules/suspects/entities/suspect.entity";
+import { Task } from "@/modules/tasks/entities/task.entity";
 import { Timeline } from "@/modules/timelines/entities/timeline.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Victim } from "@/modules/victims/entities/victim.entity";
 import { VictimInterview } from "@/modules/victims_interviews/entities/victim_interview.entity";
-import { WarrantResult } from "@/modules/warrant_results/entities/warrant_result.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
 import { WitnessInterview } from "@/modules/witnesses_interviews/entities/witness_interview.entity";
@@ -66,12 +67,13 @@ export const entities = [
   Role,
   Sentence,
   Suspect,
+  Task,
   Timeline,
   User,
   Victim,
   VictimInterview,
-  WarrantResult,
   Warrant,
   Witness,
   WitnessInterview,
+  Holiday,
 ];

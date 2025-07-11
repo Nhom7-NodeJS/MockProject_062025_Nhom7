@@ -4,7 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn
+  PrimaryColumn,
 } from "typeorm";
 
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
@@ -14,8 +14,10 @@ import { Prosecution } from "@/modules/prosecutions/entities/prosecution.entity"
 import { ProsecutionUser } from "@/modules/prosecutions_users/entities/prosecution_user.entity";
 import { Question } from "@/modules/questions/entity/question.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
-import { Role } from "@/modules/roles/entities/role.entity";
+import { Role, UserRole } from "@/modules/roles/entities/role.entity";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
+import { Gender, UserStatus } from "../enums/user.enum";
+import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 
 @Entity("users")
 export class User {
@@ -34,14 +36,17 @@ export class User {
   @Column({ nullable: true })
   phone_number?: string;
 
+  @Column({ type: "enum", enum: Gender, nullable: true })
+  gender?: Gender;
+
   @Column({ type: "timestamp" })
   dob!: Date;
 
   @Column({ type: "timestamp" })
   date_attended!: Date;
 
-  @Column()
-  status!: string;
+  @Column({ type: "enum", enum: UserStatus, default: UserStatus.ACTIVE })
+  status!: UserStatus;
 
   @Column({ type: "timestamp" })
   create_at!: Date;
@@ -49,6 +54,11 @@ export class User {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 
+  @Column({ nullable: true })
+  refresh_token?: string;
+
+  @Column({nullable: true})
+  email?: string;
   // OneToMany
   @OneToMany(() => CaseUser, (caseUser) => caseUser.user)
   caseUsers!: CaseUser[];
@@ -56,7 +66,10 @@ export class User {
   @OneToMany(() => Evidence, (evidence) => evidence.user)
   evidences!: Evidence[];
 
-  @OneToMany(() => InvestigationPlan, (investigationPlan) => investigationPlan.createdOfficer)
+  @OneToMany(
+    () => InvestigationPlan,
+    (investigationPlan) => investigationPlan.createdOfficer
+  )
   investigationPlans!: InvestigationPlan[];
 
   @OneToMany(() => Interview, (interview) => interview.interviewer)
@@ -74,8 +87,16 @@ export class User {
   @OneToMany(() => Report, (report) => report.user)
   reports!: Report[];
 
+  @OneToMany(() => Warrant, (warrant) => warrant.user)
+  warrants!: Warrant[];
+
   // ManyToOne
   @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn({ name: "role_id" })
   role!: Role;
+    @Column({
+    type: "enum",
+    enum: UserRole,
+  })
+  position!: UserRole;
 }
