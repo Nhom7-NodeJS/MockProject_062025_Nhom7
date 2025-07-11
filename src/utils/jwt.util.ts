@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.ACCESS_TOKEN_SECRET || 'access_secret';
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET || 'refresh_secret';
 const REFRESH_EXPIRES_IN= process.env.REFRESH_TOKEN_EXPIRES_IN;
-const ACCESS_EXPIRES_IN= process.env.ACCESS_TOKEN_EXPIRES_IN=10m;
+const ACCESS_EXPIRES_IN= process.env.ACCESS_TOKEN_EXPIRES_IN || '15m';
 export const JwtUtils = {
   generateAccessToken: (payload: object) => {
     return jwt.sign(payload, JWT_SECRET, { expiresIn: '15m' }); // ngắn hạn

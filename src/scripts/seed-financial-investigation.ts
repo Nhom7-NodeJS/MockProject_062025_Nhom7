@@ -5,7 +5,7 @@ import { FinancialInvest } from "@/modules/financial_invests/entities/financial_
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
 import { WarrantStatus } from "@/modules/warrants/enums/warrant.enum";
 import { v4 as uuidv4 } from "uuid";
-
+import { CaseType, CaseSeverity, CaseStatus } from "@/modules/cases/enums/case.enum";
 async function seedFinancialData() {
   try {
     // Initialize the data source
@@ -24,9 +24,9 @@ async function seedFinancialData() {
     const case1 = new Case();
     case1.case_id = uuidv4();
     case1.case_name = "Fraud Case";
-    case1.type_case = "Murder";
-    case1.severity = "High";
-    case1.status = "Open";
+    case1.type_case = CaseType.MURDER
+    case1.severity = CaseSeverity.HIGH;
+    case1.status = CaseStatus.IN_PROCESS;
     case1.create_at = new Date();
     await caseRepository.save(case1);
 
@@ -62,9 +62,9 @@ async function seedFinancialData() {
     const case2 = new Case();
     case2.case_id = uuidv4();
     case2.case_name = "Cyber Fraud Case";
-    case2.type_case = "Cybercrime";
-    case2.severity = "Medium";
-    case2.status = "In Progress";
+    case2.type_case = CaseType.CYBER_CRIME;
+    case2.severity = CaseSeverity.MEDIUM;
+    case2.status = CaseStatus.PENDING_APPROVAL;
     case2.create_at = new Date();
     await caseRepository.save(case2);
 

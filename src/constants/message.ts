@@ -51,7 +51,7 @@ export const SuccessMessages = {
     WARRANT_CREATED: "Warrant created successfully",
     WARRANT_UPDATED: "Warrant updated successfully",
     WARRANT_DELETED: "Warrant deleted successfully",
-
+  },
 
   FINANCIAL_INVEST: {
     FINANCIAL_INVEST_GET: "Fetch financial invest data successfully",
@@ -68,6 +68,7 @@ export const SuccessMessages = {
     TASK_UPDATED: "Update task status successfully",
   },
 } as const;
+
 export const ErrorMessages = {
   USER_NOT_FOUND: "User not found",
   INVALID_ID: "Invalid id",
