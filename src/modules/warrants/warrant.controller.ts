@@ -12,7 +12,7 @@ import { GetAllWarrantStatus } from "./dto/warrant.getallcasestatus";
 class WarrantController {
   async getAllWarrantsWithStatus(req: Request, res: Response) {
     const { status } = req.query as GetAllWarrantStatus;
-
+   
     const warrants = await warrantService.getAllWarrants(status);
 
     if (!warrants) {
@@ -30,12 +30,12 @@ class WarrantController {
   }
 
  createNewWarrant = async (req: Request, res: Response) => {
-  const uploaded = (req as any).uploadedFiles; // ✅ lấy đúng dữ liệu
+  const uploaded = (req as any).uploadedFiles; 
   const fileUrls = uploaded?.attached_file || [];
 
   const data: CreateWarrantDto = {
     ...req.body,
-    attached_file: fileUrls, // ✅ gán URLs đúng
+    attached_file: fileUrls, //=
   };
 
   const newWarrant = await warrantService.createNewWarrant(data);
