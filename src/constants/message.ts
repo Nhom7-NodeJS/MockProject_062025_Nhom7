@@ -27,8 +27,17 @@ export const SuccessMessages = {
     PERMISSION_DELETED: "Permission deleted successfully",
   },
 
+
   REPORT: {
+    REPORT_GET: "Fetch report data successfully",
+
     REPORT_CREATED: "Report created successfully",
+
+    REPORT_UPDATED: "Report updated successfully",
+
+    REPORT_STATUS_UPDATED: "Report status updated successfully",
+   
+    REPORT_DELETED: "Report deleted successfully",
   },
 
   AUTH: {
@@ -78,4 +87,12 @@ export const ErrorMessages = {
   FILE_UPLOAD_FAILED: "Failed to upload files",
   UNSUPPORTED_FILE_TYPE: "This file type is not supported",
   INVALID_JSON: "Invalid JSON",
+
+  REPORT_NOT_FOUND: "Report not found",
+
+  FORBIDDEN: "Access forbidden",
+
+  INVALID_REPORT_STATUS: "Invalid report status",
+
+  INTERNAL_SERVER_ERROR: "Internal server error",
 } as const;

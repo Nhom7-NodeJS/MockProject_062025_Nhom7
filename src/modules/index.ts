@@ -1,10 +1,11 @@
 import express from "express";
+import userRouter from "@/modules/users/user.route";
+import reportRouter from "./reports/report.route";
+import authRouter from "./auth/auth.route";
 
 import financialInvestRouter from "@/modules/financial_invests/financial_invest.route";
 import forensicInvestRouter from "@/modules/forensic_invests/forensic_invest.route";
 import taskRouter from "@/modules/tasks/task.route";
-import userRouter from "@/modules/users/user.route";
-import reportRouter from "@/modules/reports/report.route";
 import caseRouter from "@/modules/cases/case.route";
 
 const router = express.Router();
@@ -17,4 +18,6 @@ router.use(`${API_V1}/users`, userRouter);
 router.use(`${API_V1}/home`, reportRouter);
 router.use(`${API_V1}/cases`, caseRouter);
 
+router.use(`${API_V1}/report`, reportRouter)
+router.use("/account", authRouter);
 export default router;
