@@ -1,7 +1,8 @@
 import express from "express";
+
 import { FinancialInvestController } from "@/modules/financial_invests/financial_invest.controller";
 import { processRequestFiles } from "@/middlewares/upload.middleware";
-
+import { asyncHandle } from "@/utils/handle-error";
 
 const router = express.Router();
 
@@ -16,5 +17,8 @@ router.put("/:task_id/confirm",
     processRequestFiles, 
     FinancialInvestController.confirmFinancialTask
 );
-
+router.put(
+  "/update/:evidenceId",
+  asyncHandle(FinancialInvestController.updateFinancialInvest)
+);
 export default router;

@@ -1,13 +1,17 @@
 import { Repository } from "typeorm";
+import jwt from "jsonwebtoken";
 
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { User } from "@/modules/users/entities/user.entity";
 
 import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
-import { CreateUserDto } from "./dto/user.dto";
+import {CreateUserDto} from "./dto/user.dto"
+import {UserResponseDto} from "./dto/user.dto"
+import {PasswordUtils} from "@/utils/password.util"
+
 
 export class UserService {
   private userRepository: Repository<User>;
@@ -19,6 +23,8 @@ export class UserService {
   // async getAll(): Promise<User[]> {
   //   return await this.userRepository.find();
   // }
+
+
 
   // async getById(id: number): Promise<User> {
   //   const userExists = await this.userRepository.findOne({

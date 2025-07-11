@@ -7,6 +7,9 @@ import { loadedEnv } from "@/config/load-env";
 import { requestLogger } from "@/middlewares/logger-filter";
 import { logger } from "@/utils/logger";
 
+import { AppDataSource } from "@/config/database.config"; // Adjust the import path as necessary
+
+
 const app = express();
 const PORT = loadedEnv.port;
 

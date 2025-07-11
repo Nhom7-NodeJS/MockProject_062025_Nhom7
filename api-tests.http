@@ -61,3 +61,37 @@ Authorization: Bearer your_jwt_token_here
   "username": "{username}",
   "notes": "Assigning main investigator to this case"
 }
+
+### Get All Tasks by User + Role + Case
+GET {{baseUrl}}/tasks/all/john_doe/FINANCIAL_INVESTIGATOR/CASE001
+Content-Type: {{contentType}}
+
+### Get Task Detail by Role and Task ID
+GET {{baseUrl}}/tasks/detail/FINANCIAL_INVESTIGATOR/c8f352bc-bdf0-4298-81dc-c3a406fd897e
+Content-Type: {{contentType}}
+
+### Change Task Status (auto flow)
+PUT {{baseUrl}}/tasks/status/25b444fe-12c6-49f6-97af-f6d36ec2f5c6
+Content-Type: {{contentType}}
+
+{
+}
+
+### 1. Update Financial Investigation Result
+PUT {{baseUrl}}/financial-invest/update/c2b66d1a-2ea9-4df7-b734-f5e38d43f21a
+Content-Type: {{contentType}}
+
+{
+  "summary": "Updated financial investigation summary.",
+  "fileUrl": ["file3.pdf", "file4.pdf"]
+}
+
+### 2. Update Forensic Investigation Result
+PUT {{baseUrl}}/forensic-invest/update/46f402e6-d78a-486e-9d2c-f58ab8cf44a4
+Content-Type: {{contentType}}
+
+{
+  "summary": "Updated forensic investigation summary.",
+  "fileUrl": ["report1.docx", "image1.png"]
+}
+

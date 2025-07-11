@@ -1,21 +1,32 @@
+import { Request, Response, NextFunction } from "express";
+import Joi, { ObjectSchema, ValidationErrorItem } from "joi";
+
 import { AppError } from "@/common/error.response";
 import { ErrorCode } from "@/constants/error-code";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
-import { Request, Response, NextFunction } from "express";
-import { ObjectSchema } from "joi";
 
-export const validateBody = (schema: ObjectSchema) => {
+interface ValidationErrorDetail {
+  field: string;
+  message: string;
+}
+
+const createValidator = (schema: ObjectSchema, requestPart: 'body' | 'query' | 'params') => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const { error, value } = schema.validate(req.body, { abortEarly: false });
+    const options = {
+      abortEarly: false,
+      allowUnknown: requestPart !== 'body',
+      stripUnknown: true
+    };
+
+    const { error, value } = schema.validate(req[requestPart], options);
+
     if (error) {
-      // custom errors detail for response
-      const errorDetails = error.details.map((err) => {
-        return {
-          field: err.context?.label,
-          message: err.message,
-        };
-      });
+      const errorDetails: ValidationErrorDetail[] = error.details.map((err: ValidationErrorItem) => ({
+        field: err.context?.label || err.path.join('.'),
+        message: err.message.replace(/['"]/g, ''),
+      }));
+
       throw new AppError(
         ErrorMessages.VALIDATION_FAILED,
         HttpStatusCode.BAD_REQUEST,
@@ -23,7 +34,12 @@ export const validateBody = (schema: ObjectSchema) => {
         errorDetails
       );
     }
-    req.body = value;
+
+    req[requestPart] = value;
     next();
   };
 };
+
+export const validateBody = (schema: ObjectSchema) => createValidator(schema, 'body');
+export const validateQuery = (schema: ObjectSchema) => createValidator(schema, 'query');
+export const validateParams = (schema: ObjectSchema) => createValidator(schema, 'params');

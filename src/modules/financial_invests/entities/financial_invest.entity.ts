@@ -8,7 +8,11 @@ export class FinancialInvest {
   evidence_id!: string;
 
   @Column()
-  summary!: string;
+
+  summary?: string;
+
+  @Column({ type: "json" })
+  attach_file?: string[];
 
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;

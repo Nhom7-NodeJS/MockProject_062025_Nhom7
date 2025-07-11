@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 import { AppDataSource } from "@/config/config-database";
 import { FinancialInvest } from "./entities/financial_invest.entity";
@@ -178,3 +179,4 @@ export class FinancialInvestController {
     });
   }
 }
+

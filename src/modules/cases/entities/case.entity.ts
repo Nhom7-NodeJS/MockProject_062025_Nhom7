@@ -82,4 +82,9 @@ export class Case {
 
   @OneToMany(() => Witness, (witness) => witness.case)
   witnesses!: Witness[];
+
+  toJSON() {
+    const { is_deleted, ...rest } = this;
+    return rest;
+  }
 }
