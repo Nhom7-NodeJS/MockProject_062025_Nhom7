@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { NextFunction, Request, Response } from "express";
 import { AppResponse } from "@/common/success.response";
 import { SuccessMessages } from "@/constants/message";
@@ -5,6 +6,17 @@ import { HttpStatusCode } from "@/constants/status-code";
 import taskService from "./task.service";
 import { CreateTaskDto } from "./dto/create-task.dto";
 
+=======
+import { Request, Response } from "express";
+
+import { AppResponse } from "@/common/success.response";
+import { SuccessMessages } from "@/constants/message";
+import { HttpStatusCode } from "@/constants/status-code";
+
+import taskService from "./task.service";
+import { CreateTaskDto } from "./dto/create-task.dto";
+
+>>>>>>> origin/dev3
 export class TaskController {
   async getAllTaskByRoleId(req: Request, res: Response) {
     const { username, roleId, caseId } = req.params;

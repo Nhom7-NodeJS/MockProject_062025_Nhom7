@@ -1,30 +1,36 @@
 // warrant.router.ts
-import { Router } from "express";
-import WarrantController from "./warrant.controller";
+import express from "express";
+import warrantController from "./warrant.controller";
 import { processRequestFiles } from "@/middlewares/upload.middleware";
 
-const WarrantRouter = Router();
+const router = express.Router();
 
-WarrantRouter.get("/getAllWarrant", WarrantController.getAllWarrants);
-WarrantRouter.get(
+router.get("/", warrantController.getAllWarrants);
+
+router.get(
   "/getExecutingWarrant",
-  WarrantController.getExecutingWarrants
+  warrantController.getExecutingWarrants
 );
-WarrantRouter.get(
+
+router.get(
   "/getCompletedWarrant",
-  WarrantController.getCompletedWarrants
+  warrantController.getCompletedWarrants
 );
-WarrantRouter.post(
+
+router.post(
   "/createNewWarrant",
   processRequestFiles,
-  WarrantController.createNewWarrant
+  warrantController.createNewWarrant
 );
-WarrantRouter.post(
+
+router.post(
   "/searchWarrantByName",
-  WarrantController.searchWarrantByName
+  warrantController.searchWarrantByName
 );
-WarrantRouter.get(
+
+router.get(
   "/getWarrantById/:warrant_id",
-  WarrantController.getWarrantById
+  warrantController.getWarrantById
 );
-export default WarrantRouter;
+
+export default router;

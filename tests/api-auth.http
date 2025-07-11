@@ -6,7 +6,7 @@ POST {{baseUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "username": "testuser2",
+  "username": "testuser1",
   "password": "Test@123",
   "fullname": "Test User",
   "dob": "1990-01-01T00:00:00.000Z",

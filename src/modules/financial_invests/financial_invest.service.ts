@@ -1,13 +1,20 @@
 import { Repository } from "typeorm";
 
+<<<<<<< HEAD
 import { AppDataSource } from "@/config/config-database";
+=======
+import { AppDataSource } from "@/config/database.config";
+>>>>>>> origin/dev3
 import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
 
 import { FinancialInvest } from "./entities/financial_invest.entity";
+<<<<<<< HEAD
 import { FinancialDetailResponseDto } from "./dto/financial_detail-response.dto";
+=======
+>>>>>>> origin/dev3
 
 export class FinancialInvestService {
   private financialInvestRepository: Repository<FinancialInvest>;

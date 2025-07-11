@@ -4,6 +4,7 @@ import { RoleType } from '@/constants/role-type';
 export interface SignupDto {
   username: string;
   password: string;
+  email?: string;
   fullname: string;
   dob: Date;
   phone_number?: string;
@@ -14,6 +15,6 @@ export interface SignupDto {
 
 export interface SignupResponseDto {
   username: string;
-  fullname: string;
+  email: string;
   role: string;
 }

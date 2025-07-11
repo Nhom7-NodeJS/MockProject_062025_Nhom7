@@ -1,26 +1,29 @@
 import { Request, Response } from "express";
-import WarrantService from "./warrant.service";
+
+import { AppResponse } from "@/common/success.response";
 import { HttpStatusCode } from "@/constants/status-code";
 import { SuccessMessages, ErrorMessages } from "@/constants/message";
-import { AppResponse } from "@/common/success.response";
+
+import warrantService from "./warrant.service";
 import { validateCreateWarrant } from "./warrant.validate";
 import { validateSearchWarrantByName } from "./warrant.validate";
 import { CreateWarrantDto } from "./dto/warrant.create.dto";
+
 class WarrantController {
   // Lấy tất cả lệnh
   async getAllWarrants(req: Request, res: Response) {
     try {
-      const warrants = await WarrantService.getAllWarrants();
+      const warrants = await warrantService.getAllWarrants();
 
       if (!warrants) {
         return new AppResponse({
-          message: ErrorMessages.Warrant_NOT_FOUND,
+          message: ErrorMessages.WARRANT_NOT_FOUND,
           statusCode: HttpStatusCode.NOT_FOUND,
         }).sendResponse(res);
       }
 
       return new AppResponse({
-        message: SuccessMessages.Warrant.WARRANT_GET,
+        message: SuccessMessages.WARRANT.WARRANT_GET,
         statusCode: HttpStatusCode.OK,
         data: warrants,
       }).sendResponse(res);
@@ -34,17 +37,17 @@ class WarrantController {
   // Lấy lệnh đang thực thi
   async getExecutingWarrants(req: Request, res: Response) {
     try {
-      const warrants = await WarrantService.getExecutingWarrants();
+      const warrants = await warrantService.getExecutingWarrants();
 
       if (!warrants) {
         return new AppResponse({
-          message: ErrorMessages.Warrant_NOT_FOUND,
+          message: ErrorMessages.WARRANT_NOT_FOUND,
           statusCode: HttpStatusCode.NOT_FOUND,
         }).sendResponse(res);
       }
 
       return new AppResponse({
-        message: SuccessMessages.Warrant.WARRANT_GET,
+        message: SuccessMessages.WARRANT.WARRANT_GET,
         statusCode: HttpStatusCode.OK,
         data: warrants,
       }).sendResponse(res);
@@ -57,17 +60,17 @@ class WarrantController {
 
   async getCompletedWarrants(req: Request, res: Response) {
     try {
-      const warrants = await WarrantService.getCompletedWarrants();
+      const warrants = await warrantService.getCompletedWarrants();
 
       if (!warrants) {
         return new AppResponse({
-          message: ErrorMessages.Warrant_NOT_FOUND,
+          message: ErrorMessages.WARRANT_NOT_FOUND,
           statusCode: HttpStatusCode.NOT_FOUND,
         }).sendResponse(res);
       }
 
       return new AppResponse({
-        message: SuccessMessages.Warrant.WARRANT_GET,
+        message: SuccessMessages.WARRANT.WARRANT_GET,
         statusCode: HttpStatusCode.OK,
         data: warrants,
       }).sendResponse(res);
@@ -98,10 +101,10 @@ class WarrantController {
     }
 
     try {
-      const newWarrant = await WarrantService.createNewWarrant(data);
+      const newWarrant = await warrantService.createNewWarrant(data);
 
       return new AppResponse({
-        message: SuccessMessages.Warrant.WARRANT_CREATED,
+        message: SuccessMessages.WARRANT.WARRANT_CREATED,
         statusCode: HttpStatusCode.CREATED,
         data: newWarrant,
       }).sendResponse(res);
@@ -124,17 +127,17 @@ class WarrantController {
       });
     }
     try {
-      const warrants = await WarrantService.searchWarrantByName(warrant_name);
+      const warrants = await warrantService.searchWarrantByName(warrant_name);
 
       if (!warrants || warrants.length === 0) {
         return new AppResponse({
-          message: ErrorMessages.Warrant_NOT_FOUND,
+          message: ErrorMessages.WARRANT_NOT_FOUND,
           statusCode: HttpStatusCode.NOT_FOUND,
         }).sendResponse(res);
       }
 
       return new AppResponse({
-        message: SuccessMessages.Warrant.WARRANT_GET,
+        message: SuccessMessages.WARRANT.WARRANT_GET,
         statusCode: HttpStatusCode.OK,
         data: warrants,
       }).sendResponse(res);
@@ -148,17 +151,17 @@ class WarrantController {
     const { warrant_id } = req.params;
 
     try {
-      const warrant = await WarrantService.getWarrantById(warrant_id);
+      const warrant = await warrantService.getWarrantById(warrant_id);
 
       if (!warrant) {
         return new AppResponse({
-          message: ErrorMessages.Warrant_NOT_FOUND,
+          message: ErrorMessages.WARRANT_NOT_FOUND,
           statusCode: HttpStatusCode.NOT_FOUND,
         }).sendResponse(res);
       }
 
       return new AppResponse({
-        message: SuccessMessages.Warrant.WARRANT_GET,
+        message: SuccessMessages.WARRANT.WARRANT_GET,
         statusCode: HttpStatusCode.OK,
         data: warrant,
       }).sendResponse(res);

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import { Request, Response } from "express";
 import { AppDataSource } from "@/config/database.config";
@@ -8,6 +9,18 @@ import { TaskStatus } from "@/modules/tasks/enums/task.enum";
 import { ErrorCode } from "@/constants/error-code";
 import { UpdateFinancialTaskDto } from "@/modules/financial_invests/dto/financial_invest.dto";
 
+=======
+import { Request, Response } from "express";
+
+import { AppDataSource } from "@/config/database.config";
+import { ErrorCode } from "@/constants/error-code";
+import { Task } from "@/modules/tasks/entities/task.entity";
+import { TaskStatus } from "@/modules/tasks/enums/task.enum";
+import { UpdateFinancialTaskDto } from "@/modules/financial_invests/dto/financial_invest.dto";
+
+import { FinancialInvest } from "./entities/financial_invest.entity";
+
+>>>>>>> origin/dev3
 export class FinancialInvestController {
   static async financialTaskDetail(req: Request, res: Response) {
     const { task_id } = req.params;

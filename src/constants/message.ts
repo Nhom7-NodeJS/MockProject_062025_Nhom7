@@ -32,13 +32,9 @@ export const SuccessMessages = {
 
   REPORT: {
     REPORT_GET: "Fetch report data successfully",
-
     REPORT_CREATED: "Report created successfully",
-
     REPORT_UPDATED: "Report updated successfully",
-
     REPORT_STATUS_UPDATED: "Report status updated successfully",
-   
     REPORT_DELETED: "Report deleted successfully",
   },
 
@@ -55,7 +51,8 @@ export const SuccessMessages = {
     TASK_UPDATED: "Task updated successfully",
     TASK_DELETED: "Task deleted successfully",
   },
-  Warrant: {
+
+  WARRANT: {
     WARRANT_GET: "Fetch warrant data successfully",
     WARRANT_CREATED: "Warrant created successfully",
     WARRANT_UPDATED: "Warrant updated successfully",
@@ -89,9 +86,9 @@ export const ErrorMessages = {
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
   
-  Warrant_NOT_FOUND: "Warrant not found",
-  Warrant_EXISTS: "Warrant already exists",
-  Warrant_INVALID: "Invalid warrant data",
+  WARRANT_NOT_FOUND: "Warrant not found",
+  WARRANT_EXISTS: "Warrant already exists",
+  WARRANT_INVALID: "Invalid warrant data",
   FILE_PROCESS_FAILED: "Failed to process files",
   FILE_UPLOAD_FAILED: "Failed to upload files",
   UNSUPPORTED_FILE_TYPE: "This file type is not supported",
@@ -100,15 +97,13 @@ export const ErrorMessages = {
   FORENSIC_INVESTIGATION_NOT_FOUND: "Forensic investigation not found",
 
   TASK_NOT_FOUND: "Task not found",
-
   TASK_INVALID_STATUS: "Task cannot be updated further",
+  
   INVALID_JSON: "Invalid JSON",
 
   REPORT_NOT_FOUND: "Report not found",
 
   FORBIDDEN: "Access forbidden",
-
   INVALID_REPORT_STATUS: "Invalid report status",
-
   INTERNAL_SERVER_ERROR: "Internal server error",
 } as const;

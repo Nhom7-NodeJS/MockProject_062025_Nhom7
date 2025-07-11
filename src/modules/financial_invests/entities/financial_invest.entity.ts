@@ -8,7 +8,10 @@ export class FinancialInvest {
   evidence_id!: string;
 
   @Column()
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/dev3
   summary?: string;
 
   @Column({ type: "json" })
