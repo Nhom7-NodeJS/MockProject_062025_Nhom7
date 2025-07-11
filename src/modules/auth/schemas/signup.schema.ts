@@ -12,6 +12,9 @@ export const signupSchema = Joi.object<SignupDto>({
     'string.empty': 'Password is required',
     'any.required': 'Password is required'
   }),
+  email: Joi.string().email().optional().messages({
+    'string.email': 'Email must be a valid email address'
+  }),
   fullname: Joi.string().required().messages({
     'string.empty': 'Full name is required',
     'any.required': 'Full name is required'

@@ -1,7 +1,11 @@
+<<<<<<< HEAD
+=======
+import * as bcrypt from 'bcryptjs';
+
+>>>>>>> d627b66cfc31fa246dcaffe0e4d745d8ea3e5c48
 import { AppDataSource } from "@/config/database.config";
 import { User } from "@/modules/users/entities/user.entity";
 import { Role } from "@/modules/roles/entities/role.entity";
-import * as bcrypt from 'bcryptjs';
 import { Gender, UserStatus } from "@/modules/users/enums/user.enum";
 
 const SALT_ROUNDS = 10;
@@ -63,6 +67,7 @@ async function seedUsersAndRoles() {
     const sheriffUser = userRepository.create({
       username: 'sheriff.john',
       password_hash: hashedPassword,
+      email: "Gx0kW@example.com",
       fullname: 'John Smith',
       gender: Gender.MALE,
       dob: new Date('1980-05-15'),
@@ -76,6 +81,7 @@ async function seedUsersAndRoles() {
     const officer1 = userRepository.create({
       username: 'officer.jane',
       password_hash: hashedPassword,
+      email: "tWcM4@example.com",
       fullname: 'Jane Doe',
       gender: Gender.FEMALE,
       dob: new Date('1990-08-22'),

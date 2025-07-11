@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> d627b66cfc31fa246dcaffe0e4d745d8ea3e5c48
 import {
   IsString,
   IsArray,

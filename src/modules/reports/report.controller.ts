@@ -1,25 +1,20 @@
-import { ReportService } from "@/modules/reports/report.service"
-import {
-	CreateIncidentReportDto,
-	IncidentReportResponseDto
-} from "@/modules/reports/dto/report.dto";
-import { toIncidentReportResponseDto } from "@/modules/reports/report.mapper"
+import { Request, Response } from "express";
+
+import { AppResponse } from "@/common/success.response";
+import { AppError } from "@/common/error.response";
 import { ErrorCode } from "@/constants/error-code";
 import { SuccessMessages, ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
-import { AppResponse } from "@/common/success.response";
-import { AppError } from "@/common/error.response";
-import { Request, Response } from "express";
+import { toIncidentReportResponseDto } from "@/modules/reports/report.mapper"
+
 import reportService from "./report.service";
-import { UpdateReportStatusDto } from "./dto/report.dto";
+import { 
+  CreateIncidentReportDto,
+  UpdateReportStatusDto,
+  IncidentReportResponseDto
+} from "./dto/report.dto";
 
 export class ReportController {
-  private reportService: ReportService;
-
-  constructor(){
-    this.reportService = new ReportService();
-  }
-
   async createReport(req: Request, res: Response) {
     const uploadedFiles = (req as any).uploadedFiles;
     // console.log(uploadedFiles)
@@ -51,7 +46,7 @@ export class ReportController {
       evidences,
     };
 
-    const newReport = await this.reportService.createReport(createIncidentReportDto);
+    const newReport = await reportService.createReport(createIncidentReportDto);
     const reportDto: IncidentReportResponseDto = toIncidentReportResponseDto(newReport);
 
     return new AppResponse({

@@ -10,14 +10,8 @@ import { authMiddleware } from "@/middlewares/auth.middleware";
 import { RoleType } from "@/constants/role-type";
 
 import CaseController from "./case.controller";
-import { 
-  getAllCasesSchema, 
-  getPaginatedCasesSchema 
-} from "./schemas/query-case.schema";
-import { 
-  confirmCaseBodySchema, 
-  confirmCaseParamsSchema 
-} from "./schemas/confirm-case.schema";
+import { getAllCasesSchema, getPaginatedCasesSchema } from "./schemas/query-case.schema";
+import { confirmCaseBodySchema, confirmCaseParamsSchema } from "./schemas/confirm-case.schema";
 
 const router = Router();
 

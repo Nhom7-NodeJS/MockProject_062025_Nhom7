@@ -1,14 +1,16 @@
 import express from "express";
 
-import reportController from "@/modules/reports/report.controller";
+import { CloudinaryFolder } from "@/constants/cloudinary-folder";
 import { asyncHandle } from "@/utils/handle-error";
+import { parseJSONFields } from "@/middlewares/parse-json.middleware";
 import { processRequestFiles } from "@/middlewares/process-file.middleware";
 import { validateBody } from "@/middlewares/validate.middleware";
-import { parseJSONFields } from "@/middlewares/parse-json.middleware";
-import { CreateReportSchema } from "./schemas/create-report.schema";
-import { CloudinaryFolder } from "@/constants/cloudinary-folder";
+import reportController from "@/modules/reports/report.controller";
+
 import ReportController from "./report.controller";
+import { CreateReportSchema } from "./schemas/create-report.schema";
 import { UpdateReportStatusSchema } from "./schemas/update-report-status.schema";
+
 const router = express.Router();
 
 router.post(
@@ -18,10 +20,12 @@ router.post(
   validateBody(CreateReportSchema), 
   asyncHandle((req, res) => reportController.createReport(req, res)
 ));
+
 router.get(
   "/",
   asyncHandle(ReportController.getAllReports)
 );
+
 router.put(
   "/:reportId/status",
   validateBody(UpdateReportStatusSchema),
