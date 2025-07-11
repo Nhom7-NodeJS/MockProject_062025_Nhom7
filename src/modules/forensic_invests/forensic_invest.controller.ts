@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { NextFunction, Request, Response } from "express";
-=======
 import { Request, Response } from "express";
->>>>>>> d627b66cfc31fa246dcaffe0e4d745d8ea3e5c48
 
 import { AppResponse } from "@/common/success.response";
 import { SuccessMessages } from "@/constants/message";
