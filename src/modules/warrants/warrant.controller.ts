@@ -29,23 +29,24 @@ class WarrantController {
     }).sendResponse(res);
   }
 
-  createNewWarrant = async (req: Request, res: Response) => {
-    const uploaded = req.body.uploadedFiles;
-    const fileUrls = uploaded?.attached_file || [];
+ createNewWarrant = async (req: Request, res: Response) => {
+  const uploaded = (req as any).uploadedFiles; // ✅ lấy đúng dữ liệu
+  const fileUrls = uploaded?.attached_file || [];
 
-    const data: CreateWarrantDto = {
-      ...req.body,
-      attached_file: fileUrls,
-    };
-
-    const newWarrant = await warrantService.createNewWarrant(data);
-
-    return new AppResponse({
-      message: SuccessMessages.WARRANT.WARRANT_CREATED,
-      statusCode: HttpStatusCode.CREATED,
-      data: newWarrant,
-    }).sendResponse(res);
+  const data: CreateWarrantDto = {
+    ...req.body,
+    attached_file: fileUrls, // ✅ gán URLs đúng
   };
+
+  const newWarrant = await warrantService.createNewWarrant(data);
+
+  return new AppResponse({
+    message: SuccessMessages.WARRANT.WARRANT_CREATED,
+    statusCode: HttpStatusCode.CREATED,
+    data: newWarrant,
+  }).sendResponse(res);
+};
+
   searchWarrantByName = async (req: Request, res: Response) => {
     let warrant_name = req.body.warrant_name;
     const warrants = await warrantService.searchWarrantByName(warrant_name);
