@@ -1,38 +1,21 @@
-import { Request, Response } from "express";
-// import { AuthenticatedRequest } from "@/middlewares/auth.middleware";
-import { CaseService } from "./case.service";
+import { Request, Response } from 'express';
+
+import { AppError } from '@/common/error.response';
 import { AppResponse } from "@/common/success.response";
 import { HttpStatusCode } from "@/constants/status-code";
 import { SuccessMessages } from "@/constants/message";
-import { CaseStatus } from "./enums/case.enum";
-import { ConfirmCaseDto, ConfirmCaseResponseDto } from "./dto/confirm-case.dto";
+import { AuthenticatedRequest } from '@/middlewares/auth.middleware';
+import { PaginationUtils } from "@/utils/pagination";
 
-const caseService = new CaseService();
+import caseService from "./case.service";
+import { GetAllCasesQuery, GetPaginatedCasesQuery } from "./dto/case.dto";
+import { IConfirmCaseDto, IConfirmCaseResponseDto } from './dto/confirm-case.dto';
 
 class CaseController {
   async getAllCases(req: Request, res: Response) {
-    const { status } = req.query;
-    
-    // If status is provided, filter by status
-    if (status) {
-      // Validate status
-      if (!Object.values(CaseStatus).includes(status as CaseStatus)) {
-        return new AppResponse({
-          message: `Invalid status. Must be one of: ${Object.values(CaseStatus).join(', ')}`,
-          statusCode: HttpStatusCode.BAD_REQUEST,
-        }).sendResponse(res);
-      }
+    const { status } = req.query as GetAllCasesQuery;
 
-      const cases = await caseService.getAllByStatus(status as CaseStatus);
-      return new AppResponse({
-        message: SuccessMessages.CASE.CASE_GET,
-        statusCode: HttpStatusCode.OK,
-        data: cases,
-      }).sendResponse(res);
-    }
-    
-    // If no status provided, return all cases
-    const cases = await caseService.getAll();
+    const cases = await caseService.getAllCases(status);
     return new AppResponse({
       message: SuccessMessages.CASE.CASE_GET,
       statusCode: HttpStatusCode.OK,
@@ -40,88 +23,80 @@ class CaseController {
     }).sendResponse(res);
   }
 
-  // async confirmCaseAndAssignInvestigator(req: AuthenticatedRequest, res: Response) {
-  //   const { caseId } = req.params;
-  //   const { username, notes = null } = req.body as ConfirmCaseDto;
-  //   const currentUser = req.user; // Current user from auth middleware
+  async getPaginatedCases(req: Request, res: Response) {
+    const { status } = req.query as GetPaginatedCasesQuery;
     
-  //   if (!currentUser) {
-  //     return new AppResponse({
-  //       message: 'User not authenticated',
-  //       statusCode: HttpStatusCode.UNAUTHORIZED,
-  //     }).sendResponse(res);
-  //   }
+    const paginationOptions = {
+      defaultLimit: 10,
+      maxLimit: 100
+    };
 
-  //   try {
-  //     const { case: updatedCase, caseUser } = await caseService.confirmCaseAndAssignInvestigator(
-  //       caseId,
-  //       username,
-  //       notes
-  //     );
-
-  //     const response = new ConfirmCaseResponseDto(
-  //       updatedCase.case_id,
-  //       updatedCase.status,
-  //       caseUser.username,
-  //       new Date()
-  //     );
-
-  //     return new AppResponse({
-  //       message: SuccessMessages.CASE.CASE_UPDATED,
-  //       statusCode: HttpStatusCode.OK,
-  //       data: response
-  //     }).sendResponse(res);
-  //   } catch (error: any) {
-  //     return new AppResponse({
-  //       message: error.message || 'Failed to confirm case and assign investigator',
-  //       statusCode: HttpStatusCode.BAD_REQUEST
-  //     }).sendResponse(res);
-  //   }
-  // }
-
-  /**
-   * TEST ONLY - Bypasses authentication for testing
-   * REMOVE THIS IN PRODUCTION
-   * 
-   * Example request:
-   * POST /api/v1/cases/test-confirm
-   * {
-   *   "caseId": "your-case-id",
-   *   "username": "investigator-username",
-   *   "notes": "Test assignment"
-   * }
-   */
-  async testConfirmCaseAndAssignInvestigator(req: Request, res: Response) {
-    const { caseId, username, notes = null } = req.body;
+    const pagination = PaginationUtils.getPaginationParams(req, paginationOptions);
     
-    console.log('TEST MODE: Bypassing authentication');
+    // Get paginated cases with optional status filter
+    const { items, total } = await caseService.getPaginatedCases(
+      pagination,
+      status
+    );
     
-    try {
-      const { case: updatedCase, caseUser } = await caseService.confirmCaseAndAssignInvestigator(
-        caseId,
-        username,
-        notes
+    // Create paginated response
+    const paginatedResponse = PaginationUtils.createPaginatedResponse(
+      req,
+      items,
+      total,
+      paginationOptions
+    );
+    
+    return new AppResponse({
+      message: SuccessMessages.CASE.CASE_GET,
+      statusCode: HttpStatusCode.OK,
+      data: paginatedResponse,
+    }).sendResponse(res);
+  }
+
+  async confirmCaseAndAssignInvestigator(req: AuthenticatedRequest, res: Response) {
+    const { caseId } = req.params;
+    const { investigators, notes } = req.body as IConfirmCaseDto;
+ 
+    const { case: updatedCase, caseUsers } = await caseService.confirmCaseAndAssignInvestigators(
+      caseId,
+      investigators,
+      notes || null
+    );
+
+    const response: IConfirmCaseResponseDto = {
+      caseId: updatedCase.case_id,
+      status: updatedCase.status,
+      investigators: caseUsers.map(cu => cu.username),
+      assignedAt: caseUsers[0]?.assigned_at || new Date()
+    };
+
+    return new AppResponse({
+      message: 'Case confirmed and investigators assigned successfully',
+      statusCode: HttpStatusCode.OK,
+      data: response,
+    }).sendResponse(res);
+  }
+
+  async getCasesByUser(req: AuthenticatedRequest, res: Response) {
+    const { status } = req.query as GetAllCasesQuery;
+    const username = req.user?.username;
+
+    if (!username) {
+      throw new AppError(
+        'User not authenticated',
+        HttpStatusCode.UNAUTHORIZED,
+        'AUTH.USER_NOT_AUTHENTICATED'
       );
-
-      const response = new ConfirmCaseResponseDto(
-        updatedCase.case_id,
-        updatedCase.status,
-        caseUser.username,
-        new Date()
-      );
-
-      return new AppResponse({
-        message: 'TEST MODE: ' + SuccessMessages.CASE.CASE_UPDATED,
-        statusCode: HttpStatusCode.OK,
-        data: response
-      }).sendResponse(res);
-    } catch (error: any) {
-      console.error('TEST MODE ERROR:', error);
-      return new AppResponse({
-        message: 'TEST MODE ERROR: ' + (error.message || 'Failed to confirm case'),
-        statusCode: HttpStatusCode.BAD_REQUEST
-      }).sendResponse(res);
     }
+
+    const cases = await caseService.getCasesByUser(username, status);
+    
+    return new AppResponse({
+      message: SuccessMessages.CASE.CASE_GET,
+      statusCode: HttpStatusCode.OK,
+      data: cases,
+    }).sendResponse(res);
   }
 }
 

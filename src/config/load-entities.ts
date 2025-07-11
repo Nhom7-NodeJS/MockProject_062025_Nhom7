@@ -77,3 +77,4 @@ export const entities = [
   WitnessInterview,
   Holiday,
 ];
+export default entities;

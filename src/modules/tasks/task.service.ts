@@ -1,22 +1,52 @@
 import { Repository } from "typeorm";
+import { v4 as uuidv4 } from 'uuid';
 
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
+import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 
 import { Task } from "./entities/task.entity";
-import { TaskDetailResponseDto } from "./dto/task_detail-response.dto";
 import { TaskStatus } from "./enums/task.enum";
+import { CreateTaskDto } from "./dto/create-task.dto";
+import { TaskDetailResponseDto } from "./dto/task_detail-response.dto";
 
 export class TaskService {
   private taskRepository: Repository<Task>;
+  private caseUserRepository: Repository<CaseUser>;
 
   constructor() {
     this.taskRepository = AppDataSource.getRepository(Task);
+    this.caseUserRepository = AppDataSource.getRepository(CaseUser);
   }
 
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    // Check if the case-user assignment exists
+    const caseUser = await this.caseUserRepository.findOne({
+      where: {
+        case_id: createTaskDto.case_id,
+        username: createTaskDto.username,
+      },
+    });
+
+    if (!caseUser) {
+      throw new AppError(
+        'User is not assigned to this case',
+        HttpStatusCode.NOT_FOUND,
+        'USER_NOT_ASSIGNED_TO_CASE'
+      );
+    }
+
+    const task = this.taskRepository.create({
+      ...createTaskDto,
+      task_id: uuidv4(),
+      status: createTaskDto.status || TaskStatus.WAITING_EXECUTING,
+    });
+
+    return this.taskRepository.save(task);
+  }
   async getAllTaskByCaseId(
     username: string,
     roleId: string,
@@ -150,8 +180,6 @@ export class TaskService {
     await this.taskRepository.save(task);
     return task;
   }
-
-  async updateTaskResult(taskId: string, fileUrl: string[]) {}
 }
 
 export default new TaskService();

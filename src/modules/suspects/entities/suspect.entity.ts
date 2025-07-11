@@ -16,11 +16,7 @@ export class Suspect {
   @Column({ nullable: true })
   national?: string;
 
-<<<<<<< HEAD
-  @Column({ type: "enum", enum: Gender })
-=======
   @Column({ type: "enum", enum: Gender, default: Gender.UNKNOWN })
->>>>>>> origin/NguyenHuyNhan
   gender!: Gender;
 
   @Column({ type: "timestamp", nullable: true })

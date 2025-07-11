@@ -1,12 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { Role } from "@/modules/roles/entities/role.entity";
 import { User } from "@/modules/users/entities/user.entity";
 import { Case } from "@/modules/cases/entities/case.entity";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { Task } from "@/modules/tasks/entities/task.entity";
-import { UserRole } from "@/modules/roles/enums/role.enum";
 import { Gender, UserStatus } from "@/modules/users/enums/user.enum";
 import { TaskStatus } from "@/modules/tasks/enums/task.enum";
 import {
@@ -80,12 +79,12 @@ async function seedTasksRoles() {
     // === Insert Role ===
     const role1 = new Role();
     role1.role_id = "FINANCIAL_INVESTIGATOR";
-    role1.description = UserRole.FINANCIAL_INVESTIGATOR;
+    role1.description = "Financial Investigator";
     await roleRepository.save(role1);
 
     const role2 = new Role();
     role2.role_id = "FORENSIC_OFFICER";
-    role2.description = UserRole.FORENSIC_OFFICER;
+    role2.description = "Forensic Officer";
     await roleRepository.save(role2);
 
     // === Insert User 1 ===
