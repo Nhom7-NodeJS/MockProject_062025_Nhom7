@@ -1,5 +1,5 @@
-import { AppDataSource } from "@/config/config-database";
 import { Case } from "@/modules/cases/entities/case.entity";
+import { AppDataSource } from "@/config/database.config";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";

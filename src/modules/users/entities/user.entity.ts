@@ -14,7 +14,7 @@ import { Prosecution } from "@/modules/prosecutions/entities/prosecution.entity"
 import { ProsecutionUser } from "@/modules/prosecutions_users/entities/prosecution_user.entity";
 import { Question } from "@/modules/questions/entity/question.entity";
 import { Report } from "@/modules/reports/entities/report.entity";
-import { Role } from "@/modules/roles/entities/role.entity";
+import { Role, UserRole } from "@/modules/roles/entities/role.entity";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { Gender, UserStatus } from "../enums/user.enum";
 import { Warrant } from "@/modules/warrants/entities/warrant.entity";
@@ -45,7 +45,7 @@ export class User {
   @Column({ type: "timestamp" })
   date_attended!: Date;
 
-  @Column({ type: "enum", enum: UserStatus })
+  @Column({ type: "enum", enum: UserStatus, default: UserStatus.ACTIVE })
   status!: UserStatus;
 
   @Column({ type: "timestamp" })
@@ -57,6 +57,8 @@ export class User {
   @Column({ nullable: true })
   refresh_token?: string;
 
+  @Column({nullable: true})
+  email?: string;
   // OneToMany
   @OneToMany(() => CaseUser, (caseUser) => caseUser.user)
   caseUsers!: CaseUser[];
@@ -92,4 +94,9 @@ export class User {
   @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn({ name: "role_id" })
   role!: Role;
+    @Column({
+    type: "enum",
+    enum: UserRole,
+  })
+  position!: UserRole;
 }

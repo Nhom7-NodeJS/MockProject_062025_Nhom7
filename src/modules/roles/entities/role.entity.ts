@@ -4,15 +4,6 @@ import { PermissionRole } from "@/modules/permissions_roles/entities/permission_
 import { User } from "@/modules/users/entities/user.entity";
 import { UserRole } from "@/modules/roles/enums/role.enum";
 
-// No enums, roles_id is this
-// export enum UserRole {
-//   CENSOR = "Censor",
-//   INVESTIGATOR = "Investigator",
-//   POLICE_CHIEF = "Police Chief",
-//   FORENSIC_OFFICER = "Forensic Officer",
-//   FINANCIAL_INVESTIGATOR = "Financial Investigator",
-// }
-
 @Entity("roles")
 export class Role {
   @PrimaryColumn()

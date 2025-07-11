@@ -17,13 +17,11 @@ export interface CreateUserDto {
 
 // Output DTO (for response)
 export interface UserResponseDto {
-  username: string;
+  id: number;
   fullname: string;
   createdAt?: Date;
   status: UserStatus;
   position: UserRole;
   attended: Date;
   DOB: Date;
-  phone_number: string;
-  zone: Zone;
 }

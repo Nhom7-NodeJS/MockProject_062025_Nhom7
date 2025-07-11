@@ -1,4 +1,4 @@
-import { AppDataSource } from "@/config/config-database";
+import { AppDataSource } from "@/config/database.config";
 import { Evidence } from "@/modules/evidences/entities/evidence.entity";
 import { PhysicalInvest } from "@/modules/physical_invests/entities/physical_invest.entity";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
