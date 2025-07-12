@@ -1,11 +1,15 @@
 import express from "express";
 import cors from "cors";
-import { initDatabase } from "@/database/connect-database";
+
 import router from "@/modules";
+import { initDatabase } from "@/database/connect-database";
 import { exceptionHandler } from "@/middlewares/exception-filter";
 import { loadedEnv } from "@/config/load-env";
 import { requestLogger } from "@/middlewares/logger-filter";
 import { logger } from "@/utils/logger";
+
+import { AppDataSource } from "@/config/database.config"; // Adjust the import path as necessary
+
 
 const app = express();
 const PORT = loadedEnv.port;

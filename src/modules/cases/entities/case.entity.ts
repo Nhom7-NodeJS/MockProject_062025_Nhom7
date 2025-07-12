@@ -15,6 +15,7 @@ import { CaseSeverity, CaseStatus, CaseType } from "../enums/case.enum";
 
 @Entity("cases")
 export class Case {
+  [x: string]: any;
   @PrimaryColumn()
   case_id!: string;
 
@@ -81,4 +82,9 @@ export class Case {
 
   @OneToMany(() => Witness, (witness) => witness.case)
   witnesses!: Witness[];
+
+  toJSON() {
+    const { is_deleted, ...rest } = this;
+    return rest;
+  }
 }

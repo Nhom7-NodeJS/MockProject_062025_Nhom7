@@ -16,41 +16,41 @@ export class Suspect {
   @Column({ nullable: true })
   national?: string;
 
-  @Column({ type: "enum", enum: Gender })
+  @Column({ type: "enum", enum: Gender, default: Gender.UNKNOWN })
   gender!: Gender;
 
-  @Column({ type: "timestamp" })
-  dob!: Date;
+  @Column({ type: "timestamp", nullable: true })
+  dob?: Date;
 
-  @Column()
-  identification!: string;
+  @Column({ nullable: true })
+  identification?: string;
 
-  @Column()
-  phone_number!: string;
+  @Column({ nullable: true })
+  phone_number?: string;
 
-  @Column()
-  description!: string;
+  @Column({ nullable: true })
+  description?: string;
 
-  @Column()
-  address!: string;
+  @Column({ nullable: true })
+  address?: string;
 
-  @Column({ type: "timestamp" })
-  catch_time!: Date;
+  @Column({ type: "timestamp", nullable: true } )
+  catch_time?: Date;
 
   @Column({ nullable: true })
   notes?: string;
 
-  @Column()
-  status!: string;
+  @Column({ nullable: true })
+  status?: string;
 
   @Column({ nullable: true })
   mugshot_url?: string;
 
-  @Column()
-  fingerprints_hash!: string;
+  @Column({ nullable: true })
+  fingerprints_hash?: string;
 
-  @Column()
-  health_status!: string;
+  @Column({ nullable: true })
+  health_status?: string;
 
   // OneToMany
   @OneToMany(() => Arrest, (arrest) => arrest.suspect)
