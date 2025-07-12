@@ -23,7 +23,7 @@ router.get(
 
 router.post(
   "/createNewWarrant",
-  authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
+ // authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
   processRequestFiles(CloudinaryFolder.WARRANT),
   parseJSONFields(["attached_file"]),
   validateBody(createWarrantSchema),
