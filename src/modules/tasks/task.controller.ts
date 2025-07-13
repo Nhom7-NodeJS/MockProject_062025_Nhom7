@@ -4,11 +4,12 @@ import { AuthenticatedRequest } from "@/middlewares/auth.middleware";
 import { AppResponse } from "@/common/success.response";
 import { ErrorMessages, SuccessMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
+import { AppError } from "@/common/error.response";
+import { ErrorCode } from "@/constants/error-code";
+import { PaginationUtils } from "@/utils/pagination";
 
 import taskService from "./task.service";
 import { CreateTaskDto } from "./dto/create-task.dto";
-import { AppError } from "@/common/error.response";
-import { ErrorCode } from "@/constants/error-code";
 
 export class TaskController {
   async getAllTaskByRoleId(req: AuthenticatedRequest, res: Response) {
@@ -35,6 +36,49 @@ export class TaskController {
     }).sendResponse(res);
   }
 
+  async getPaginatedTask(req: AuthenticatedRequest, res: Response) {
+    const user = req.user;
+    if (!user) {
+      throw new AppError(
+        ErrorMessages.UNAUTHORIZED,
+        HttpStatusCode.UNAUTHORIZED,
+        ErrorCode.UNAUTHORIZED
+      );
+    }
+
+    const { caseId } = req.params;
+
+    const paginationOptions = {
+      defaultLimit: 10,
+      maxLimit: 100,
+    };
+
+    const pagination = PaginationUtils.getPaginationParams(
+      req,
+      paginationOptions
+    );
+
+    const { items, total } = await taskService.getPaginatedTask(
+      pagination,
+      user.username,
+      user.role,
+      caseId
+    );
+
+    const paginatedResponse = PaginationUtils.createPaginatedResponse(
+      req,
+      items,
+      total,
+      paginationOptions
+    );
+
+    return new AppResponse({
+      message: SuccessMessages.TASK.TASK_GET,
+      statusCode: HttpStatusCode.OK,
+      data: paginatedResponse,
+    }).sendResponse(res);
+  }
+
   async getTaskDetailById(req: Request, res: Response) {
     const { roleId, taskId } = req.params;
     const result = await taskService.getTaskDetailById(roleId, taskId);
@@ -54,7 +98,9 @@ export class TaskController {
     return new AppResponse({
       message: SuccessMessages.TASK.TASK_UPDATED,
       statusCode: HttpStatusCode.OK,
-      data: result, }).sendResponse(res);  }
+      data: result,
+    }).sendResponse(res);
+  }
 
   async createTask(req: Request, res: Response) {
     const createTaskDto = req.body as CreateTaskDto;

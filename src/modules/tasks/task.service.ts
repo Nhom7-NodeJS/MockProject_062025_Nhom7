@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 import { AppDataSource } from "@/config/database.config";
 import { AppError } from "@/common/error.response";
@@ -10,7 +10,8 @@ import { Task } from "./entities/task.entity";
 import { TaskStatus } from "./enums/task.enum";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { TaskDetailResponseDto } from "./dto/task_detail-response.dto";
-import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
+import { IPaginationParams } from "@/utils/pagination";
+
 
 export class TaskService {
   private taskRepository: Repository<Task>;
@@ -32,9 +33,9 @@ export class TaskService {
 
     if (!caseUser) {
       throw new AppError(
-        'User is not assigned to this case',
+        "User is not assigned to this case",
         HttpStatusCode.NOT_FOUND,
-        'USER_NOT_ASSIGNED_TO_CASE'
+        "USER_NOT_ASSIGNED_TO_CASE"
       );
     }
 
@@ -77,6 +78,48 @@ export class TaskService {
       );
     }
     return taskList;
+  }
+
+  async getPaginatedTask(
+    paginationParams: IPaginationParams,
+    username: string,
+    roleId: string,
+    caseId: string
+  ): Promise<{ items: Task[]; total: number }> {
+    const { skip, limit } = paginationParams;
+
+    const query = await this.taskRepository
+      .createQueryBuilder("task")
+      .leftJoin("task.caseUser", "caseUser")
+      .leftJoin("caseUser.user", "user")
+      .leftJoin("user.role", "role")
+      .where("user.username = :username", { username: username })
+      .andWhere("user.role_id = :roleId", { roleId: roleId })
+      .andWhere("caseUser.case_id = :caseId", { caseId: caseId })
+      .andWhere("task.is_deleted = :isDeleted", { isDeleted: false })
+      .select([
+        "task.task_id AS taskId",
+        "task.task_name AS taskName",
+        "task.due_date AS deadline",
+        "caseUser.case_id AS caseId",
+        "task.status AS status",
+      ]);
+
+    // Get total count and paginated data in parallel
+    const [items, total] = await Promise.all([
+      query.skip(skip).take(limit).getRawMany(),
+      query.getCount(),
+    ]);
+
+    if (!items) {
+      throw new AppError(
+        ErrorMessages.TASK_NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        ErrorCode.TASK_NOT_FOUND
+      );
+    }
+
+    return { items, total };
   }
 
   async getTaskDetailById(

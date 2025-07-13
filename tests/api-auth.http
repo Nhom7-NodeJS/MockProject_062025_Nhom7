@@ -9,10 +9,10 @@ Content-Type: application/json
   "username": "testuser1",
   "password": "Test@123",
   "fullname": "Test User",
-  "dob": "1990-01-01T00:00:00.000Z",
+  "dob": "01-01-1990",
   "phone_number": "0123456789",
   "gender": "male",
-  "date_attended": "2020-01-01T00:00:00.000Z",
+  "date_attended": "01-01-2020",
   "roleType": "CENSOR"
 }
 
@@ -39,8 +39,8 @@ Content-Type: application/json
   "username": "testuser1",
   "password": "Test@123",
   "fullname": "Test User",
-  "dob": "1990-01-01T00:00:00.000Z",
-  "date_attended": "2020-01-01T00:00:00.000Z"
+  "dob": "01-01-1990",
+  "date_attended": "01-01-2020"
 }
 
 ### 5. Login with invalid credentials

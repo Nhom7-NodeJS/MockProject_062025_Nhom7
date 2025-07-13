@@ -4,17 +4,17 @@ export class TaskDetailResponseDto {
   deadline?: Date;
   status?: string;
   content?: string;
-  evidences?: TaskEvidenceDto;
-  invest?: TaskInvestDto;
+  evidences?: ITaskEvidenceDto;
+  invest?: ITaskInvestDto;
 }
 
-export interface TaskEvidenceDto {
+export interface ITaskEvidenceDto {
   evidenceId: string;
   description: string;
   attachFile: string;
 }
 
-export interface TaskInvestDto {
+export interface ITaskInvestDto {
   summary?: string;
   attachFile?: string[];
 }
