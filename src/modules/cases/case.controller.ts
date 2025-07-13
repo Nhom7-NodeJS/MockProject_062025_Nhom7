@@ -98,6 +98,47 @@ class CaseController {
       data: cases,
     }).sendResponse(res);
   }
+
+  async getPaginatedCasesByUser(req: AuthenticatedRequest, res: Response) {
+    const { status } = req.query as GetPaginatedCasesQuery;
+    const username = req.user?.username;
+
+    if (!username) {
+      throw new AppError(
+        'User not authenticated',
+        HttpStatusCode.UNAUTHORIZED,
+        'AUTH.USER_NOT_AUTHENTICATED'
+      );
+    }
+
+    const paginationOptions = {
+      defaultLimit: 10,
+      maxLimit: 100
+    };
+
+    const pagination = PaginationUtils.getPaginationParams(req, paginationOptions);
+    
+    // Get paginated cases for the user with optional status filter
+    const { items, total } = await caseService.getPaginatedCasesByUser(
+      username,
+      pagination,
+      status
+    );
+
+    // Create paginated response
+    const paginatedResponse = PaginationUtils.createPaginatedResponse(
+      req,
+      items,
+      total,
+      paginationOptions
+    );
+    
+    return new AppResponse({
+      message: SuccessMessages.CASE.CASE_GET,
+      statusCode: HttpStatusCode.OK,
+      data: paginatedResponse,
+    }).sendResponse(res);
+  }
 }
 
 export default new CaseController();

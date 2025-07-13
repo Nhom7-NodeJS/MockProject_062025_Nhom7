@@ -23,7 +23,7 @@ async function seedCases() {
         case_name: 'Bank Robbery - Downtown Branch',
         type_case: CaseType.ROBBERY,
         severity: CaseSeverity.HIGH,
-        status: CaseStatus.IN_PROCESS,
+        status: CaseStatus.PENDING_APPROVAL,
         summary: 'Armed robbery at downtown bank branch with multiple suspects',
         create_at: new Date('2025-06-15T10:00:00Z')
       },

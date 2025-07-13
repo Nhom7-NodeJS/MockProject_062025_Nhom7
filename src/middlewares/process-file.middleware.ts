@@ -1,4 +1,5 @@
 import multer from "multer";
+import { randomUUID } from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { v2 as cloudinaryV2, UploadApiResponse } from "cloudinary";
 
@@ -44,17 +45,24 @@ export const processRequestFiles = (folder: string = CloudinaryFolder.GENERAL) =
         groupedFiles[file.fieldname].push(file);
       }
 
-      // Upload files and collect their URLs
-      // Each evidence can have multiple files
       const uploadResults: Record<string, string[]> = {};
 
       for (const [field, files] of Object.entries(groupedFiles)) {
         uploadResults[field] = [];
 
         for (const file of files) {
+          const uploadOptions: any = { folder };
+          
+          if (file.mimetype === MimeTypes.PDF) {
+            uploadOptions.resource_type = "raw";
+            // give random uuis to pdf files
+            const uniqueId = randomUUID();
+            uploadOptions.public_id = `${uniqueId}.pdf`;
+          }
+
           const result = await new Promise<UploadApiResponse>((resolve, reject) => {
             const stream = Cloudinary.uploader.upload_stream(
-              { folder },
+              uploadOptions,
               (error, result) => {
                 if (error || !result) {
                   return reject(
@@ -74,13 +82,12 @@ export const processRequestFiles = (folder: string = CloudinaryFolder.GENERAL) =
             );
             stream.end(file.buffer);
           });
+
           uploadResults[field].push(result.secure_url);
         }
       }
 
-      // Attach the upload results to request
       (req as any).uploadedFiles = uploadResults;
-
       next();
     } catch (err: any) {
       if (err.message?.startsWith("Unsupported file type")) {

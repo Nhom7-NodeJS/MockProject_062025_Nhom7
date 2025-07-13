@@ -63,7 +63,7 @@ export const mapReporterInfo = (r: Report): ReporterInfo => ({
 export const mapIncidentInfo = (r: Report): IncidentInfo => ({
   crimeType: r.crime_type,
   severity: r.severity,
-  dateOccur: formatUSDateTime(r.incident_date),
+  dateOccur: formatUSDate(r.incident_date),
   detailAddress: r.detail_address ?? null,
   description: r.description ?? null,
 });

@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import * as bcrypt from "bcryptjs";
 
 import { AppDataSource } from "@/config/database.config";
@@ -144,7 +143,7 @@ async function seedTasksRoles() {
 
     // === Insert Evidence 1 ===
     const evidence1 = new Evidence();
-    evidence1.evidence_id = uuidv4();
+    evidence1.evidence_id = "E001";
     evidence1.description = "Fingerprint found on crime scene.";
     evidence1.collected_at = new Date();
     evidence1.current_location = "Evidence Room A";
@@ -157,7 +156,7 @@ async function seedTasksRoles() {
 
     // === Insert Evidence 2 ===
     const evidence2 = new Evidence();
-    evidence2.evidence_id = uuidv4();
+    evidence2.evidence_id = "E002";
     evidence2.description = "DNA sample from suspect.";
     evidence2.collected_at = new Date();
     evidence2.current_location = "Evidence Locker B";
@@ -217,7 +216,7 @@ async function seedTasksRoles() {
 
     // === Insert Task 1 ===
     const task1 = new Task();
-    task1.task_id = uuidv4();
+    task1.task_id = "T001";
     task1.task_name = "Investigate fraud";
     task1.content = "Collect and analyze fraud evidence.";
     task1.status = TaskStatus.WAITING_EXECUTING;
@@ -229,7 +228,7 @@ async function seedTasksRoles() {
 
     // === Insert Task 2 ===
     const task2 = new Task();
-    task2.task_id = uuidv4();
+    task2.task_id = "T002";
     task2.task_name = "Collect forensic samples";
     task2.content = "Gather DNA evidence from crime scene.";
     task2.status = TaskStatus.WAITING_EXECUTING;
