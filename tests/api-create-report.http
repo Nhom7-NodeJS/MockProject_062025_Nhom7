@@ -1,0 +1,252 @@
+@baseUrl = http://localhost:4000/api/v1
+
+### Create Report - right data
+POST {{baseUrl}}/report/report
+Content-Type: multipart/form-data; boundary=----MyCustomBoundary
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="reporterInfo"
+
+{
+  "fullname": "Nguyen Van A",
+  "email": "a@gmail.com",
+  "address": "New York",
+  "phoneNumber": "0123456789",
+  "incidentRelation": "Witness"
+}
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="incidentInfo"
+
+{
+  "crimeType": "Crimes Against Property",
+  "severity": "Urgent",
+  "dateOccur": "06/30/2025",
+  "detailAddress": "123 Main St",
+  "description": "Stolen laptop"
+}
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="relevantParties"
+
+[
+  {
+    "fullname": "Nguyen Van B",
+    "incidentRelation": "Witness",
+    "gender": "male",
+    "nationality": "US",
+    "statement": "I saw the theft"
+  },
+  {
+    "fullname": "Nguyen Van C",
+    "incidentRelation": "Suspect",
+    "gender": "female",
+    "nationality": "US",
+    "statement": "I didn't do it"
+  }
+]
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidences"
+
+[
+  {
+    "evidenceType": "Physical Evidence",
+    "evidenceLocation": "Room 101",
+    "description": "First photo evidence"
+  },
+  {
+    "evidenceType": "Documentary Evidence",
+    "evidenceLocation": "Room 102",
+    "description": "Second photo evidence"
+  }
+]
+
+# replace with your own files in /test/files
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_0"; filename="photo1.png"
+Content-Type: image/png
+
+< ./files/photo1.png
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_0"; filename="photo2.jpg"
+Content-Type: image/jpeg
+
+< ./files/photo2.jpg
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_1"; filename="document1.pdf"
+Content-Type: application/pdf
+
+< ./files/document1.pdf
+
+------MyCustomBoundary--
+
+
+### Create Report - wrong data
+POST {{baseUrl}}/report/report
+Content-Type: multipart/form-data; boundary=----MyCustomBoundary
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="reporterInfo"
+
+{
+  "fullname": "Nguyen Van A",
+  "email": "a@gmail.com",
+  "address": "New York",
+  "phoneNumber": "0123456789",
+  "incidentRelation": "witness"
+}
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="incidentInfo"
+
+{
+  "crimeType": "theft",
+  "severity": "Serious",
+  "dateOccur": "06/30/2025",
+  "detailAddress": "123 Main St",
+  "description": 1
+}
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="relevantParties"
+
+[
+  {
+    "fullname": "Nguyen Van B",
+    "incidentRelation": "witness",
+    "gender": "male",
+    "nationality": "US",
+    "statement": "I saw the theft"
+  },
+  {
+    "fullname": "Nguyen Van C",
+    "incidentRelation": "suspect",
+    "gender": "female",
+    "nationality": "US",
+    "statement": "I didn't do it"
+  }
+]
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidences"
+
+[
+  {
+    "evidenceType": "photo",
+    "evidenceLocation": "Room 101",
+    "description": "First photo evidence"
+  },
+  {
+    "evidenceType": "video",
+    "evidenceLocation": "Room 102",
+    "description": "Second photo evidence"
+  }
+]
+
+# replace with your own files in /test/files
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_0"; filename="photo1.png"
+Content-Type: image/png
+
+< ./files/photo1.png
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_0"; filename="photo2.jpg"
+Content-Type: image/jpeg
+
+< ./files/photo2.jpg
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_1"; filename="document1.pdf"
+Content-Type: application/pdf
+
+< ./files/document1.pdf
+
+------MyCustomBoundary--
+
+
+### Create Report - wrong file type
+POST {{baseUrl}}/report/report
+Content-Type: multipart/form-data; boundary=----MyCustomBoundary
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="reporterInfo"
+
+{
+  "fullname": "Nguyen Van A",
+  "email": "a@gmail.com",
+  "address": "New York",
+  "phoneNumber": "0123456789",
+  "incidentRelation": "witness"
+}
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="incidentInfo"
+
+{
+  "crimeType": "theft",
+  "severity": "Serious",
+  "dateOccur": "06/30/2025",
+  "detailAddress": "123 Main St",
+  "description": 1
+}
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="relevantParties"
+
+[
+  {
+    "fullname": "Nguyen Van B",
+    "incidentRelation": "witness",
+    "gender": "male",
+    "nationality": "US",
+    "statement": "I saw the theft"
+  },
+  {
+    "fullname": "Nguyen Van C",
+    "incidentRelation": "suspect",
+    "gender": "female",
+    "nationality": "US",
+    "statement": "I didn't do it"
+  }
+]
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidences"
+
+[
+  {
+    "evidenceType": "photo",
+    "evidenceLocation": "Room 101",
+    "description": "First photo evidence"
+  },
+  {
+    "evidenceType": "video",
+    "evidenceLocation": "Room 102",
+    "description": "Second photo evidence"
+  }
+]
+
+# replace with your own files in /test/files
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_0"; filename="photo1.png"
+Content-Type: image/png
+
+< ./files/photo1.png
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_0"; filename="photo2.jpg"
+Content-Type: image/jpeg
+
+< ./files/photo2.jpg
+
+------MyCustomBoundary
+Content-Disposition: form-data; name="evidence_1"; filename="document2.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< ./files/document2.docx
+
+------MyCustomBoundary--

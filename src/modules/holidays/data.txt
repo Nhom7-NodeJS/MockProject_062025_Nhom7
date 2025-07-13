@@ -1,0 +1,25 @@
+INSERT INTO holidays (holiday_id, holiday_name, type_of_holiday, date_of_holiday, note, is_deleted) VALUES
+-- Federal Holidays
+('HD00000001', 'New Year\'s Day', 'federal_holiday', '2025-01-01 00:00:00', 'First day of the year', false),
+('HD00000002', 'Martin Luther King Jr. Day', 'federal_holiday', '2025-01-20 00:00:00', 'Honoring MLK Jr.', false),
+('HD00000003', 'Presidents\' Day', 'federal_holiday', '2025-02-17 00:00:00', 'Honoring U.S. presidents', false),
+('HD00000004', 'Memorial Day', 'federal_holiday', '2025-05-26 00:00:00', 'Remembering the fallen', false),
+('HD00000005', 'Juneteenth National Independence Day', 'federal_holiday', '2025-06-19 00:00:00', 'End of slavery in the U.S.', false),
+('HD00000006', 'Independence Day', 'federal_holiday', '2025-07-04 00:00:00', 'U.S. Independence Day', false),
+('HD00000007', 'Labor Day', 'federal_holiday', '2025-09-01 00:00:00', 'Workers celebration', false),
+('HD00000008', 'Columbus Day', 'federal_holiday', '2025-10-13 00:00:00', 'Christopher Columbus Day', false),
+('HD00000009', 'Veterans Day', 'federal_holiday', '2025-11-11 00:00:00', 'Honoring military veterans', false),
+('HD00000010', 'Thanksgiving Day', 'federal_holiday', '2025-11-27 00:00:00', 'Family & gratitude', false),
+('HD00000011', 'Christmas Day', 'federal_holiday', '2025-12-25 00:00:00', 'Christmas holiday', false),
+
+-- States Holidays
+('HD00000012', 'Confederate Memorial Day', 'states_holiday', '2025-04-28 00:00:00', 'Southern states remembrance', false),
+('HD00000013', 'Cesar Chavez Day', 'states_holiday', '2025-03-31 00:00:00', 'Celebrated in CA, CO, TX', false),
+('HD00000014', 'Patriots\' Day', 'states_holiday', '2025-04-21 00:00:00', 'Observed in Massachusetts and Maine', false),
+('HD00000015', 'Emancipation Day', 'states_holiday', '2025-04-16 00:00:00', 'Observed in Washington, D.C.', false),
+('HD00000016', 'Lincoln\'s Birthday', 'states_holiday', '2025-02-12 00:00:00', 'Observed in Illinois and California', false),
+('HD00000017', 'Pioneer Day', 'states_holiday', '2025-07-24 00:00:00', 'State holiday in Utah', false),
+('HD00000018', 'Nevada Day', 'states_holiday', '2025-10-31 00:00:00', 'Celebration of Nevada\'s statehood', false),
+('HD00000019', 'Texas Independence Day', 'states_holiday', '2025-03-02 00:00:00', 'Texas declared independence from Mexico', false),
+('HD00000020', 'Mardi Gras', 'states_holiday', '2025-03-04 00:00:00', 'Carnival celebration in LA, AL, MS', false),
+('HD00000021', 'Seward\'s Day', 'states_holiday', '2025-03-31 00:00:00', 'Commemorates Alaska Purchase', false);

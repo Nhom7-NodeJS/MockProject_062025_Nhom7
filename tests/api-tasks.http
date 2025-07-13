@@ -1,0 +1,77 @@
+@baseUrl = http://localhost:4000/api/v1
+@contentType = application/json
+
+### 1. Login as Police Chief
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "sheriff.john",
+  "password": "Password123!"
+}
+
+### Auth Token
+@authToken = {{login.response.body.data.accessToken}}
+
+### 2. Create a new task
+# @name createTask
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "task_name": "Interview Witness",
+  "content": "Interview John Doe about the incident",
+  "start_date": "2025-07-15T09:00:00.000Z",
+  "due_date": "2025-07-17T17:00:00.000Z",
+  "case_id": "CASE-002",
+  "username": "officer.jane"
+}
+
+// === INVESTIGATOR ===
+
+### 1. Login as an Investigator
+# @name loginInvestigator
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "jane_smith",
+  "password": "Password123!"
+}
+
+### Investigator Token
+@investigatorToken = {{loginInvestigator.response.body.data.accessToken}}
+
+### Get All Tasks by User + Role + Case
+GET {{baseUrl}}/tasks/all/CASE002
+Authorization: Bearer {{investigatorToken}}
+Content-Type: {{contentType}}
+
+### Get All Tasks by User + Role + Case with pagination
+GET {{baseUrl}}/tasks/all/paginated/CASE002
+Authorization: Bearer {{investigatorToken}}
+Content-Type: {{contentType}}
+
+### Get Task Detail by Role and Task ID
+GET {{baseUrl}}/tasks/detail/T002
+Authorization: Bearer {{investigatorToken}}
+Content-Type: {{contentType}}
+
+### Change Task Status (auto flow)
+PUT {{baseUrl}}/tasks/status/T002
+Content-Type: {{contentType}}
+
+{
+}
+
+### 2. Update Forensic Investigation Result
+PUT {{baseUrl}}/forensic-invest/update/E002
+Content-Type: {{contentType}}
+
+{
+  "summary": "Updated forensic investigation summary.",
+  "fileUrl": ["report1.docx", "image1.png"]
+}
+
