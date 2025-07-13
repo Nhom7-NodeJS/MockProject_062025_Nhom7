@@ -68,6 +68,12 @@ export const SuccessMessages = {
     FORENSIC_INVEST_GET: "Fetch forensic invest data successfully",
     FORENSIC_INVEST_UPDATED: "Update forensic investigation successfully",
   },
+  HOLIDAY: {
+    HOLIDAY_GET: "Fetch holiday data successfully",
+    HOLIDAY_CREATED: "Holiday created successfully",
+    HOLIDAY_UPDATED: "Holiday updated successfully",
+    HOLIDAY_DELETED: "Holiday deleted successfully",
+  },
 } as const;
 
 export const ErrorMessages = {
@@ -85,7 +91,7 @@ export const ErrorMessages = {
   PERMISSION_EXISTS: "Permission already exists for this user",
   SENTENCE_NOT_FOUND: "Sentence not found",
   SENTENCE_EXISTS: "Sentence already exists",
-  
+  HOLIDAY_NOT_FOUND: "Holiday not found",
   WARRANT_NOT_FOUND: "Warrant not found",
   WARRANT_EXISTS: "Warrant already exists",
   WARRANT_INVALID: "Invalid warrant data",
@@ -93,7 +99,7 @@ export const ErrorMessages = {
   FILE_UPLOAD_FAILED: "Failed to upload files",
   UNSUPPORTED_FILE_TYPE: "This file type is not supported",
   FINANCIAL_INVESTIGATION_NOT_FOUND: "Financial investigation not found",
-
+  HOLIDAY_CREATE_FAILED: "Failed to create holiday",
   FORENSIC_INVESTIGATION_NOT_FOUND: "Forensic investigation not found",
 
   TASK_NOT_FOUND: "Task not found",

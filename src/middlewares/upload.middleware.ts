@@ -74,6 +74,7 @@ export const processRequestFiles = [
             stream.end(file.buffer);
           });
           uploadResults[field].push(result.secure_url);
+          
         }
       }
 
