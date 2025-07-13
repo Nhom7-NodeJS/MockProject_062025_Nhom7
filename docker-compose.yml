@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - '3307:3306'  
+    restart: always
+    networks:
+      - intern_network
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: intern_db
+    volumes:
+      - mysqldata:/var/lib/mysql  
+  myapp:
+    image: viethd4a1/intern_app:latest
+    container_name: intern_container 
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - intern_network
+
+networks:
+  intern_network:
+    driver: bridge
+
+volumes:
+  mysqldata:
+    driver: local
