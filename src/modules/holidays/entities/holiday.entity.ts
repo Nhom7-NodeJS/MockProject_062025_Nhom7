@@ -1,10 +1,16 @@
 import { TypeOfHoliday } from "@/modules/holidays/enums/holiday.enum";
-import { Entity, Column, PrimaryColumn } from "typeorm";
-
+import { Entity, Column, PrimaryColumn, BeforeInsert } from "typeorm";
+import { v4 as uuidv4 } from "uuid";
 @Entity("holidays")
 export class Holiday {
   @PrimaryColumn()
   holiday_id!: string;
+
+ 
+  @BeforeInsert()
+  generateId() {
+    this.holiday_id = `HD${uuidv4().replace(/-/g, "").slice(0, 10)}`; 
+  }
 
   @Column()
   holiday_name!: string;
@@ -21,3 +27,4 @@ export class Holiday {
   @Column({ type: "boolean", default: false })
   is_deleted!: boolean;
 }
+
