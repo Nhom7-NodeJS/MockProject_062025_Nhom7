@@ -1,7 +1,8 @@
 import Joi from "joi";
 import { CreateIncidentReportDto } from "@/modules/reports/dto/report.dto";
 import { Gender } from "@/modules/users/enums/user.enum";
-import { IncidentRelationship } from "../enums/report.enum";
+import { IncidentRelationship, CrimeType, SeverityLevel } from "@/modules/reports/enums/report.enum"
+import { EvidenceType } from "@/modules/evidences/enums/evidence.enum"
 
 export const CreateReportSchema = Joi.object<CreateIncidentReportDto>({
   reporterInfo: Joi.object({
@@ -34,14 +35,18 @@ export const CreateReportSchema = Joi.object<CreateIncidentReportDto>({
   }),
 
   incidentInfo: Joi.object({
-    crimeType: Joi.string().required().messages({
-      "string.base": "Crime type must be a string",
-      "string.empty": "Crime type must not be empty",
+    crimeType: Joi.string()
+      .valid(...Object.values(CrimeType))
+      .required()
+      .messages({
+      "any.only": `Crime type must be one of: ${Object.values(CrimeType).join(", ")}`,
       "any.required": "Crime type is required",
     }),
-    severity: Joi.string().required().messages({
-      "string.base": "Severity must be a string",
-      "string.empty": "Severity must not be empty",
+    severity: Joi.string()
+      .valid(...Object.values(SeverityLevel))
+      .required()
+      .messages({
+      "any.only": `Severity must be one of: ${Object.values(SeverityLevel).join(", ")}`,
       "any.required": "Severity is required",
     }),
     dateOccur: Joi.string().required().messages({
@@ -91,10 +96,12 @@ export const CreateReportSchema = Joi.object<CreateIncidentReportDto>({
   evidences: Joi.array()
     .items(
       Joi.object({
-        evidenceType: Joi.string().required().messages({
-          "string.base": "Evidence type must be a string",
-          "string.empty": "Evidence type must not be empty",
-          "any.required": "Evidence type is required",
+        evidenceType: Joi.string()
+          .valid(...Object.values(EvidenceType))
+          .required()
+          .messages({
+            "any.only": `Evidence type must be one of: ${Object.values(EvidenceType).join(", ")}`,
+            "any.required": "Evidence type is required",
         }),
         evidenceLocation: Joi.string().allow(null).messages({
           "string.base": "Evidence location must be a string",
