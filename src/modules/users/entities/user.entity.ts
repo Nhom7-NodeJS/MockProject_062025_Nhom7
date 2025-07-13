@@ -57,7 +57,7 @@ export class User {
   @Column({ nullable: true })
   refresh_token?: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   email?: string;
   
   // OneToMany
@@ -94,4 +94,5 @@ export class User {
   // ManyToOne
   @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn({ name: "role_id" })
-  role!: Role;}
+  role!: Role;
+}

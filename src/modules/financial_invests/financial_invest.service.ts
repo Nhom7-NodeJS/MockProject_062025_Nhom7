@@ -5,7 +5,6 @@ import { AppError } from "@/common/error.response";
 import { ErrorMessages } from "@/constants/message";
 import { HttpStatusCode } from "@/constants/status-code";
 import { ErrorCode } from "@/constants/error-code";
-
 import { FinancialInvest } from "./entities/financial_invest.entity";
 
 export class FinancialInvestService {

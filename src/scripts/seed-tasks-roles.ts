@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import * as bcrypt from "bcryptjs";
 
 import { AppDataSource } from "@/config/database.config";
 import { Role } from "@/modules/roles/entities/role.entity";
@@ -18,6 +18,12 @@ import { CaseEvidence } from "@/modules/cases_evidences/entities/case_evidence.e
 import { EvidenceType } from "@/modules/evidences/enums/evidence.enum";
 import { FinancialInvest } from "@/modules/financial_invests/entities/financial_invest.entity";
 import { ForensicInvest } from "@/modules/forensic_invests/entities/forensic_invest.entity";
+
+const SALT_ROUNDS = 10;
+
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, SALT_ROUNDS);
+}
 
 async function seedTasksRoles() {
   try {
@@ -88,9 +94,11 @@ async function seedTasksRoles() {
     await roleRepository.save(role2);
 
     // === Insert User 1 ===
+    const hashedPassword = await hashPassword("Password123!");
+
     const user1 = new User();
     user1.username = "john_doe";
-    user1.password_hash = "hashed_password1";
+    user1.password_hash = hashedPassword;
     user1.fullname = "John Doe";
     user1.dob = new Date("1990-01-01");
     user1.date_attended = new Date();
@@ -103,7 +111,7 @@ async function seedTasksRoles() {
     // === Insert User 2 ===
     const user2 = new User();
     user2.username = "jane_smith";
-    user2.password_hash = "hashed_password2";
+    user2.password_hash = hashedPassword;
     user2.fullname = "Jane Smith";
     user2.dob = new Date("1992-05-15");
     user2.date_attended = new Date();
@@ -135,7 +143,7 @@ async function seedTasksRoles() {
 
     // === Insert Evidence 1 ===
     const evidence1 = new Evidence();
-    evidence1.evidence_id = uuidv4();
+    evidence1.evidence_id = "E001";
     evidence1.description = "Fingerprint found on crime scene.";
     evidence1.collected_at = new Date();
     evidence1.current_location = "Evidence Room A";
@@ -148,7 +156,7 @@ async function seedTasksRoles() {
 
     // === Insert Evidence 2 ===
     const evidence2 = new Evidence();
-    evidence2.evidence_id = uuidv4();
+    evidence2.evidence_id = "E002";
     evidence2.description = "DNA sample from suspect.";
     evidence2.collected_at = new Date();
     evidence2.current_location = "Evidence Locker B";
@@ -208,7 +216,7 @@ async function seedTasksRoles() {
 
     // === Insert Task 1 ===
     const task1 = new Task();
-    task1.task_id = uuidv4();
+    task1.task_id = "T001";
     task1.task_name = "Investigate fraud";
     task1.content = "Collect and analyze fraud evidence.";
     task1.status = TaskStatus.WAITING_EXECUTING;
@@ -220,7 +228,7 @@ async function seedTasksRoles() {
 
     // === Insert Task 2 ===
     const task2 = new Task();
-    task2.task_id = uuidv4();
+    task2.task_id = "T002";
     task2.task_name = "Collect forensic samples";
     task2.content = "Gather DNA evidence from crime scene.";
     task2.status = TaskStatus.WAITING_EXECUTING;

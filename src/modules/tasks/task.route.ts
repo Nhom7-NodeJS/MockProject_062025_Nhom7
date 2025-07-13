@@ -7,16 +7,19 @@ import { asyncHandle } from "@/utils/handle-error";
 
 import taskController from "./task.controller";
 import { createTaskSchema } from "./schemas/create-task.schema";
+import { checkHolidayMiddleware } from "@/middlewares/check-holidate.middleware";
 
 const router = express.Router();
 
 router.get(
-  "/all/:username/:roleId/:caseId",
+  "/all/:caseId",
+  authMiddleware([RoleType.FINANCIAL_INVESTIGATOR, RoleType.FORENSIC_OFFICER]),
   asyncHandle(taskController.getAllTaskByRoleId)
 );
 
 router.get(
-  "/detail/:roleId/:taskId",
+  "/detail/:taskId",
+  authMiddleware([RoleType.FINANCIAL_INVESTIGATOR, RoleType.FORENSIC_OFFICER]),
   asyncHandle(taskController.getTaskDetailById)
 );
 
@@ -28,5 +31,16 @@ router.post(
   validateBody(createTaskSchema),
   asyncHandle(taskController.createTask)
 );
+
+/*
+test middleware checkHolidayMiddleware 
+router.post(
+  "/",
+  //  authMiddleware([RoleType.POLICE_CHIEF]),
+  validateBody(createTaskSchema),
+  checkHolidayMiddleware,
+  asyncHandle(taskController.createTask)
+);
+*/
 
 export default router;

@@ -13,13 +13,12 @@ export class WarrantService {
     this.warrantRepository = AppDataSource.getRepository(Warrant);
   }
 
-  async getAllWarrants(): Promise<Warrant[]> {
-    try {
-      return await this.warrantRepository.find();
-    } catch (err) {
-      console.error(err);
-      throw err; // <-- để controller bắt được lỗi
-    }
+  async getAllWarrants(status?: WarrantStatus): Promise<Warrant[]> {
+   const query = this.warrantRepository.createQueryBuilder("warrant").where("warrant.is_deleted = :isDeleted", { isDeleted: false }).orderBy("warrant.time_publish", "DESC");
+   if (status) {
+   query.andWhere("warrant.status = :status", { status });
+  }
+  return query.getMany();
   }
 
   async getExecutingWarrants(): Promise<Warrant[]> {
