@@ -33,8 +33,9 @@ router.put("/status/:taskId", asyncHandle(taskController.changeTaskStatus));
 
 router.post(
   "/",
-  authMiddleware([RoleType.POLICE_CHIEF]),
+  // authMiddleware([RoleType.POLICE_CHIEF]),
   validateBody(createTaskSchema),
+  checkHolidayMiddleware,
   asyncHandle(taskController.createTask)
 );
 

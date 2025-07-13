@@ -17,7 +17,7 @@ const router = express.Router();
 router.get(
   "/",
   validateQuery(getAllWarantSchema),
-  authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
+ // authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
   warrantController.getAllWarrantsWithStatus
 );
 
