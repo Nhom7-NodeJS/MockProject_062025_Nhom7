@@ -43,7 +43,7 @@ router.put(
   asyncHandle(CaseController.confirmCaseAndAssignInvestigator)
 );
 
-// GET /cases/me - Get cases assigned to the authenticated user
+// GET /cases/me - Get cases assigned to the authenticated user (non-paginated)
 // Example: /cases/me?status=In%20Process
 router.get(
   "/me",
@@ -55,6 +55,20 @@ router.get(
   ]),
   validateQuery(getAllCasesSchema),
   asyncHandle(CaseController.getCasesByUser)
+);
+
+// GET /cases/me/paginated - Get paginated cases assigned to the authenticated user
+// Example: /cases/me/paginated?status=In%20Process&page=1&limit=10
+router.get(
+  "/me/paginated",
+  authMiddleware([
+    RoleType.POLICE_CHIEF,
+    RoleType.INVESTIGATOR,
+    RoleType.FORENSIC_OFFICER,
+    RoleType.FINANCIAL_INVESTIGATOR
+  ]),
+  validateQuery(getPaginatedCasesSchema),
+  asyncHandle(CaseController.getPaginatedCasesByUser)
 );
 
 export default router;

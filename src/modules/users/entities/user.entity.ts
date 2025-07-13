@@ -59,6 +59,7 @@ export class User {
 
   @Column({nullable: true})
   email?: string;
+  
   // OneToMany
   @OneToMany(() => CaseUser, (caseUser) => caseUser.user)
   caseUsers!: CaseUser[];

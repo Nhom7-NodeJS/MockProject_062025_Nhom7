@@ -1,13 +1,14 @@
-import { AppDataSource } from "@/config/database.config";
 import { Repository } from "typeorm";
+
+import { AppDataSource } from "@/config/database.config";
 import { AppError } from "@/common/error.response";
-import { CaseStatus } from "./enums/case.enum";
 import { CaseUser } from "@/modules/cases_users/entities/case_user.entity";
 import { HttpStatusCode } from "@/constants/status-code";
 import { IPaginationParams } from "@/utils/pagination";
 import { User } from "@/modules/users/entities/user.entity";
 
 import { Case} from "./entities/case.entity";
+import { CaseStatus } from "./enums/case.enum";
 
 export class CaseService {
   private caseRepository: Repository<Case>;
@@ -47,11 +48,10 @@ export class CaseService {
       query.andWhere('case.status = :status', { status });
     }
     
-    // Get total count and paginated data in parallel
-    const [items, total] = await Promise.all([
-      query.skip(skip).take(limit).getMany(),
-      query.getCount()
-    ]);
+    const [items, total] = await query
+      .skip(skip)
+      .take(limit)
+      .getManyAndCount();
     
     return { items, total };
   }
@@ -140,7 +140,7 @@ export class CaseService {
     return { case: caseRecord, caseUsers: savedCaseUsers };
   }
 
-  async getCasesByUser(username: string, status?: CaseStatus): Promise<Case[]> {
+  private getBaseUserCasesQuery(username: string, status?: CaseStatus) {
     const query = this.caseRepository
       .createQueryBuilder('case')
       .innerJoin('case.caseUsers', 'caseUser', 'caseUser.username = :username', { username })
@@ -152,7 +152,29 @@ export class CaseService {
       query.andWhere('case.status = :status', { status });
     }
 
+    return query;
+  }
+
+  async getCasesByUser(username: string, status?: CaseStatus): Promise<Case[]> {
+    const query = this.getBaseUserCasesQuery(username, status);
+    
     return query.getMany();
+  }
+
+  async getPaginatedCasesByUser(
+    username: string,
+    paginationParams: IPaginationParams,
+    status?: CaseStatus
+  ): Promise<{ items: Case[]; total: number }> {
+    const { skip, limit } = paginationParams;
+    const query = this.getBaseUserCasesQuery(username, status);
+    
+    const [items, total] = await query
+      .skip(skip)
+      .take(limit)
+      .getManyAndCount();
+    
+    return { items, total };
   }
 }
 
