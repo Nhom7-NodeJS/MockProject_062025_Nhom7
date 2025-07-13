@@ -49,6 +49,11 @@ GET {{baseUrl}}/tasks/all/CASE002
 Authorization: Bearer {{investigatorToken}}
 Content-Type: {{contentType}}
 
+### Get All Tasks by User + Role + Case with pagination
+GET {{baseUrl}}/tasks/all/paginated/CASE002
+Authorization: Bearer {{investigatorToken}}
+Content-Type: {{contentType}}
+
 ### Get Task Detail by Role and Task ID
 GET {{baseUrl}}/tasks/detail/T002
 Authorization: Bearer {{investigatorToken}}
