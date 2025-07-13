@@ -18,6 +18,12 @@ router.get(
 );
 
 router.get(
+  "/all/paginated/:caseId",
+  authMiddleware([RoleType.FINANCIAL_INVESTIGATOR, RoleType.FORENSIC_OFFICER]),
+  asyncHandle(taskController.getPaginatedTask)
+);
+
+router.get(
   "/detail/:taskId",
   authMiddleware([RoleType.FINANCIAL_INVESTIGATOR, RoleType.FORENSIC_OFFICER]),
   asyncHandle(taskController.getTaskDetailById)
