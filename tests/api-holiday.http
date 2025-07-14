@@ -1,0 +1,33 @@
+@baseUrl = http://localhost:4000/api/v1
+@contentType = application/json
+
+### 1. Login as Police Chief
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "sheriff.john",
+  "password": "Password123!"
+}
+
+### Auth Token
+@authToken = {{login.response.body.data.accessToken}}
+
+
+### 2. Create Holiday
+POST {{baseUrl}}/holiday/create
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "holiday_name": "Ngày Giỗ Tổ Hùng Vương",
+  "type_of_holiday": "federal_holiday",
+  "date_of_holiday": "2025-04-18T00:00:00.000Z",
+  "note": "Ngày lễ truyền thống dân tộc"
+}
+
+### 3. Get All Holidays
+GET {{baseUrl}}/holiday/getAll
+Authorization: Bearer {{authToken}}
+
