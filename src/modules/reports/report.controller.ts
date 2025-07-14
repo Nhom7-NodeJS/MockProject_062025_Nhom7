@@ -55,18 +55,18 @@ export class ReportController {
       data: reportDto,
     }).sendResponse(res);
   }
-    async updateReportStatus(req: Request, res: Response) {
+  async updateReportStatus(req: Request, res: Response) {
     try {
       const { reportId } = req.params;
       const { reportStatus } = req.body as UpdateReportStatusDto;
 
-      const updatedReport = await reportService.updateReportStatus(reportId, reportStatus);
+      await reportService.updateReportStatus(reportId, reportStatus);
 
-      return new AppResponse({
-        message: "Report status updated successfully",
-        statusCode: HttpStatusCode.OK,
-        data: updatedReport
-      }).sendResponse(res);
+      // Return format theo yêu cầu
+      return res.status(HttpStatusCode.OK).json({
+        code: 200,
+        message: "report status updated"
+      });
     } catch (error: any) {
       throw new AppError(
         error.message || ErrorMessages.INTERNAL_SERVER_ERROR,
