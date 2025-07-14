@@ -27,7 +27,7 @@ async function hashPassword(password: string): Promise<string> {
 
 async function seedTasksRoles() {
   try {
-    await AppDataSource.initialize();
+    //    await AppDataSource.initialize();
 
     const roleRepository = AppDataSource.getRepository(Role);
     const userRepository = AppDataSource.getRepository(User);
@@ -41,14 +41,16 @@ async function seedTasksRoles() {
     const forensicInvestRepository =
       AppDataSource.getRepository(ForensicInvest);
 
+    // call user
+    const user1 = await userRepository.findOneByOrFail({
+      username: "officer.jane",
+    });
+    const user2 = await userRepository.findOneByOrFail({
+      username: "officer.mike",
+    });
+    /*
     // === Clear data ===
     await taskRepository.createQueryBuilder().delete().where("1 = 1").execute();
-
-    await financialInvestRepository
-      .createQueryBuilder()
-      .delete()
-      .where("1 = 1")
-      .execute();
 
     await forensicInvestRepository
       .createQueryBuilder()
@@ -56,7 +58,7 @@ async function seedTasksRoles() {
       .where("1 = 1")
       .execute();
 
-    await caseUserRepository
+    await financialInvestRepository
       .createQueryBuilder()
       .delete()
       .where("1 = 1")
@@ -74,6 +76,12 @@ async function seedTasksRoles() {
       .where("1 = 1")
       .execute();
 
+    await caseUserRepository
+      .createQueryBuilder()
+      .delete()
+      .where("1 = 1")
+      .execute();
+
     await caseRepository.createQueryBuilder().delete().where("1 = 1").execute();
 
     await userRepository.createQueryBuilder().delete().where("1 = 1").execute();
@@ -81,7 +89,9 @@ async function seedTasksRoles() {
     await roleRepository.createQueryBuilder().delete().where("1 = 1").execute();
 
     console.log("Cleared existing data");
+    */
 
+    /*
     // === Insert Role ===
     const role1 = new Role();
     role1.role_id = "FINANCIAL_INVESTIGATOR";
@@ -119,11 +129,12 @@ async function seedTasksRoles() {
     user2.create_at = new Date();
     user2.role = role2;
     user2.gender = Gender.FEMALE;
+  
     await userRepository.save(user2);
-
+*/
     // === Insert Case 1 ===
     const case1 = new Case();
-    case1.case_id = "CASE001";
+    case1.case_id = "CASE-0001";
     case1.case_name = "Fraud Investigation";
     case1.type_case = CaseType.MURDER;
     case1.severity = CaseSeverity.MEDIUM;
@@ -133,11 +144,11 @@ async function seedTasksRoles() {
 
     // === Insert Case 2 ===
     const case2 = new Case();
-    case2.case_id = "CASE002";
+    case2.case_id = "CASE-0002";
     case2.case_name = "Forensic DNA";
-    case1.type_case = CaseType.ROBBERY;
-    case1.severity = CaseSeverity.LOW;
-    case1.status = CaseStatus.IN_PROCESS;
+    case2.type_case = CaseType.ROBBERY;
+    case2.severity = CaseSeverity.LOW;
+    case2.status = CaseStatus.IN_PROCESS;
     case2.create_at = new Date();
     await caseRepository.save(case2);
 
@@ -169,14 +180,14 @@ async function seedTasksRoles() {
 
     // === Insert CaseUser 1 ===
     const caseUser1 = new CaseUser();
-    caseUser1.case_id = "CASE001";
+    caseUser1.case_id = "CASE-0001";
     caseUser1.username = user1.username;
     caseUser1.assigned_at = new Date();
     await caseUserRepository.save(caseUser1);
 
     // === Insert CaseUser 2 ===
     const caseUser2 = new CaseUser();
-    caseUser2.case_id = "CASE002";
+    caseUser2.case_id = "CASE-0002";
     caseUser2.username = user2.username;
     caseUser2.assigned_at = new Date();
     await caseUserRepository.save(caseUser2);
@@ -241,10 +252,9 @@ async function seedTasksRoles() {
     console.log("Seed completed with 2 rows!");
   } catch (error) {
     console.error("Seed failed:", error);
-  } finally {
-    await AppDataSource.destroy();
-    process.exit(0);
   }
 }
 
-seedTasksRoles();
+// seedTasksRoles();
+
+export default seedTasksRoles;

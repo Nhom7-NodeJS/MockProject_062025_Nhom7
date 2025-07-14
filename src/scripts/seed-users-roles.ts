@@ -13,15 +13,12 @@ async function hashPassword(password: string): Promise<string> {
 
 async function seedUsersAndRoles() {
   try {
-    await AppDataSource.initialize();
+    // await AppDataSource.initialize();
     console.log("Data Source has been initialized!");
 
     const roleRepository = AppDataSource.getRepository(Role);
     const userRepository = AppDataSource.getRepository(User);
-
-    // Clear existing data
-    await userRepository.createQueryBuilder().delete().where("1 = 1").execute();
-    await roleRepository.createQueryBuilder().delete().where("1 = 1").execute();
+    
     console.log("Cleared existing users and roles data");
 
     // Create roles
@@ -118,10 +115,7 @@ async function seedUsersAndRoles() {
     console.log("Successfully seeded users and roles!");
   } catch (error) {
     console.error("Error seeding users and roles:", error);
-  } finally {
-    await AppDataSource.destroy();
-    process.exit(0);
   }
 }
 
-seedUsersAndRoles();
+export default seedUsersAndRoles;

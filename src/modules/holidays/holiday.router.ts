@@ -12,8 +12,8 @@ import { RoleType } from "@/constants/role-type";
 const router = express.Router();
 
 router.post(
-  "/createNewHoliday",
-  // authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
+  "/create",
+  authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
   validateBody(createHolidaySchema),
   holidayController.createHoliday
 );
