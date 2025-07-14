@@ -1,6 +1,9 @@
 @baseUrl = http://localhost:4000/api/v1
 
-### 1. Login để lấy token
+### Auth Token
+@authToken = {{login.response.body.data.accessToken}}
+
+### Login
 # @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
@@ -10,34 +13,17 @@ Content-Type: application/json
   "password": "Password123!"
 }
 
-### 2. Get All Reports
+### Get all reports (with pagination)
+GET {{baseUrl}}/report?page=1&limit=9
 
-@token = {{login.response.body.data.accessToken}}
-GET {{baseUrl}}/report/
+### Get report by ID
+GET {{baseUrl}}/report/2
 
-### 3. Confirm Report - Approve 
+### Confirm report status
 PUT {{baseUrl}}/report/1/status
-x-access-token: {{token}}
 Content-Type: application/json
+x-access-token: {{authToken}}
 
 {
   "reportStatus": "Approved"
-}
-
-### 4. Confirm Report - Reject 
-PUT {{baseUrl}}/report/2/status
-x-access-token: {{token}}
-Content-Type: application/json
-
-{
-  "reportStatus": "Rejected"
-}
-
-### 5. Confirm Report - Pending 
-PUT {{baseUrl}}/report/3/status
-x-access-token: {{token}}
-Content-Type: application/json
-
-{
-  "reportStatus": "Pending"
 }

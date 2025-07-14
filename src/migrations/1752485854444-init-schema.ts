@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class UpdateDB1752429983893 implements MigrationInterface {
-    name = 'UpdateDB1752429983893'
+export class InitSchema1752485854444 implements MigrationInterface {
+    name = 'InitSchema1752485854444'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE \`indictments\` (\`indictment_id\` varchar(255) NOT NULL, \`content\` varchar(255) NOT NULL, \`issued_at\` timestamp NOT NULL, \`is_deleted\` tinyint NOT NULL DEFAULT 0, \`prosecution_id\` varchar(255) NULL, PRIMARY KEY (\`indictment_id\`)) ENGINE=InnoDB`);

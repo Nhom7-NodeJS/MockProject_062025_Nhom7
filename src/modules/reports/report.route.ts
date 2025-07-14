@@ -31,7 +31,10 @@ router.put(
   validateBody(UpdateReportStatusSchema),
   asyncHandle(ReportController.updateReportStatus)
 );
-
+router.get(
+  "/:reportId",
+  asyncHandle(ReportController.getReportById)
+);
 
 // import { Router } from "express";
 // import { ReportController } from "./report.controller";

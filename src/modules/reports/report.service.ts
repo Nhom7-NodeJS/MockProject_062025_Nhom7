@@ -177,7 +177,7 @@ export class ReportService {
     if (!report) {
       throw new AppError(
         "Report not found",
-        HttpStatusCode.NOT_FOUND,
+        HttpStatusCode.BAD_REQUEST,
         ErrorCode.VALIDATION_ERROR
       );
     }
@@ -195,7 +195,39 @@ export class ReportService {
     };
   }
 
-  async getAllReports() {
+  async getAllReports(page: number = 1, limit: number = 10) {
+    const [reports, total] = await this.reportRepository.findAndCount({
+      where: { is_deleted: false },
+      relations: ['case', 'user'],
+      order: { reported_at: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return {
+      data: reports.map(report => ({
+        report_id: report.report_id,
+        crime_type: report.crime_type,
+        severity: report.severity,
+        status: report.status,
+        description: report.description,
+        incident_date: report.incident_date,
+        reported_at: report.reported_at,
+        reporter_fullname: report.reporter_fullname,
+        reporter_email: report.reporter_email,
+        case_id: report.case?.case_id,
+        user_id: report.user?.username
+      })),
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    };
+  }
+
+  async getAllReportsWithoutPagination() {
     const reports = await this.reportRepository.find({
       where: { is_deleted: false },
       relations: ['case', 'user'],
@@ -217,6 +249,12 @@ export class ReportService {
     }));
   }
 
- 
+  async getReportById(reportId: string) {
+    return await this.reportRepository.findOne({
+      where: { report_id: Number(reportId), is_deleted: false },
+      relations: ["case", "user"],
+    });
+  }
+
 }
 export default new ReportService();
