@@ -1,9 +1,10 @@
 import { AppDataSource } from "@/config/database.config";
-import { Holiday } from "@/modules/holidays/entities/holiday.entity";
-import { TypeOfHoliday } from "@/modules/holidays/enums/holiday.enum";
+import { Holiday } from "../modules/holidays/entities/holiday.entity";
+import { TypeOfHoliday } from "../modules/holidays/enums/holiday.enum";
 
 export const seedHolidays = async () => {
   try {
+   // await AppDataSource.initialize();
     const holidayRepo = AppDataSource.getRepository(Holiday);
 
     // Clear old data
@@ -195,3 +196,4 @@ export const seedHolidays = async () => {
     console.error("Error seeding holidays:", error);
   }
 };
+
