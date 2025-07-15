@@ -1,0 +1,69 @@
+@baseUrl = http://localhost:4000/api/v1
+@contentType = application/json
+
+### 1. Login as Police Chief
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "sheriff.john",
+  "password": "Password123!"
+}
+
+### Auth Token
+@authToken = {{login.response.body.data.accessToken}}
+
+
+### Create Warrant with File Upload (multipart/form-data)
+POST {{baseUrl}}/warrant/create
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{authToken}}
+
+--MyBoundary
+Content-Disposition: form-data; name="warrant_name"
+
+Discover TylerJohn House
+--MyBoundary
+Content-Disposition: form-data; name="police_response"
+
+officer.jane
+--MyBoundary
+Content-Disposition: form-data; name="time_publish"
+
+2025-07-10T08:00:00.000Z
+--MyBoundary
+Content-Disposition: form-data; name="status"
+
+WAITING_EXECUTING
+--MyBoundary
+Content-Disposition: form-data; name="case_id"
+
+CASE-001
+--MyBoundary
+Content-Disposition: form-data; name="attached_file"; filename="image.png"
+Content-Type: image/png
+
+< ./assets/image.png
+--MyBoundary--
+
+
+### get all warrants 
+GET {{baseUrl}}/warrant
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}   
+
+### get all warrants with status 
+GET {{baseUrl}}/warrant?status=Waiting executing
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}   
+
+
+### get warrant by ID
+GET {{baseUrl}}/warrant/WR77788a1da2
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+// give a valid warrant ID to test
+
+
+

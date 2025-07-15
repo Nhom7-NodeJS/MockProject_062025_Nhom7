@@ -12,35 +12,36 @@ import { processRequestFiles } from "@/middlewares/process-file.middleware";
 import { parseJSONFields } from "@/middlewares/parse-json.middleware";
 import { authMiddleware } from "@/middlewares/auth.middleware";
 import { RoleType } from "@/constants/role-type";
+import { asyncHandle } from "@/utils/handle-error";
 const router = express.Router();
 
 router.get(
   "/",
   validateQuery(getAllWarantSchema),
- // authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
+  // authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
   warrantController.getAllWarrantsWithStatus
 );
 
 router.post(
-  "/createNewWarrant",
- // authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
+  "/create",
+  authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
   processRequestFiles(CloudinaryFolder.WARRANT),
   parseJSONFields(["attached_file"]),
   validateBody(createWarrantSchema),
-  warrantController.createNewWarrant
+  asyncHandle((req, res) => warrantController.createNewWarrant(req, res))
 );
 
 router.post(
   "/searchWarrantByName",
   authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
   validateBody(searchWarrantSchema),
-  warrantController.searchWarrantByName
+  asyncHandle((req, res) => warrantController.searchWarrantByName(req, res))
 );
 
 router.get(
-  "/getWarrantById/:warrant_id",
+  "/:warrant_id",
   authMiddleware([RoleType.POLICE_CHIEF, RoleType.ADMIN]),
-  warrantController.getWarrantById
+  asyncHandle((req, res) => warrantController.getWarrantById(req, res))
 );
 
-export default router
+export default router;

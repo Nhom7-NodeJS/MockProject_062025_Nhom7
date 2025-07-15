@@ -4,8 +4,11 @@ import { WarrantStatus } from "@/modules/warrants/enums/warrant.enum";
 
 export const seedWarrants = async () => {
   try {
+     if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+    }
     const warrantRepo = AppDataSource.getRepository(Warrant);
-
+  
     // Clear old data
     await warrantRepo.createQueryBuilder().delete().where("1=1").execute();
     console.log("Cleared existing warrants");
@@ -13,7 +16,7 @@ export const seedWarrants = async () => {
     const warrants = [
       warrantRepo.create({
         warrant_name: "Discover John House 7",
-        police_response: "user-001", // ID của user đã tồn tại
+        police_response: "officer.jane", // ID của user đã tồn tại
         attached_file: [
           "https://res.cloudinary.com/dh42mlh8c/image/upload/v1752421115/warrant/g8fobmmsbj4qdlarygei.png",
         ],
@@ -30,3 +33,4 @@ export const seedWarrants = async () => {
     console.error("Error seeding warrants:", error);
   }
 };
+seedWarrants();
