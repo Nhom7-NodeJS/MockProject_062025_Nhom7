@@ -55,7 +55,7 @@ export class ReportController {
       data: reportDto,
     }).sendResponse(res);
   }
-    async updateReportStatus(req: Request, res: Response) {
+  async updateReportStatus(req: Request, res: Response) {
     try {
       const { reportId } = req.params;
       const { reportStatus } = req.body as UpdateReportStatusDto;
@@ -78,12 +78,15 @@ export class ReportController {
 
   async getAllReports(req: Request, res: Response) {
     try {
-      const reports = await reportService.getAllReports();
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const result = await reportService.getAllReports(page, limit);
       
       return new AppResponse({
         message: "Fetch reports data successfully",
         statusCode: HttpStatusCode.OK,
-        data: reports
+        data: result.data,
+        pagination: result.pagination
       }).sendResponse(res);
     } catch (error: any) {
       throw new AppError(
@@ -93,58 +96,29 @@ export class ReportController {
       );
     }
   }
+
+  async getReportById(req: Request, res: Response) {
+    try {
+      const { reportId } = req.params;
+      const report = await reportService.getReportById(reportId);
+      
+      if (!report) {
+        return res.status(404).json({ message: "Report not found" });
+      }
+      
+      return new AppResponse({
+        message: "Report detail fetched successfully",
+        statusCode: HttpStatusCode.OK,
+        data: report,
+      }).sendResponse(res);
+    } catch (error: any) {
+      throw new AppError(
+        error.message || "Internal server error",
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+        ErrorCode.DATABASE_ERROR
+      );
+    }
+  }
 }
-
-// import { Request, Response } from "express";
-// import reportService from "./report.service";
-// import { AppResponse } from "@/common/success.response";
-// import { HttpStatusCode } from "@/constants/status-code";
-// import { UpdateReportStatusDto } from "./dto/report.dto";
-
-// interface AuthRequest extends Request {
-//   user?: {
-//     id: string;
-//     role: string;
-//     email: string;
-//   };
-// }
-
-// export class ReportController {
-  
-//   async updateReportStatus(req: AuthRequest, res: Response): Promise<void> {
-//     try {
-//       const reportId = req.params.reportId;
-//       const updateDto: UpdateReportStatusDto = req.body;
-      
-//       // Middleware đã validate token và reportStatus rồi
-//       await reportService.updateReportStatus(reportId, updateDto);
-      
-//       res.status(HttpStatusCode.OK).json({
-//         code: 200,
-//         message: "report status updated"
-//       });
-
-//     } catch (error) {
-//       throw error;
-//     }
-//   }
-
-//   async getReportById(req: AuthRequest, res: Response): Promise<void> {
-//     try {
-//       const reportId = req.params.reportId;
-//       const report = await reportService.getById(reportId);
-    
-//       const response = new AppResponse({
-//         message: "Report retrieved successfully",
-//         statusCode: HttpStatusCode.OK,
-//         data: report
-//       });
-      
-//       response.sendResponse(res);
-//     } catch (error) {
-//       throw error;
-//     }
-//   }
-// }
 
 export default new ReportController();

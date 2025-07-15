@@ -1,0 +1,29 @@
+@baseUrl = http://localhost:4000/api/v1
+
+### Auth Token
+@authToken = {{login.response.body.data.accessToken}}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "sheriff.john",
+  "password": "Password123!"
+}
+
+### Get all reports (with pagination)
+GET {{baseUrl}}/report?page=1&limit=9
+
+### Get report by ID
+GET {{baseUrl}}/report/2
+
+### Confirm report status
+PUT {{baseUrl}}/report/1/status
+Content-Type: application/json
+x-access-token: {{authToken}}
+
+{
+  "reportStatus": "Approved"
+}
