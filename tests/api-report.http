@@ -17,7 +17,7 @@ GET {{baseUrl}}/report/
 
 ### 3. Confirm Report - Approve 
 PUT {{baseUrl}}/report/1/status
-x-access-token: {{token}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 
 ### 4. Confirm Report - Reject 
 PUT {{baseUrl}}/report/2/status
-x-access-token: {{token}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 ### 5. Confirm Report - Pending 
 PUT {{baseUrl}}/report/3/status
-x-access-token: {{token}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

@@ -1,24 +1,22 @@
 import { HttpStatusCode } from "@/constants/status-code";
 import { Response } from "express";
 
-interface IAppResponse {
-  message: string;
-  statusCode?: number;
-  data?: any;
-  pagination?: any;
-}
-
 export class AppResponse {
   message: string;
   statusCode: number;
   data: any;
-  pagination?: any;
-
-  constructor({ message, statusCode = HttpStatusCode.OK, data = {}, pagination }: IAppResponse) {
+  constructor({
+    message,
+    statusCode = HttpStatusCode.OK,
+    data = {},
+  }: {
+    message: string;
+    statusCode: number;
+    data?: any;
+  }) {
     this.message = message;
     this.statusCode = statusCode;
     this.data = data;
-    this.pagination = pagination;
   }
 
   sendResponse(res: Response) {
@@ -26,7 +24,6 @@ export class AppResponse {
       success: true,
       message: this.message,
       data: this.data,
-      pagination: this.pagination,
     });
   }
 }

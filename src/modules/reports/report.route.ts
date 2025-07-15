@@ -5,7 +5,7 @@ import { asyncHandle } from "@/utils/handle-error";
 import { parseJSONFields } from "@/middlewares/parse-json.middleware";
 import { processRequestFiles } from "@/middlewares/process-file.middleware";
 import { validateBody } from "@/middlewares/validate.middleware";
-import { reportAuthMiddleware } from "@/middlewares/auth.middleware";
+import { authMiddleware } from "@/middlewares/auth.middleware";
 import reportController from "@/modules/reports/report.controller";
 
 import ReportController from "./report.controller";
@@ -27,7 +27,7 @@ router.get(
 );
 router.put(
   "/:reportId/status",
-  reportAuthMiddleware(),
+  authMiddleware(),
   validateBody(UpdateReportStatusSchema),
   asyncHandle(ReportController.updateReportStatus)
 );

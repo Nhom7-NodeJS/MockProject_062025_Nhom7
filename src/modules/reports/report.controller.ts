@@ -62,11 +62,11 @@ export class ReportController {
 
       await reportService.updateReportStatus(reportId, reportStatus);
 
-      // Return format theo yêu cầu
-      return res.status(HttpStatusCode.OK).json({
-        code: 200,
-        message: "report status updated"
-      });
+      return new AppResponse({
+        message: "report status updated",
+        statusCode: HttpStatusCode.OK,
+        data: { code: 200 }
+      }).sendResponse(res);
     } catch (error: any) {
       throw new AppError(
         error.message || ErrorMessages.INTERNAL_SERVER_ERROR,
