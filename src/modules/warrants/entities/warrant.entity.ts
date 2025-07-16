@@ -22,7 +22,7 @@ export class Warrant {
 
   @BeforeInsert()
   generateId() {
-    this.warrant_id = `WR${uuidv4().replace(/-/g, "").slice(0, 10)}`; // ví dụ: WR1a2b3c4d5e
+    this.warrant_id = `WR${uuidv4().replace(/-/g, "").slice(0, 10)}`;
   }
 
   @Column()

@@ -19,7 +19,8 @@ export const checkHolidayMiddleware = async (
 
     const start = new Date(start_date);
     const end = due_date ? new Date(due_date) : start; // without due_date, use start_date as end
-
+     
+    // Validate date format
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       return res.status(HttpStatusCode.BAD_REQUEST).json({
         message: "Invalid date format for start_date or due_date",
