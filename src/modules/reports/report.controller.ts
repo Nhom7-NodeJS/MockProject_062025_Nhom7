@@ -55,17 +55,17 @@ export class ReportController {
       data: reportDto,
     }).sendResponse(res);
   }
-    async updateReportStatus(req: Request, res: Response) {
+  async updateReportStatus(req: Request, res: Response) {
     try {
       const { reportId } = req.params;
       const { reportStatus } = req.body as UpdateReportStatusDto;
 
-      const updatedReport = await reportService.updateReportStatus(reportId, reportStatus);
+      await reportService.updateReportStatus(reportId, reportStatus);
 
       return new AppResponse({
-        message: "Report status updated successfully",
+        message: "report status updated",
         statusCode: HttpStatusCode.OK,
-        data: updatedReport
+        data: { code: 200 }
       }).sendResponse(res);
     } catch (error: any) {
       throw new AppError(

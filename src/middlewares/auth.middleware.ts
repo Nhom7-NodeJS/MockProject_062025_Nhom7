@@ -79,3 +79,58 @@ export const authMiddleware = (roles?: string[]) => {
     }
   };
 };
+
+// Authentication middleware for x-access-token header
+export const reportAuthMiddleware = () => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    // Get token from x-access-token header
+    const token = req.headers['x-access-token'] as string;
+
+    if (!token) {
+      throw new AppError(
+        'No authentication token provided',
+        HttpStatusCode.UNAUTHORIZED,
+        ErrorCode.UNAUTHORIZED,
+        { reason: 'missing_token' }
+      );
+    }
+
+    try {
+      // Verify token
+      const decoded = authService.verifyToken(token);
+      
+      if (!decoded) {
+        throw new AppError(
+          'Invalid or malformed authentication token',
+          HttpStatusCode.UNAUTHORIZED,
+          ErrorCode.INVALID_TOKEN,
+          { reason: 'token_verification_failed' }
+        );
+      }
+
+      // Add user to request
+      req.user = {
+        username: decoded.username,
+        role: decoded.role,
+      };
+
+      next();
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+      
+      // For unexpected errors, wrap them in AppError
+      const errorMessage = error instanceof Error ? error.message : 'Authentication failed';
+      throw new AppError(
+        errorMessage,
+        HttpStatusCode.UNAUTHORIZED,
+        ErrorCode.INVALID_TOKEN,
+        {
+          reason: 'authentication_error',
+          originalError: error instanceof Error ? error.message : String(error)
+        }
+      );
+    }
+  };
+};
