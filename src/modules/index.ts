@@ -15,8 +15,6 @@ const API_V1 = "/api/v1";
 
 // Public routes
 router.use(`${API_V1}/auth`, authRouter);
-router.use(`${API_V1}/report`, reportRouter);
-
 
 // Protected routes
 router.use(`${API_V1}/cases`, caseRouter);
@@ -25,7 +23,7 @@ router.use(`${API_V1}/forensic-invest`, forensicInvestRouter);
 router.use(`${API_V1}/tasks`, taskRouter);
 router.use(`${API_V1}/holiday`, holidayRouter);
 router.use(`${API_V1}/warrant`, warrantRouter);
-router.use(`${API_V1}/report`, reportRouter)
+router.use(`${API_V1}/report`, reportRouter);
 router.use("/account", authRouter);
 export default router;
 

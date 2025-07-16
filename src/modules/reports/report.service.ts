@@ -12,6 +12,7 @@ import { Victim } from "@/modules/victims/entities/victim.entity";
 import { Witness } from "@/modules/witnesses/entities/witness.entity";
 import { Gender } from "@/modules/users/enums/user.enum";
 import { CreateIncidentReportDto } from "@/modules/reports/dto/report.dto";
+import { IPaginationParams } from "@/utils/pagination";
 
 import { ReportStatus, IncidentRelationship } from "./enums/report.enum";
 import { ReportVictim } from "../reports_victims/entities/report_victim.entity";
@@ -215,5 +216,7 @@ export class ReportService {
       user_id: report.user?.username
     }));
   }
+
+ 
 }
 export default new ReportService();
