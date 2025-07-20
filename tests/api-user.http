@@ -1,0 +1,45 @@
+@baseUrl = http://localhost:4000/api/v1
+@contentType = application/json
+
+### 1. Login as Police Chief
+# @name loginPoliceChief
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "username": "testuser111",
+  "password": "Test@123111"
+}
+
+### Auth Token for Police Chief
+@policeChiefToken = {{loginPoliceChief.response.body.data.accessToken}}
+
+
+### 3. Get Paginated Users with Status Filter
+# @name getPaginatedUsersWithStatus
+GET {{baseUrl}}/user/
+Authorization: Bearer {{policeChiefToken}}
+Content-Type: {{contentType}}
+
+### 4. Search Users by Username or Fullname
+
+### 6. Get User Detail by Username
+# @name getUserDetail
+GET {{baseUrl}}/user/testuser111
+Authorization: Bearer {{policeChiefToken}}
+Content-Type: {{contentType}}
+
+### 7. Update User Details
+# @name updateUser
+PUT {{baseUrl}}/user/testuser111
+Authorization: Bearer {{policeChiefToken}}
+Content-Type: {{contentType}}
+
+{
+  "fullname": "John Doe",
+  "email": "dewd@example.com",
+  "dob": "1990-01-15",
+  "phone_number": "+12345678944",
+  "date_attended": "2023-01-01",
+  "roleType": "INVESTIGATOR"
+}

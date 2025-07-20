@@ -64,10 +64,10 @@ Content-Disposition: form-data; name="evidences"
 
 # replace with your own files in /test/files
 ------MyCustomBoundary
-Content-Disposition: form-data; name="evidence_0"; filename="photo1.png"
-Content-Type: image/png
+Content-Disposition: form-data; name="evidence_0"; filename="photo1.jpg"
+Content-Type: image/jpeg
 
-< ./files/photo1.png
+< ./files/photo1.jpg
 
 ------MyCustomBoundary
 Content-Disposition: form-data; name="evidence_0"; filename="photo2.jpg"
@@ -76,10 +76,10 @@ Content-Type: image/jpeg
 < ./files/photo2.jpg
 
 ------MyCustomBoundary
-Content-Disposition: form-data; name="evidence_1"; filename="document1.pdf"
-Content-Type: application/pdf
+Content-Disposition: form-data; name="evidence_1"; filename="photo3.jpg"
+Content-Type: image/jpeg
 
-< ./files/document1.pdf
+< ./files/photo3.jpg
 
 ------MyCustomBoundary--
 
