@@ -6,14 +6,14 @@ POST {{baseUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "username": "testuser1",
-  "password": "Test@123",
+  "username": "testuser111",
+  "password": "Test@123111",
   "fullname": "Test User",
   "dob": "01-01-1990",
   "phone_number": "0123456789",
   "gender": "male",
   "date_attended": "01-01-2020",
-  "roleType": "CENSOR"
+  "roleType": "POLICE_CHIEF"
 }
 
 ### 2. User Login
