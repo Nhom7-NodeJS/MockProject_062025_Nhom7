@@ -1,20 +1,22 @@
 import { AppDataSource } from "@/config/database.config";
 import { Case } from "@/modules/cases/entities/case.entity";
-import { CaseSeverity, CaseStatus, CaseType } from "@/modules/cases/enums/case.enum";
+import {
+  CaseSeverity,
+  CaseStatus,
+  CaseType,
+} from "@/modules/cases/enums/case.enum";
 
 async function seedCases() {
   try {
-    await AppDataSource.initialize();
-    console.log('Data Source has been initialized!');
+    //  await AppDataSource.initialize();
+    console.log("Data Source has been initialized!");
 
+    console.log("👉 Start seeding cases");
     const caseRepository = AppDataSource.getRepository(Case);
 
     // Clear existing data
-    await caseRepository.createQueryBuilder()
-      .delete()
-      .where('1 = 1')
-      .execute();
-    console.log('Cleared existing cases data');
+    await caseRepository.createQueryBuilder().delete().where("1 = 1").execute();
+    console.log("Cleared existing cases data");
 
     // Create 3 test cases
     const testCases = [
@@ -50,13 +52,12 @@ async function seedCases() {
     // Save test cases
     const createdCases = await caseRepository.save(testCases);
     console.log(`Successfully created ${createdCases.length} cases`);
-
   } catch (error) {
-    console.error('Error seeding cases:', error);
-  } finally {
-    await AppDataSource.destroy();
-    process.exit(0);
+    console.error("Error seeding cases:", error);
+    throw error; // BẮT BUỘC
   }
 }
 
-seedCases();
+// seedCases();
+
+export default seedCases;

@@ -8,18 +8,21 @@ import warrantService from "./warrant.service";
 
 import { CreateWarrantDto } from "./dto/warrant.create.dto";
 import { GetAllWarrantStatus } from "./dto/warrant.getallcasestatus";
+import { AppError } from "@/common/error.response";
+import { ErrorCode } from "@/constants/error-code";
 
 class WarrantController {
   async getAllWarrantsWithStatus(req: Request, res: Response) {
     const { status } = req.query as GetAllWarrantStatus;
-   
+
     const warrants = await warrantService.getAllWarrants(status);
 
     if (!warrants) {
-      return new AppResponse({
-        message: ErrorMessages.WARRANT_NOT_FOUND,
-        statusCode: HttpStatusCode.NOT_FOUND,
-      }).sendResponse(res);
+      throw new AppError(
+        ErrorMessages.WARRANT_NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        ErrorCode.WARRANT_NOT_FOUND
+      );
     }
 
     return new AppResponse({
@@ -67,26 +70,13 @@ class WarrantController {
   getWarrantById = async (req: Request, res: Response) => {
     const { warrant_id } = req.params;
 
-    try {
-      const warrant = await warrantService.getWarrantById(warrant_id);
+    const warrant = await warrantService.getWarrantById(warrant_id);
 
-      if (!warrant) {
-        return new AppResponse({
-          message: ErrorMessages.WARRANT_NOT_FOUND,
-          statusCode: HttpStatusCode.NOT_FOUND,
-        }).sendResponse(res);
-      }
-
-      return new AppResponse({
-        message: SuccessMessages.WARRANT.WARRANT_GET,
-        statusCode: HttpStatusCode.OK,
-        data: warrant,
-      }).sendResponse(res);
-    } catch (error) {
-      return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
-        error: "Internal server error",
-      });
-    }
+    return new AppResponse({
+      message: SuccessMessages.WARRANT.WARRANT_GET,
+      statusCode: HttpStatusCode.OK,
+      data: warrant,
+    }).sendResponse(res);
   };
 }
 

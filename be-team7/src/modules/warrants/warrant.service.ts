@@ -5,6 +5,10 @@ import { WarrantStatus } from "@/modules/financial_invests/enums/financial_inves
 
 import { Warrant } from "./entities/warrant.entity";
 import { CreateWarrantDto } from "./dto/warrant.create.dto";
+import { AppError } from "@/common/error.response";
+import { ErrorMessages } from "@/constants/message";
+import { HttpStatusCode } from "@/constants/status-code";
+import { ErrorCode } from "@/constants/error-code";
 
 export class WarrantService {
   private warrantRepository: Repository<Warrant>;
@@ -14,11 +18,14 @@ export class WarrantService {
   }
 
   async getAllWarrants(status?: WarrantStatus): Promise<Warrant[]> {
-   const query = this.warrantRepository.createQueryBuilder("warrant").where("warrant.is_deleted = :isDeleted", { isDeleted: false }).orderBy("warrant.time_publish", "DESC");
-   if (status) {
-   query.andWhere("warrant.status = :status", { status });
-  }
-  return query.getMany();
+    const query = this.warrantRepository
+      .createQueryBuilder("warrant")
+      .where("warrant.is_deleted = :isDeleted", { isDeleted: false })
+      .orderBy("warrant.time_publish", "DESC");
+    if (status) {
+      query.andWhere("warrant.status = :status", { status });
+    }
+    return query.getMany();
   }
 
   async getExecutingWarrants(): Promise<Warrant[]> {
@@ -67,16 +74,19 @@ export class WarrantService {
   }
 
   async searchWarrantByName(name: string) {
-    try {
-      return await this.warrantRepository.find({
-        where: {
-          warrant_name: name,
-        },
-      });
-    } catch (err) {
-      console.error("Error searching warrant by name:", err);
-      throw err;
+    const warrant = await this.warrantRepository.find({
+      where: {
+        warrant_name: name,
+      },
+    });
+    if (!warrant || warrant.length === 0) {
+      throw new AppError(
+        ErrorMessages.WARRANT_NOT_FOUND,
+        HttpStatusCode.NOT_FOUND,
+        ErrorCode.WARRANT_NOT_FOUND
+      );
     }
+    return warrant;
   }
 
   async getWarrantById(warrantId: string) {
@@ -88,7 +98,11 @@ export class WarrantService {
       });
 
       if (!warrant) {
-        throw new Error("Warrant not found");
+        throw new AppError(
+          ErrorMessages.WARRANT_NOT_FOUND,
+          HttpStatusCode.NOT_FOUND,
+          ErrorCode.WARRANT_NOT_FOUND
+        );
       }
 
       return warrant;
@@ -99,4 +113,4 @@ export class WarrantService {
   }
 }
 
-export default new WarrantService;
+export default new WarrantService();
